@@ -15,7 +15,7 @@ const {
 ---
 
 <section class="contact-cta">
-  <div class="container contact-cta__inner fade-up">
+  <div class="container contact-cta__inner" data-reveal data-reveal-y="28">
     <p class="contact-cta__eyebrow">{eyebrow}</p>
     <h2>{title}</h2>
     <p class="contact-cta__desc">{description}</p>
@@ -23,6 +23,9 @@ const {
       class="contact-cta__form"
       id="contact-mailto-form"
       data-contact-email={site.contactEmail}
+      data-reveal
+      data-reveal-delay="0.1"
+      data-reveal-y="20"
     >
       <label class="sr-only" for="cta-email">Email</label>
       <input
@@ -68,14 +71,16 @@ const {
   .contact-cta {
     background: var(--purple);
     color: var(--white);
-    padding-block: clamp(3.5rem, 8vw, 5.5rem);
+    padding-block: clamp(2.25rem, 5vw, 3.25rem);
   }
 
   .contact-cta__inner {
     text-align: center;
     display: grid;
-    gap: 0.9rem;
+    gap: 0.7rem;
     justify-items: center;
+    max-width: 44rem;
+    margin-inline: auto;
   }
 
   .contact-cta__eyebrow {
@@ -87,7 +92,7 @@ const {
   }
 
   .contact-cta h2 {
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: clamp(1.75rem, 4vw, 2.4rem);
     max-width: 16ch;
   }
 

@@ -19,7 +19,7 @@ function isActive(href: string) {
 ---
 
 <header class="site-header">
-  <div class="container site-header__inner">
+  <div class="site-header__inner">
     <a class="brand" href="/">
       <span class="brand__mark" aria-hidden="true"></span>
       <span class="brand__text">{site.shortName}</span>
@@ -54,6 +54,9 @@ function isActive(href: string) {
     align-items: center;
     gap: 1rem;
     min-height: var(--header-h);
+    width: 100%;
+    max-width: none;
+    padding-inline: var(--page-gutter);
   }
 
   .brand {
@@ -61,8 +64,9 @@ function isActive(href: string) {
     align-items: center;
     gap: 0.55rem;
     text-decoration: none;
-    font-family: var(--font-display);
-    font-size: 1.15rem;
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 700;
     color: var(--ink);
     flex-shrink: 0;
   }

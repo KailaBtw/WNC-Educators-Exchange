@@ -7,13 +7,21 @@ import { events } from "../../content/events";
 
 <section class="section" id="events">
   <div class="container">
-    <SectionHeader eyebrow="Gatherings" title="Event information">
-      <p>Past summits and our upcoming November convening—register under the upcoming card.</p>
-    </SectionHeader>
-    <div class="events-grid">
-      {events.map((event) => <EventCard event={event} />)}
+    <div data-reveal>
+      <SectionHeader eyebrow="Gatherings" title="Event information">
+        <p>Past summits and our upcoming November convening—register under the upcoming card.</p>
+      </SectionHeader>
     </div>
-    <div class="events-grid__cta">
+    <div class="events-grid">
+      {
+        events.map((event, index) => (
+          <div data-reveal data-reveal-delay={String(0.08 * index)} data-reveal-y="44">
+            <EventCard event={event} />
+          </div>
+        ))
+      }
+    </div>
+    <div class="events-grid__cta" data-reveal data-reveal-delay="0.2">
       <Button href="/events">Explore All Events</Button>
     </div>
   </div>

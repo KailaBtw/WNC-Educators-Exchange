@@ -72,8 +72,8 @@ import { stats } from "../content/stats";
 <style>
   .about-page {
     display: grid;
-    grid-template-columns: 1.05fr 1fr;
-    gap: clamp(2rem, 5vw, 4rem);
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.75rem, 4vw, 3rem);
     align-items: center;
   }
 
@@ -81,29 +81,28 @@ import { stats } from "../content/stats";
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    align-items: start;
+    align-items: stretch;
   }
 
   .about-page__img {
     border-radius: var(--radius-lg);
-    min-height: 22rem;
+    aspect-ratio: 3 / 4;
+    min-height: 0;
     background-size: cover;
     background-position: center;
   }
 
   .about-page__img--a {
     background-image: url("/images/about/story-1.svg");
-    margin-top: 1.5rem;
   }
 
   .about-page__img--b {
     background-image: url("/images/about/story-2.svg");
-    min-height: 26rem;
   }
 
   .about-page h1 {
-    font-size: clamp(2.4rem, 5vw, 3.4rem);
-    margin: 0.45rem 0 1.1rem;
+    font-size: clamp(2.2rem, 4.5vw, 3rem);
+    margin: 0.4rem 0 0.9rem;
   }
 
   .about-page__actions {
@@ -111,7 +110,7 @@ import { stats } from "../content/stats";
     flex-wrap: wrap;
     gap: 1rem;
     align-items: center;
-    margin-top: 1.75rem;
+    margin-top: 1.35rem;
   }
 
   .about-authors h2 {
@@ -146,9 +145,8 @@ import { stats } from "../content/stats";
       grid-template-columns: 1fr;
     }
 
-    .about-page__img,
-    .about-page__img--b {
-      min-height: 14rem;
+    .about-page__img {
+      aspect-ratio: 4 / 5;
     }
   }
 </style>

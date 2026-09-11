@@ -35,23 +35,24 @@ const colorMap = {
   .stat-row {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.25rem;
+    gap: 1rem;
     list-style: none;
-    margin-top: 2rem;
+    margin-top: 1.35rem;
   }
 
   .stat-row__value {
     font-family: var(--font-display);
-    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-size: clamp(1.55rem, 2.5vw, 2rem);
     line-height: 1.1;
   }
 
   .stat-row__label {
-    margin-top: 0.35rem;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
+    margin-top: 0.3rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
+    line-height: 1.35;
   }
 
   @media (max-width: 640px) {

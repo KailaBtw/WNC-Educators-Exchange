@@ -12,14 +12,21 @@ import { schoolPractices, schoolsIntro } from "../content/schools";
 >
   <section class="section">
     <div class="container">
-      <SectionHeader eyebrow={schoolsIntro.eyebrow} title={schoolsIntro.title} align="center">
-        <p>{schoolsIntro.description}</p>
-      </SectionHeader>
+      <div data-reveal>
+        <SectionHeader eyebrow={schoolsIntro.eyebrow} title={schoolsIntro.title} align="center">
+          <p>{schoolsIntro.description}</p>
+        </SectionHeader>
+      </div>
 
       <div class="schools-grid">
         {
-          schoolPractices.map((practice) => (
-            <article class="school-card">
+          schoolPractices.map((practice, index) => (
+            <article
+              class="school-card"
+              data-reveal
+              data-reveal-delay={String(0.06 * (index % 4))}
+              data-reveal-y="40"
+            >
               <p class="school-card__institution">{practice.institution}</p>
               <h3>{practice.title}</h3>
               <p>{practice.summary}</p>

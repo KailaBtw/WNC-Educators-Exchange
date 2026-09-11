@@ -10,15 +10,17 @@ const schoolsTeaser = schoolPractices.slice(0, 2);
 
 <section class="section essentials">
   <div class="container">
-    <SectionHeader eyebrow="The Essentials" title="Formulated for radiant classrooms" align="center">
-      <p>
-        Survey findings and campus practice—side by side. Start with the top concerns, then see what
-        schools are already trying.
-      </p>
-    </SectionHeader>
+    <div data-reveal>
+      <SectionHeader eyebrow="The Essentials" title="Formulated for radiant classrooms" align="center">
+        <p>
+          Survey findings and campus practice—side by side. Start with the top concerns, then see what
+          schools are already trying.
+        </p>
+      </SectionHeader>
+    </div>
 
     <div class="essentials__grid">
-      <article class="essentials__card">
+      <article class="essentials__card" data-reveal data-reveal-delay="0.05" data-reveal-y="40">
         <div class="essentials__image" style={`background-image: url("/images/about/issues-card.svg")`}
         ></div>
         <div class="essentials__meta">
@@ -43,7 +45,7 @@ const schoolsTeaser = schoolPractices.slice(0, 2);
         </div>
       </article>
 
-      <article class="essentials__card">
+      <article class="essentials__card" data-reveal data-reveal-delay="0.16" data-reveal-y="40">
         <div
           class="essentials__image"
           style={`background-image: url("/images/about/schools-card.svg")`}
@@ -146,7 +148,7 @@ const schoolsTeaser = schoolPractices.slice(0, 2);
   }
 
   .essentials__cta {
-    margin-top: 1.75rem;
+    margin-top: 1.25rem;
   }
 
   @media (max-width: 800px) {
