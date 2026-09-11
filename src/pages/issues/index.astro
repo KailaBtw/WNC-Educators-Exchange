@@ -6,6 +6,7 @@ import Button from "../../components/ui/Button.astro";
 import ContactCta from "../../components/layout/ContactCta.astro";
 import { site } from "../../content/site";
 import { stats } from "../../content/stats";
+import { issueFilters, issues } from "../../content/issues";
 
 const reportStats = [
   { value: stats.respondents.value, label: stats.respondents.label, color: "green-light" as const },
@@ -28,17 +29,14 @@ const reportStats = [
       </p>
       <div class="prose muted issues-report__overview">
         <p>
-          The 2026 WNC Educator Survey makes the picture clear: {stats.aiActive.value} of the faculty
-          who engage with AI are already using these tools, {stats.policyBehind.value} say their
-          institution’s policy is behind or nonexistent, and {stats.criticalThinking.value} name loss
-          of critical thinking as their leading concern. Students feel the pressure too. Roughly 70%
-          of college students now see AI as a danger to their future careers.
+          The survey makes the picture clear: {stats.aiActive.value} of AI-active faculty already use
+          these tools, {stats.policyBehind.value} say policy is behind or nonexistent, and
+          {stats.criticalThinking.value} name loss of critical thinking as their leading concern.
         </p>
         <p>
-          One principle ties all ten issues together, simple enough for a sticky note:
-          <strong>{site.tagline}</strong> Used well, AI extends what a capable person can do. Used as
-          a substitute for learning, it removes the work that builds human understanding and
-          capability in the first place.
+          One principle ties all ten together: <strong>{site.tagline}</strong> Used well, AI extends
+          what a capable person can do. Used as a substitute for learning, it removes the work that
+          builds understanding.
         </p>
       </div>
       <StatRow stats={reportStats} />
@@ -52,7 +50,35 @@ const reportStats = [
   <section class="section section--tight issues-report__list">
     <div class="container">
       <p class="eyebrow issues-report__list-eyebrow">The ten issues</p>
+
+      <nav class="issues-jump" aria-label="Jump to issue">
+        {
+          issues.map((issue) => (
+            <a href={`#issue-${issue.number}`} data-jump={issue.number}>
+              {issue.number}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="issues-filters" role="toolbar" aria-label="Filter issues">
+        {
+          issueFilters.map((filter, index) => (
+            <button
+              type="button"
+              class:list={["issues-filters__btn", { "is-active": index === 0 }]}
+              data-issue-filter={filter.id}
+            >
+              {filter.label}
+            </button>
+          ))
+        }
+      </div>
+
+      <p class="issues-count" data-issues-count aria-live="polite">Showing {issues.length} issues</p>
+
       <IssueList />
+      <p class="issues-empty" data-issues-empty hidden>No issues in this filter.</p>
     </div>
   </section>
 
@@ -88,6 +114,63 @@ const reportStats = [
 
   <ContactCta />
 </BaseLayout>
+
+<script>
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>("[data-issue-filter]");
+  const cards = document.querySelectorAll<HTMLElement>("[data-issue-card]");
+  const countEl = document.querySelector<HTMLElement>("[data-issues-count]");
+  const emptyEl = document.querySelector<HTMLElement>("[data-issues-empty]");
+  const jumpLinks = document.querySelectorAll<HTMLAnchorElement>("[data-jump]");
+
+  function applyFilter(category: string) {
+    let visible = 0;
+    cards.forEach((card) => {
+      const match = category === "all" || card.dataset.category === category;
+      card.hidden = !match;
+      if (match) visible += 1;
+    });
+    if (countEl) {
+      countEl.textContent = `Showing ${visible} issue${visible === 1 ? "" : "s"}`;
+    }
+    if (emptyEl) emptyEl.hidden = visible > 0;
+
+    jumpLinks.forEach((link) => {
+      const num = link.dataset.jump;
+      const card = document.getElementById(`issue-${num}`);
+      link.hidden = !card || card.hidden;
+    });
+  }
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach((b) => b.classList.toggle("is-active", b === btn));
+      applyFilter(btn.dataset.issueFilter || "all");
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>("[data-issue-toggle]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const card = btn.closest<HTMLElement>("[data-issue-card]");
+      if (!card) return;
+      const panel = card.querySelector<HTMLElement>("[data-issue-panel]");
+      const open = !card.classList.contains("is-open");
+      card.classList.toggle("is-open", open);
+      btn.setAttribute("aria-expanded", String(open));
+      if (panel) panel.hidden = !open;
+    });
+  });
+
+  jumpLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const target = document.getElementById(`issue-${link.dataset.jump}`);
+      if (!target || target.hidden) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      const toggle = target.querySelector<HTMLButtonElement>("[data-issue-toggle]");
+      if (toggle && !target.classList.contains("is-open")) toggle.click();
+    });
+  });
+</script>
 
 <style>
   .issues-report__intro {
@@ -128,7 +211,86 @@ const reportStats = [
 
   .issues-report__list-eyebrow {
     text-align: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .issues-jump {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .issues-jump a {
+    width: 2.35rem;
+    height: 2.35rem;
+    display: grid;
+    place-items: center;
+    border-radius: 0.65rem;
+    text-decoration: none;
+    font-weight: 700;
+    color: var(--ink);
+    background: color-mix(in srgb, var(--white) 70%, var(--cream));
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .issues-jump a:hover {
+    background: var(--green);
+    color: var(--white);
+    transform: translateY(-2px);
+  }
+
+  .issues-jump a[hidden] {
+    display: none !important;
+  }
+
+  .issues-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .issues-filters__btn {
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--white) 65%, var(--cream));
+    color: var(--muted);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .issues-filters__btn:hover {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--green-light) 45%, white);
+  }
+
+  .issues-filters__btn.is-active {
+    background: var(--purple);
+    color: var(--white);
+  }
+
+  .issues-count {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0 0 1.15rem;
+  }
+
+  .issues-empty {
+    text-align: center;
+    color: var(--muted);
+    margin-top: 1rem;
+  }
+
+  .issues-empty[hidden] {
+    display: none !important;
   }
 
   .issues-report__footer {

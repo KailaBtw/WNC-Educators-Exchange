@@ -1,68 +1,80 @@
 import { useEffect } from "react";
-import { animate, inView } from "framer-motion";
 
 /**
- * Site-wide scroll reveals for any element marked with data-reveal.
+ * Site-wide scroll reveals for [data-reveal].
  * Optional: data-reveal-delay (seconds), data-reveal-y (px).
+ * Skips nested [data-reveal] so children are not left stuck at opacity 0.
  */
 export default function ScrollMotionRoot() {
   useEffect(() => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
+    const all = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+    const elements = all.filter((el) => !el.parentElement?.closest("[data-reveal]"));
 
-    const elements = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+    if (prefersReduced) {
+      all.forEach(revealNow);
+      return;
+    }
+
     if (!elements.length) return;
 
-    elements.forEach((el, index) => {
+    elements.forEach((el) => {
       const y = Number(el.dataset.revealY ?? 36);
-      const tilt = index % 2 === 0 ? -0.6 : 0.6;
-      el.dataset.revealTilt = String(tilt);
       el.style.opacity = "0";
-      el.style.transform = `translate3d(0, ${y}px, 0) scale(0.97) rotate(${tilt}deg)`;
-      el.style.filter = "blur(1px)";
-      el.style.willChange = "opacity, transform, filter";
+      el.style.transform = `translate3d(0, ${y}px, 0)`;
+      el.style.transition = "none";
+      el.style.willChange = "opacity, transform";
     });
 
-    // Failsafe: never leave content stuck invisible if inView misses.
+    const reveal = (el: HTMLElement) => {
+      if (el.dataset.revealed === "true") return;
+      el.dataset.revealed = "true";
+      const delay = Number(el.dataset.revealDelay ?? 0);
+      window.setTimeout(() => {
+        el.style.transition =
+          "opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)";
+        el.style.opacity = "1";
+        el.style.transform = "translate3d(0, 0, 0)";
+        window.setTimeout(() => {
+          el.style.willChange = "auto";
+        }, 800);
+      }, delay * 1000);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          reveal(entry.target as HTMLElement);
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    elements.forEach((el) => observer.observe(el));
+
+    // Failsafe: never leave content stuck invisible.
     const failsafe = window.setTimeout(() => {
       elements.forEach((el) => {
-        if (getComputedStyle(el).opacity === "0") {
-          el.style.opacity = "1";
-          el.style.transform = "none";
-          el.style.filter = "none";
-        }
+        if (el.dataset.revealed !== "true") revealNow(el);
       });
-    }, 1800);
-
-    const unsubs = elements.map((el) => {
-      const delay = Number(el.dataset.revealDelay ?? 0);
-      return inView(
-        el,
-        () => {
-          animate(
-            el,
-            {
-              opacity: 1,
-              transform: "translate3d(0, 0, 0) scale(1) rotate(0deg)",
-              filter: "blur(0px)",
-            },
-            {
-              type: "spring",
-              stiffness: 110,
-              damping: 20,
-              mass: 0.7,
-              delay,
-            },
-          );
-        },
-        { amount: 0.16, margin: "0px 0px -10% 0px" },
-      );
-    });
+    }, 2200);
 
     return () => {
+      observer.disconnect();
       window.clearTimeout(failsafe);
-      unsubs.forEach((stop) => stop());
-    };  }, []);
+    };
+  }, []);
 
   return null;
+}
+
+function revealNow(el: HTMLElement) {
+  el.dataset.revealed = "true";
+  el.style.opacity = "1";
+  el.style.transform = "none";
+  el.style.filter = "none";
+  el.style.transition = "none";
+  el.style.willChange = "auto";
 }

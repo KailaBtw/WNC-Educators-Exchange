@@ -1,107 +1,165 @@
 ---
 import type { Issue } from "../../content/issues";
+import { issueCategoryLabel } from "../../content/issues";
 
 interface Props {
   issue: Issue;
 }
 
 const { issue } = Astro.props;
-const preview = issue.body[0];
 ---
 
-<article class="issue-entry">
-  <div class="issue-entry__num" aria-hidden="true">{String(issue.number).padStart(2, "0")}</div>
-  <div class="issue-entry__content">
-    <p class="issue-entry__label">Issue {issue.number} of 10</p>
-    <h2>
-      <a href={`/issues/${issue.slug}`}>{issue.title}</a>
-    </h2>
-    <p class="issue-entry__flyer">{issue.shortBlurb}</p>
-    <p class="issue-entry__preview">{preview}</p>
-    <a class="issue-entry__link" href={`/issues/${issue.slug}`}>Open full issue →</a>
+<article
+  class="issue-card"
+  id={`issue-${issue.number}`}
+  data-category={issue.category}
+  data-issue-card
+>
+  <button type="button" class="issue-card__toggle" data-issue-toggle aria-expanded="false">
+    <span class="issue-card__num">{String(issue.number).padStart(2, "0")}</span>
+    <span class="issue-card__main">
+      <span class="issue-card__meta">
+        <span class="issue-card__cat">{issueCategoryLabel[issue.category]}</span>
+        <span>Issue {issue.number} of 10</span>
+      </span>
+      <span class="issue-card__title">{issue.title}</span>
+      <span class="issue-card__flyer">{issue.shortBlurb}</span>
+    </span>
+    <span class="issue-card__chevron" aria-hidden="true"></span>
+  </button>
+
+  <div class="issue-card__panel" hidden data-issue-panel>
+    {issue.body.map((paragraph) => (
+      <p>{paragraph}</p>
+    ))}
+    <a class="issue-card__link" href={`/issues/${issue.slug}`}>Open full issue page →</a>
   </div>
 </article>
 
 <style>
-  .issue-entry {
+  .issue-card {
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--white) 72%, var(--cream));
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .issue-card[hidden] {
+    display: none !important;
+  }
+
+  .issue-card.is-open {
+    box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 8%, transparent);
+  }
+
+  .issue-card__toggle {
+    width: 100%;
     display: grid;
-    grid-template-columns: minmax(3.5rem, 5rem) minmax(0, 1fr);
-    gap: clamp(0.85rem, 2vw, 1.5rem);
-    padding: clamp(1.5rem, 3vw, 2rem) 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--purple) 14%, transparent);
-  }
-
-  .issue-entry:first-of-type {
-    border-top: 1px solid color-mix(in srgb, var(--purple) 14%, transparent);
-  }
-
-  .issue-entry__num {
-    font-family: var(--font-display);
-    font-size: clamp(2.4rem, 5vw, 3.4rem);
-    line-height: 1;
-    color: color-mix(in srgb, var(--green) 70%, var(--cream));
-    font-weight: 550;
-    letter-spacing: -0.03em;
-    padding-top: 0.15rem;
-  }
-
-  .issue-entry__label {
-    margin: 0 0 0.3rem;
-    color: var(--purple);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-
-  .issue-entry h2 {
-    margin: 0;
-    font-size: clamp(1.45rem, 2.8vw, 1.85rem);
-    line-height: 1.2;
-  }
-
-  .issue-entry h2 a {
-    text-decoration: none;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.85rem;
+    align-items: start;
+    text-align: left;
+    border: 0;
+    background: transparent;
+    padding: 1.1rem 1.15rem;
+    cursor: pointer;
+    font: inherit;
     color: inherit;
   }
 
-  .issue-entry h2 a:hover {
+  .issue-card__num {
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    line-height: 1;
+    color: var(--green);
+    font-weight: 550;
+    padding-top: 0.1rem;
+  }
+
+  .issue-card__main {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  .issue-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .issue-card__cat {
     color: var(--purple);
   }
 
-  .issue-entry__flyer {
-    margin: 0.65rem 0 0;
-    color: var(--ink);
-    font-size: 1.05rem;
-    font-weight: 600;
+  .issue-card__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2.4vw, 1.45rem);
+    line-height: 1.2;
+    font-weight: 550;
   }
 
-  .issue-entry__preview {
-    margin: 0.65rem 0 0;
+  .issue-card__flyer {
     color: var(--muted);
-    max-width: 46rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
   }
 
-  .issue-entry__link {
-    display: inline-block;
-    margin-top: 0.85rem;
+  .issue-card__chevron {
+    width: 0.55rem;
+    height: 0.55rem;
+    margin-top: 0.55rem;
+    border-right: 2px solid var(--green);
+    border-bottom: 2px solid var(--green);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .issue-card.is-open .issue-card__chevron {
+    transform: rotate(-135deg);
+    margin-top: 0.75rem;
+  }
+
+  .issue-card__panel {
+    padding: 0 1.15rem 1.2rem 1.15rem;
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .issue-card__panel[hidden] {
+    display: none !important;
+  }
+
+  .issue-card__panel p {
+    margin: 0;
+    color: var(--ink);
+    font-size: 0.95rem;
+  }
+
+  .issue-card__link {
     color: var(--green);
     font-weight: 600;
     text-decoration: none;
+    width: fit-content;
+    margin-top: 0.25rem;
   }
 
-  .issue-entry__link:hover {
+  .issue-card__link:hover {
     color: var(--purple);
   }
 
   @media (max-width: 560px) {
-    .issue-entry {
-      grid-template-columns: 1fr;
-      gap: 0.35rem;
+    .issue-card__toggle {
+      grid-template-columns: auto minmax(0, 1fr);
     }
 
-    .issue-entry__num {
-      font-size: 2rem;
+    .issue-card__chevron {
+      display: none;
     }
   }
 </style>

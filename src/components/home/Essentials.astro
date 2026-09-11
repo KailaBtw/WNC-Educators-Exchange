@@ -10,10 +10,20 @@ const practicePreview = schoolPractices.slice(0, 3);
 <section class="section unify" id="issues-home">
   <div class="container">
     <article class="unify-card">
-      <div class="unify-card__media" aria-hidden="true"></div>
+      <button
+        type="button"
+        class="unify-card__media"
+        data-open-modal="issues"
+        data-index="0"
+        aria-label="Open Top 10 Issues"
+      ></button>
       <div class="unify-card__body">
         <p class="unify-card__eyebrow">Survey report</p>
-        <h2>Top 10 Issues</h2>
+        <h2>
+          <button type="button" class="unify-card__title-btn" data-open-modal="issues" data-index="0">
+            Top 10 Issues
+          </button>
+        </h2>
         <p class="unify-card__lead">{site.tagline}</p>
         <ol class="unify-card__list">
           {
@@ -39,10 +49,20 @@ const practicePreview = schoolPractices.slice(0, 3);
 <section class="section unify unify--alt" id="schools-home">
   <div class="container">
     <article class="unify-card">
-      <div class="unify-card__media" aria-hidden="true"></div>
+      <button
+        type="button"
+        class="unify-card__media"
+        data-open-modal="schools"
+        data-index="0"
+        aria-label="Open what schools are doing"
+      ></button>
       <div class="unify-card__body">
         <p class="unify-card__eyebrow">Campus practice</p>
-        <h2>What schools are doing</h2>
+        <h2>
+          <button type="button" class="unify-card__title-btn" data-open-modal="schools" data-index="0">
+            What schools are doing
+          </button>
+        </h2>
         <p class="unify-card__lead">A few approaches already in use across WNC.</p>
         <ol class="unify-card__list">
           {
@@ -231,10 +251,16 @@ const practicePreview = schoolPractices.slice(0, 3);
   }
 
   .unify-card__media {
+    border: 0;
+    padding: 0;
+    cursor: pointer;
     border-radius: var(--radius-lg);
     overflow: hidden;
     min-height: 17rem;
     position: relative;
+    display: block;
+    width: 100%;
+    transition: transform 0.25s ease, filter 0.25s ease;
     background:
       radial-gradient(circle at 20% 85%, color-mix(in srgb, var(--green-light) 55%, transparent), transparent 45%),
       radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--ink) 18%, transparent), transparent 35%),
@@ -243,6 +269,17 @@ const practicePreview = schoolPractices.slice(0, 3);
         color-mix(in srgb, var(--green) 78%, var(--cream)),
         color-mix(in srgb, var(--purple) 72%, var(--cream))
       );
+  }
+
+  .unify-card__media:hover,
+  .unify-card__media:focus-visible {
+    transform: scale(1.015);
+    filter: saturate(1.08);
+    outline: none;
+  }
+
+  .unify-card__media:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--purple) 45%, transparent);
   }
 
   .unify--alt .unify-card__media {
@@ -300,6 +337,28 @@ const practicePreview = schoolPractices.slice(0, 3);
   .unify-card h2 {
     margin: 0;
     font-size: clamp(1.55rem, 3vw, 1.9rem);
+  }
+
+  .unify-card__title-btn {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .unify-card__title-btn:hover,
+  .unify-card__title-btn:focus-visible {
+    color: var(--purple);
+    outline: none;
+  }
+
+  .unify--alt .unify-card__title-btn:hover,
+  .unify--alt .unify-card__title-btn:focus-visible {
+    color: var(--blue);
   }
 
   .unify-card__lead {

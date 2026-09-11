@@ -3,13 +3,14 @@ import IssueCard from "./IssueCard.astro";
 import { issues } from "../../content/issues";
 ---
 
-<div class="issue-list">
+<div class="issue-list" data-issue-list>
   {issues.map((issue) => <IssueCard issue={issue} />)}
 </div>
 
 <style>
   .issue-list {
     display: grid;
+    gap: 0.75rem;
     max-width: 52rem;
     margin-inline: auto;
   }

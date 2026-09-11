@@ -1,0 +1,132 @@
+---
+import SectionHeader from "../ui/SectionHeader.astro";
+import Button from "../ui/Button.astro";
+import { awardsIntro, awardees } from "../../content/awards";
+
+const featured = awardees.slice(0, 3);
+---
+
+<section class="section awards-teaser" id="awards">
+  <div class="container">
+    <div data-reveal>
+      <SectionHeader eyebrow={awardsIntro.eyebrow} title={awardsIntro.title} align="center">
+        <p>
+          Educators across WNC who are shaping responsible AI practice—in classrooms, policy, and
+          regional collaboration.
+        </p>
+      </SectionHeader>
+    </div>
+
+    <div class="awards-teaser__grid">
+      {
+        featured.map((person, index) => (
+          <article
+            class="awards-teaser__card"
+            data-reveal
+            data-reveal-delay={String(0.06 * index)}
+            data-reveal-y="28"
+          >
+            <a class="awards-teaser__media" href="/awards">
+              <img src={person.image} alt={person.imageAlt} />
+            </a>
+            <div class="awards-teaser__body">
+              <p class="awards-teaser__year">{person.year}</p>
+              <h3>{person.name}</h3>
+              <p class="awards-teaser__institution">{person.institution}</p>
+              <p class="awards-teaser__recognition">{person.recognition}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="awards-teaser__cta" data-reveal data-reveal-delay="0.14" data-reveal-y="24">
+      <Button href="/awards" variant="quiet">See all recognized faculty</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .awards-teaser {
+    background: color-mix(in srgb, var(--purple) 6%, var(--cream));
+  }
+
+  .awards-teaser__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.5vw, 1.5rem);
+  }
+
+  .awards-teaser__card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+
+  .awards-teaser__media {
+    display: block;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: color-mix(in srgb, var(--green-light) 35%, white);
+  }
+
+  .awards-teaser__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+  }
+
+  .awards-teaser__media:hover img {
+    transform: scale(1.04);
+  }
+
+  .awards-teaser__body {
+    display: grid;
+    gap: 0.25rem;
+    padding-top: 0.9rem;
+  }
+
+  .awards-teaser__year {
+    margin: 0;
+    color: var(--purple);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .awards-teaser__card h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+
+  .awards-teaser__institution {
+    margin: 0;
+    color: var(--blue);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .awards-teaser__recognition {
+    margin: 0.2rem 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .awards-teaser__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.75rem;
+  }
+
+  @media (max-width: 900px) {
+    .awards-teaser__grid {
+      grid-template-columns: 1fr;
+      max-width: 18rem;
+      margin-inline: auto;
+    }
+  }
+</style>

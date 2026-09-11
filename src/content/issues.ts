@@ -1,9 +1,25 @@
+export type IssueCategory = "classroom" | "institution" | "workplace";
+
 export type Issue = {
   number: number;
   slug: string;
   title: string;
+  category: IssueCategory;
   shortBlurb: string;
   body: string[];
+};
+
+export const issueFilters: { id: "all" | IssueCategory; label: string }[] = [
+  { id: "all", label: "All issues" },
+  { id: "classroom", label: "Classroom" },
+  { id: "institution", label: "Institution" },
+  { id: "workplace", label: "Workplace" },
+];
+
+export const issueCategoryLabel: Record<IssueCategory, string> = {
+  classroom: "Classroom",
+  institution: "Institution",
+  workplace: "Workplace",
 };
 
 export const issues: Issue[] = [
@@ -11,6 +27,7 @@ export const issues: Issue[] = [
     number: 1,
     slug: "critical-thinking",
     title: "Protecting Critical Thinking",
+    category: "classroom",
     shortBlurb:
       "Real understanding can't be fast-tracked, so AI must sharpen thinking, not replace it.",
     body: [
@@ -22,6 +39,7 @@ export const issues: Issue[] = [
     number: 2,
     slug: "guidance-over-prohibition",
     title: "Create an Open Dialog",
+    category: "classroom",
     shortBlurb:
       "Many students already use AI, so teach good judgment skills and proper use instead of bans.",
     body: [
@@ -33,6 +51,7 @@ export const issues: Issue[] = [
     number: 3,
     slug: "policy-fast-moving-target",
     title: "Policy Built for a Fast-Moving Target",
+    category: "institution",
     shortBlurb:
       "AI changes faster than policy can, so treat your guidelines as a living document.",
     body: [
@@ -44,6 +63,7 @@ export const issues: Issue[] = [
     number: 4,
     slug: "judge-ai-output",
     title: "Judging AI Output",
+    category: "classroom",
     shortBlurb:
       "AI never warns you when it's wrong, so evaluating its output is a skill for every discipline.",
     body: [
@@ -55,6 +75,7 @@ export const issues: Issue[] = [
     number: 5,
     slug: "assessment-process",
     title: "Assessment Must Shift to Process",
+    category: "classroom",
     shortBlurb:
       "When AI can write the final paper in a minute, grade the process, not just the answer.",
     body: [
@@ -66,6 +87,7 @@ export const issues: Issue[] = [
     number: 6,
     slug: "workplace-preparation",
     title: "Workplace Preparation Creates Tension",
+    category: "workplace",
     shortBlurb:
       "Employers want AI fluency, but students need to build foundational skills first, then AI tools can be introduced.",
     body: [
@@ -77,6 +99,7 @@ export const issues: Issue[] = [
     number: 7,
     slug: "faculty-training",
     title: "Training Faculty for Appropriate Use",
+    category: "institution",
     shortBlurb:
       "Faculty want training and administrative direction, not just logins.",
     body: [
@@ -88,6 +111,7 @@ export const issues: Issue[] = [
     number: 8,
     slug: "institutional-infrastructure",
     title: "AI as Institutional Infrastructure",
+    category: "institution",
     shortBlurb:
       "AI now handles chatbots and enrollment systems, so build it with human in-the-loop and data privacy in mind.",
     body: [
@@ -99,6 +123,7 @@ export const issues: Issue[] = [
     number: 9,
     slug: "collaboration-beats-silos",
     title: "Collaboration Beats Silos",
+    category: "institution",
     shortBlurb:
       "Campuses that share strategies move faster than those going it alone, same with colleagues.",
     body: [
@@ -110,6 +135,7 @@ export const issues: Issue[] = [
     number: 10,
     slug: "human-connection",
     title: "AI Can’t Replace Human Connection",
+    category: "classroom",
     shortBlurb:
       "In-person learning builds the engagement and relationships no chatbot can.",
     body: [

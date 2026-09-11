@@ -100,7 +100,7 @@ import { institutions, institutionsIntro, institutionFilters } from "../content/
 </BaseLayout>
 
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+  const toolbar = document.querySelector(".schools-filters");
   const cards = document.querySelectorAll<HTMLElement>(".school-card");
   const countEl = document.querySelector<HTMLElement>("[data-schools-count]");
   const emptyEl = document.querySelector<HTMLElement>("[data-schools-empty]");
@@ -118,11 +118,13 @@ import { institutions, institutionsIntro, institutionFilters } from "../content/
     if (emptyEl) emptyEl.hidden = visible > 0;
   }
 
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      buttons.forEach((b) => b.classList.toggle("is-active", b === btn));
-      applyFilter(btn.dataset.filter || "all");
+  toolbar?.addEventListener("click", (event) => {
+    const btn = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-filter]");
+    if (!btn || !toolbar.contains(btn)) return;
+    toolbar.querySelectorAll("[data-filter]").forEach((el) => {
+      el.classList.toggle("is-active", el === btn);
     });
+    applyFilter(btn.dataset.filter || "all");
   });
 </script>
 
@@ -189,6 +191,14 @@ import { institutions, institutionsIntro, institutionFilters } from "../content/
     background: color-mix(in srgb, var(--white) 72%, var(--cream));
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .school-card[hidden] {
+    display: none !important;
+  }
+
+  .schools-empty[hidden] {
+    display: none !important;
   }
 
   .school-card:hover {
