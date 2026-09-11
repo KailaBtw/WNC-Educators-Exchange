@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionHeader from "../../components/ui/SectionHeader.astro";
+import EventCard from "../../components/events/EventCard.astro";
+import EventCarousel from "../../components/events/EventCarousel";
+import ContactCta from "../../components/layout/ContactCta.astro";
+import { events } from "../../content/events";
+
+const carouselSlides = events.flatMap((event) => event.images).slice(0, 6);
+---
+
+<BaseLayout
+  title="Events"
+  description="Past and upcoming WNC Educators Exchange gatherings, including the November 17 event."
+>
+  <section class="section">
+    <div class="container">
+      <SectionHeader eyebrow="Events" title="Past, present, and November next">
+        <p>
+          Browse summit archives and register for the upcoming November convening. Each event page
+          includes a photo carousel and program notes.
+        </p>
+      </SectionHeader>
+      <div class="events-page__grid">
+        {events.map((event) => <EventCard event={event} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <EventCarousel client:load slides={carouselSlides} heading="Real-world exchange" />
+    </div>
+  </section>
+
+  <ContactCta
+    title="Planning to attend November 17?"
+    description="Questions about registration, program, or bringing a campus team? Send a note."
+  />
+</BaseLayout>
+
+<style>
+  .events-page__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .events-page__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

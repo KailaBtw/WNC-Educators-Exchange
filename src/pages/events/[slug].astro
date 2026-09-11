@@ -1,0 +1,153 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Button from "../../components/ui/Button.astro";
+import EventCarousel from "../../components/events/EventCarousel";
+import ContactCta from "../../components/layout/ContactCta.astro";
+import { events, getEvent } from "../../content/events";
+import { site } from "../../content/site";
+
+export function getStaticPaths() {
+  return events.map((event) => ({
+    params: { slug: event.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const event = getEvent(slug!);
+
+if (!event) {
+  return Astro.redirect("/events");
+}
+---
+
+<BaseLayout title={event.title} description={event.summary}>
+  <section class="section">
+    <div class="container event-detail">
+      <p class="eyebrow">{event.category}</p>
+      <h1>{event.title}</h1>
+      <p class="event-detail__meta">
+        <span>{event.dateLabel}</span>
+        {event.location && <span>· {event.location}</span>}
+      </p>
+      <p class="event-detail__summary muted">{event.summary}</p>
+      <div class="event-detail__actions">
+        {
+          event.registerUrl && (
+            <Button href={event.registerUrl} external>
+              Register here
+            </Button>
+          )
+        }
+        <Button href="/events" variant="secondary">All events</Button>
+      </div>
+
+      <div class="event-detail__program">
+        <h2>Program</h2>
+        <ol>
+          {event.program.map((item) => <li>{item}</li>)}
+        </ol>
+        {
+          event.status === "upcoming" && (
+            <p class="muted event-detail__note">
+              Full program details may live on the external registration site. Placeholder bullets
+              mark structure until the final agenda is published.
+            </p>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <EventCarousel
+        client:load
+        slides={event.images}
+        heading={event.title}
+        body={`Photo placeholders for ${event.title}. Swap these assets with Brain Hub / January / November archives when ready.`}
+      />
+    </div>
+  </section>
+
+  {
+    event.status === "upcoming" && (
+      <section class="section section--tight">
+        <div class="container event-detail__register-band">
+          <div>
+            <p class="eyebrow">Upcoming</p>
+            <h2>Ready to register?</h2>
+            <p class="muted">
+              Registration is hosted on a separate site. Use the button below when you are ready to
+              sign up for November 17.
+            </p>
+          </div>
+          <Button href={event.registerUrl ?? site.registerUrl} external>
+            Register for Nov 17
+          </Button>
+        </div>
+      </section>
+    )
+  }
+
+  <ContactCta />
+</BaseLayout>
+
+<style>
+  .event-detail h1 {
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    margin: 0.4rem 0 0.75rem;
+    max-width: 16ch;
+  }
+
+  .event-detail__meta {
+    color: var(--blue);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .event-detail__summary {
+    max-width: 42rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .event-detail__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .event-detail__program h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .event-detail__program ol {
+    padding-left: 1.25rem;
+    display: grid;
+    gap: 0.65rem;
+    max-width: 42rem;
+    color: var(--muted);
+  }
+
+  .event-detail__note {
+    margin-top: 1rem;
+    max-width: 40rem;
+  }
+
+  .event-detail__register-band {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--green-light) 35%, white);
+  }
+
+  .event-detail__register-band h2 {
+    font-size: 2rem;
+    margin: 0.35rem 0 0.5rem;
+  }
+</style>

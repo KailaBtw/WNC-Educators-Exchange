@@ -1,0 +1,157 @@
+---
+import SectionHeader from "../ui/SectionHeader.astro";
+import Button from "../ui/Button.astro";
+import { getFeaturedIssues } from "../../content/issues";
+import { schoolPractices } from "../../content/schools";
+
+const featuredIssues = getFeaturedIssues(3);
+const schoolsTeaser = schoolPractices.slice(0, 2);
+---
+
+<section class="section essentials">
+  <div class="container">
+    <SectionHeader eyebrow="The Essentials" title="Formulated for radiant classrooms" align="center">
+      <p>
+        Survey findings and campus practice—side by side. Start with the top concerns, then see what
+        schools are already trying.
+      </p>
+    </SectionHeader>
+
+    <div class="essentials__grid">
+      <article class="essentials__card">
+        <div class="essentials__image" style={`background-image: url("/images/about/issues-card.svg")`}
+        ></div>
+        <div class="essentials__meta">
+          <p class="essentials__label">Regional report</p>
+          <p class="essentials__note">Top 3 of 10</p>
+        </div>
+        <h3>Top 10 Issues</h3>
+        <ul class="essentials__list">
+          {
+            featuredIssues.map((issue) => (
+              <li>
+                <a href={`/issues/${issue.slug}`}>
+                  <strong>{issue.number}. {issue.title}</strong>
+                  <span>{issue.shortBlurb}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="essentials__cta">
+          <Button href="/issues">Explore All Issues</Button>
+        </div>
+      </article>
+
+      <article class="essentials__card">
+        <div
+          class="essentials__image"
+          style={`background-image: url("/images/about/schools-card.svg")`}
+        ></div>
+        <div class="essentials__meta">
+          <p class="essentials__label">Campus practice</p>
+          <p class="essentials__note">Policy in motion</p>
+        </div>
+        <h3>What Schools Are Doing</h3>
+        <ul class="essentials__list">
+          {
+            schoolsTeaser.map((practice) => (
+              <li>
+                <a href="/schools">
+                  <strong>{practice.title}</strong>
+                  <span>{practice.summary}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="essentials__cta">
+          <Button href="/schools">Explore Campus Practices</Button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .essentials {
+    background: var(--white);
+  }
+
+  .essentials__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  .essentials__card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .essentials__image {
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius-lg);
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 1rem;
+  }
+
+  .essentials__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .essentials__label {
+    color: var(--blue);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .essentials__note {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .essentials__card h3 {
+    font-size: 1.85rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .essentials__list {
+    list-style: none;
+    display: grid;
+    gap: 0.85rem;
+    flex: 1;
+  }
+
+  .essentials__list a {
+    display: grid;
+    gap: 0.25rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .essentials__list a:hover strong {
+    color: var(--purple);
+  }
+
+  .essentials__list span {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .essentials__cta {
+    margin-top: 1.75rem;
+  }
+
+  @media (max-width: 800px) {
+    .essentials__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

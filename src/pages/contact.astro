@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ContactCta from "../components/layout/ContactCta.astro";
+import { site } from "../content/site";
+---
+
+<BaseLayout
+  title="Contact"
+  description="Contact the WNC Educators Exchange with questions about events, the Top 10 Issues report, or regional collaboration."
+>
+  <section class="section">
+    <div class="container contact-page">
+      <p class="eyebrow">Contact</p>
+      <h1>We are listening.</h1>
+      <p class="muted">
+        Questions about November 17, the Top 10 Issues writeup, campus practices, or bringing a team
+        to the next summit? Use the form below—your mail client will open with a draft to{" "}
+        {site.contactEmail}.
+      </p>
+    </div>
+  </section>
+  <ContactCta
+    eyebrow="WNC Exchange"
+    title="Send a question"
+    description="Include your campus and what you need. We will follow up as soon as we can."
+  />
+</BaseLayout>
+
+<style>
+  .contact-page {
+    max-width: 40rem;
+  }
+
+  .contact-page h1 {
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    margin: 0.4rem 0 1rem;
+  }
+</style>

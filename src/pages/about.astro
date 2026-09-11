@@ -1,0 +1,154 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StatRow from "../components/ui/StatRow.astro";
+import Button from "../components/ui/Button.astro";
+import ContactCta from "../components/layout/ContactCta.astro";
+import { site } from "../content/site";
+import { stats } from "../content/stats";
+---
+
+<BaseLayout
+  title="About"
+  description="About the WNC Educators Exchange—regional summits, survey findings, and transformational work across Western North Carolina."
+>
+  <section class="section">
+    <div class="container about-page">
+      <div class="about-page__images" aria-hidden="true">
+        <div class="about-page__img about-page__img--a"></div>
+        <div class="about-page__img about-page__img--b"></div>
+      </div>
+      <div class="about-page__copy">
+        <p class="eyebrow">About Us</p>
+        <h1>Transformational Work</h1>
+        <div class="prose muted">
+          <p>
+            Artificial intelligence has arrived in WNC classrooms whether educators are ready for it
+            or not. The Exchange exists so faculty, staff, and campus leaders do not have to navigate
+            that shift alone.
+          </p>
+          <p>
+            Organized with support from the {site.org}, we convene regional summits, publish findings
+            from the 2026 educator survey, and host gatherings—including our November 17 event—that
+            turn shared concerns into shared practice.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Physical colleges still provide
+            community and place; our work holds that truth alongside the need for adaptive policy and
+            AI literacy.
+          </p>
+        </div>
+        <StatRow stats={stats.aboutTeaser} />
+        <div class="about-page__actions">
+          <Button href="/events/november-2026">November event</Button>
+          <Button href="/issues" variant="ghost">Read the Top 10 →</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container about-authors">
+      <p class="eyebrow">Report authors</p>
+      <h2>Created by</h2>
+      <div class="about-authors__grid">
+        {
+          site.authors.map((author) => (
+            <figure>
+              <img src={author.image} alt={author.name} />
+              <figcaption>
+                <strong>{author.name}</strong>
+                <span>{author.role}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <ContactCta />
+</BaseLayout>
+
+<style>
+  .about-page {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .about-page__images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .about-page__img {
+    border-radius: var(--radius-lg);
+    min-height: 22rem;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .about-page__img--a {
+    background-image: url("/images/about/story-1.svg");
+    margin-top: 1.5rem;
+  }
+
+  .about-page__img--b {
+    background-image: url("/images/about/story-2.svg");
+    min-height: 26rem;
+  }
+
+  .about-page h1 {
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    margin: 0.45rem 0 1.1rem;
+  }
+
+  .about-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.75rem;
+  }
+
+  .about-authors h2 {
+    font-size: 2rem;
+    margin: 0.4rem 0 1.25rem;
+  }
+
+  .about-authors__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 12rem));
+    gap: 1.25rem;
+  }
+
+  .about-authors img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+
+  .about-authors figcaption {
+    display: grid;
+    margin-top: 0.55rem;
+  }
+
+  .about-authors figcaption span {
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .about-page {
+      grid-template-columns: 1fr;
+    }
+
+    .about-page__img,
+    .about-page__img--b {
+      min-height: 14rem;
+    }
+  }
+</style>

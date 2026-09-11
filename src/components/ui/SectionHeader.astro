@@ -1,0 +1,50 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  align?: "left" | "center";
+  class?: string;
+}
+
+const { eyebrow, title, align = "left", class: className = "" } = Astro.props;
+---
+
+<header class:list={["section-header", `section-header--${align}`, className]}>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <h2>{title}</h2>
+  <div class="section-header__body">
+    <slot />
+  </div>
+</header>
+
+<style>
+  .section-header {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-header--center {
+    text-align: center;
+    justify-items: center;
+  }
+
+  .section-header h2 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    color: var(--ink);
+    max-width: 18ch;
+  }
+
+  .section-header--center h2 {
+    max-width: 22ch;
+  }
+
+  .section-header__body {
+    color: var(--muted);
+    max-width: 42rem;
+  }
+
+  .section-header--center .section-header__body {
+    max-width: 40rem;
+  }
+</style>

@@ -1,0 +1,130 @@
+---
+import { site } from "../../content/site";
+
+const pathname = Astro.url.pathname;
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/events", label: "Events" },
+  { href: "/issues", label: "Issues" },
+  { href: "/schools", label: "Schools" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+  { href: "/awards", label: "Awards" },
+];
+
+function isActive(href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname.startsWith(href);
+}
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="/">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span class="brand__text">{site.shortName}</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      {
+        links.map((link) => (
+          <a href={link.href} class:list={["nav__link", { "is-active": isActive(link.href) }]}>
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <a class="header-cta" href={site.registerUrl} target="_blank" rel="noopener noreferrer">
+      Register
+    </a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in srgb, var(--cream) 92%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid color-mix(in srgb, var(--purple) 12%, transparent);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: var(--header-h);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+
+  .brand__mark {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--green), var(--purple));
+  }
+
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.9rem;
+    margin-left: auto;
+  }
+
+  .nav__link {
+    text-decoration: none;
+    font-size: 0.92rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .nav__link:hover,
+  .nav__link.is-active {
+    color: var(--purple);
+  }
+
+  .header-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.25rem;
+    padding: 0.4rem 0.95rem;
+    border-radius: var(--radius-pill);
+    background: var(--purple);
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .header-cta:hover {
+    transform: scale(1.03);
+  }
+
+  @media (max-width: 900px) {
+    .site-header__inner {
+      flex-wrap: wrap;
+      padding-block: 0.75rem;
+    }
+
+    .nav {
+      order: 3;
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+</style>

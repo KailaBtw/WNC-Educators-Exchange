@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/ui/Button.astro";
+---
+
+<BaseLayout
+  title="Resources"
+  description="Resource library for the WNC Educators Exchange — coming soon."
+>
+  <section class="section">
+    <div class="container resources-page">
+      <p class="eyebrow">Hold</p>
+      <h1>Resources</h1>
+      <p class="muted">
+        This section is intentionally on hold. Links to the full report, campus practice collections,
+        educator projects, and related tools will land here in a later pass.
+      </p>
+      <div class="resources-page__actions">
+        <Button href="/issues">Top 10 Issues</Button>
+        <Button href="/schools" variant="secondary">Campus practices</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .resources-page {
+    max-width: 40rem;
+  }
+
+  .resources-page h1 {
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    margin: 0.4rem 0 1rem;
+  }
+
+  .resources-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+</style>

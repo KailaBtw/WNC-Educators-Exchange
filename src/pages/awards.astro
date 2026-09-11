@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/ui/Button.astro";
+import { site } from "../content/site";
+---
+
+<BaseLayout
+  title="Faculty Awards"
+  description="Faculty we recognize—award winners and featured educators. Archive hosted on Google Drive."
+>
+  <section class="section">
+    <div class="container awards-page">
+      <p class="eyebrow">Recognition</p>
+      <h1>Faculty we recognize</h1>
+      <p class="muted">
+        Award winners and featured educators from regional AI work live in a shared Google Drive
+        archive. This page is intentionally a dead end on the site—open the Drive folder for photos,
+        citations, and materials.
+      </p>
+      <Button href={site.awardsDriveUrl} external>Open awards archive</Button>
+      <p class="awards-page__note">
+        Placeholder Drive URL — replace <code>awardsDriveUrl</code> in
+        <code>src/content/site.ts</code> when the folder is ready.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .awards-page {
+    max-width: 40rem;
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
+  .awards-page h1 {
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+  }
+
+  .awards-page__note {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .awards-page code {
+    font-size: 0.85em;
+  }
+</style>

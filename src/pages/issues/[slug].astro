@@ -1,0 +1,106 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Button from "../../components/ui/Button.astro";
+import ContactCta from "../../components/layout/ContactCta.astro";
+import { getIssue, issues } from "../../content/issues";
+import { site } from "../../content/site";
+
+export function getStaticPaths() {
+  return issues.map((issue) => ({
+    params: { slug: issue.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const issue = getIssue(slug!);
+
+if (!issue) {
+  return Astro.redirect("/issues");
+}
+
+const idx = issues.findIndex((i) => i.slug === issue.slug);
+const prev = issues[idx - 1];
+const next = issues[idx + 1];
+---
+
+<BaseLayout title={`Issue ${issue.number}: ${issue.title}`} description={issue.shortBlurb}>
+  <article class="section">
+    <div class="container issue-page">
+      <p class="eyebrow">Issue {issue.number} of 10</p>
+      <h1>{issue.title}</h1>
+      <p class="issue-page__lede">{issue.shortBlurb}</p>
+      <div class="prose issue-page__body">
+        {issue.body.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <div class="issue-page__actions">
+        <Button href={site.fullReportUrl} external>Read full analysis</Button>
+        <Button href="/issues" variant="secondary">All issues</Button>
+      </div>
+      <nav class="issue-page__nav" aria-label="Issue pagination">
+        {
+          prev ? (
+            <a href={`/issues/${prev.slug}`}>← {prev.number}. {prev.title}</a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next ? (
+            <a href={`/issues/${next.slug}`}>{next.number}. {next.title} →</a>
+          ) : (
+            <span />
+          )
+        }
+      </nav>
+    </div>
+  </article>
+  <ContactCta />
+</BaseLayout>
+
+<style>
+  .issue-page {
+    max-width: 46rem;
+  }
+
+  .issue-page h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    margin: 0.4rem 0 1rem;
+  }
+
+  .issue-page__lede {
+    font-size: 1.15rem;
+    color: var(--muted);
+    margin-bottom: 1.75rem;
+  }
+
+  .issue-page__body {
+    color: var(--ink);
+  }
+
+  .issue-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .issue-page__nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--purple) 18%, transparent);
+  }
+
+  .issue-page__nav a {
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 600;
+    max-width: 45%;
+  }
+
+  .issue-page__nav a:hover {
+    color: var(--purple);
+  }
+</style>

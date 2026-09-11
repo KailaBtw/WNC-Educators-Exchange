@@ -1,0 +1,40 @@
+---
+import SectionHeader from "../ui/SectionHeader.astro";
+import EventCard from "../events/EventCard.astro";
+import Button from "../ui/Button.astro";
+import { events } from "../../content/events";
+---
+
+<section class="section" id="events">
+  <div class="container">
+    <SectionHeader eyebrow="Gatherings" title="Event information">
+      <p>Past summits and our upcoming November convening—register under the upcoming card.</p>
+    </SectionHeader>
+    <div class="events-grid">
+      {events.map((event) => <EventCard event={event} />)}
+    </div>
+    <div class="events-grid__cta">
+      <Button href="/events">Explore All Events</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .events-grid__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.25rem;
+  }
+
+  @media (max-width: 900px) {
+    .events-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

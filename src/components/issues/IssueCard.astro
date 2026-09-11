@@ -1,0 +1,60 @@
+---
+import type { Issue } from "../../content/issues";
+
+interface Props {
+  issue: Issue;
+}
+
+const { issue } = Astro.props;
+---
+
+<article class="issue-card">
+  <p class="issue-card__num">Issue {issue.number}</p>
+  <h3><a href={`/issues/${issue.slug}`}>{issue.title}</a></h3>
+  <p>{issue.shortBlurb}</p>
+  <a class="issue-card__link" href={`/issues/${issue.slug}`}>Read more →</a>
+</article>
+
+<style>
+  .issue-card {
+    display: grid;
+    gap: 0.55rem;
+    padding: 1.35rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--purple) 18%, transparent);
+  }
+
+  .issue-card__num {
+    color: var(--green);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .issue-card h3 {
+    font-size: 1.45rem;
+  }
+
+  .issue-card h3 a {
+    text-decoration: none;
+  }
+
+  .issue-card h3 a:hover {
+    color: var(--purple);
+  }
+
+  .issue-card p {
+    color: var(--muted);
+  }
+
+  .issue-card__link {
+    color: var(--green);
+    font-weight: 600;
+    text-decoration: none;
+    width: fit-content;
+  }
+
+  .issue-card__link:hover {
+    color: var(--purple);
+  }
+</style>

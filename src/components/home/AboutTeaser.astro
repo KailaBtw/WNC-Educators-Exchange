@@ -1,0 +1,95 @@
+---
+import StatRow from "../ui/StatRow.astro";
+import Button from "../ui/Button.astro";
+import { stats } from "../../content/stats";
+---
+
+<section class="section about-teaser">
+  <div class="container about-teaser__grid">
+    <div class="about-teaser__images" aria-hidden="true">
+      <div class="about-teaser__img about-teaser__img--a"></div>
+      <div class="about-teaser__img about-teaser__img--b"></div>
+    </div>
+    <div class="about-teaser__copy fade-up">
+      <p class="eyebrow">About Us</p>
+      <h2>Transformational Work</h2>
+      <div class="prose muted">
+        <p>
+          The WNC Educators Exchange grew from regional summits and a 2026 educator survey: faculty
+          already using AI, institutions racing to keep policy current, and a shared worry about
+          critical thinking.
+        </p>
+        <p>
+          We celebrate what campuses have already built, publish the Top 10 Issues facing educators,
+          and gather again in November—so Western North Carolina stays in conversation with the rest
+          of the nation.
+        </p>
+      </div>
+      <StatRow stats={stats.aboutTeaser} />
+      <div class="about-teaser__actions">
+        <Button href="/about">Our story</Button>
+        <Button href="/awards" variant="ghost">Faculty we recognize →</Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-teaser__grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .about-teaser__images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .about-teaser__img {
+    border-radius: var(--radius-lg);
+    min-height: 22rem;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .about-teaser__img--a {
+    background-image: url("/images/about/story-1.svg");
+    margin-top: 1.5rem;
+  }
+
+  .about-teaser__img--b {
+    background-image: url("/images/about/story-2.svg");
+    min-height: 26rem;
+  }
+
+  .about-teaser__copy h2 {
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    margin: 0.55rem 0 1.1rem;
+  }
+
+  .about-teaser__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.75rem;
+  }
+
+  @media (max-width: 900px) {
+    .about-teaser__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about-teaser__img {
+      min-height: 16rem;
+    }
+
+    .about-teaser__img--b {
+      min-height: 16rem;
+    }
+  }
+</style>

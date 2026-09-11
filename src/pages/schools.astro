@@ -1,0 +1,99 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import Button from "../components/ui/Button.astro";
+import ContactCta from "../components/layout/ContactCta.astro";
+import { schoolPractices, schoolsIntro } from "../content/schools";
+---
+
+<BaseLayout
+  title="What Schools Are Doing"
+  description="Campus AI practices across Western North Carolina—policy frameworks, faculty development, and classroom redesign."
+>
+  <section class="section">
+    <div class="container">
+      <SectionHeader eyebrow={schoolsIntro.eyebrow} title={schoolsIntro.title} align="center">
+        <p>{schoolsIntro.description}</p>
+      </SectionHeader>
+
+      <div class="schools-grid">
+        {
+          schoolPractices.map((practice) => (
+            <article class="school-card">
+              <p class="school-card__institution">{practice.institution}</p>
+              <h3>{practice.title}</h3>
+              <p>{practice.summary}</p>
+              <ul class="school-card__tags">
+                {practice.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+              {practice.link && (
+                <Button href={practice.link.href} variant="ghost" external>
+                  {practice.link.label} →
+                </Button>
+              )}
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+  <ContactCta />
+</BaseLayout>
+
+<style>
+  .schools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .school-card {
+    display: grid;
+    gap: 0.65rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    border: 1px solid color-mix(in srgb, var(--purple) 12%, transparent);
+  }
+
+  .school-card__institution {
+    color: var(--blue);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .school-card h3 {
+    font-size: 1.35rem;
+  }
+
+  .school-card p {
+    color: var(--muted);
+  }
+
+  .school-card__tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .school-card__tags li {
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: color-mix(in srgb, var(--green-light) 45%, white);
+    padding: 0.25rem 0.55rem;
+    border-radius: var(--radius-pill);
+  }
+
+  @media (max-width: 800px) {
+    .schools-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
