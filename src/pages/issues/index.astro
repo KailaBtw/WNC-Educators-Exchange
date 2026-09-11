@@ -1,55 +1,74 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import SectionHeader from "../../components/ui/SectionHeader.astro";
+import StatRow from "../../components/ui/StatRow.astro";
 import IssueList from "../../components/issues/IssueList.astro";
 import Button from "../../components/ui/Button.astro";
 import ContactCta from "../../components/layout/ContactCta.astro";
 import { site } from "../../content/site";
 import { stats } from "../../content/stats";
+
+const reportStats = [
+  { value: stats.respondents.value, label: stats.respondents.label, color: "green-light" as const },
+  { value: stats.aiActive.value, label: stats.aiActive.label, color: "blue" as const },
+  { value: stats.criticalThinking.value, label: stats.criticalThinking.label, color: "purple" as const },
+];
 ---
 
 <BaseLayout
   title="Top 10 Issues"
   description="Ten issues facing WNC educators in the age of AI—from the 2026 educator survey and regional summits."
 >
-  <section class="section">
-    <div class="container">
-      <SectionHeader
-        eyebrow="Regional report"
-        title="Top 10 Issues in AI facing WNC educators"
-        align="center"
-      >
+  <section class="section issues-report">
+    <div class="container issues-report__intro">
+      <p class="eyebrow">Regional report</p>
+      <h1>Top 10 Issues Facing Educators</h1>
+      <p class="issues-report__dek">
+        Based on the 2026 WNC Educator Survey and regional educator summits. These are not
+        hypothetical future problems—they are showing up in classrooms across the region now.
+      </p>
+      <div class="prose muted issues-report__overview">
         <p>
-          The 2026 WNC Educator Survey makes the picture clear: {stats.aiActive.value} of AI-active
-          faculty are already using these tools, {stats.policyBehind.value} say institutional policy
-          is behind or nonexistent, and {stats.criticalThinking.value} name loss of critical thinking
-          as their leading concern.
+          The 2026 WNC Educator Survey makes the picture clear: {stats.aiActive.value} of the faculty
+          who engage with AI are already using these tools, {stats.policyBehind.value} say their
+          institution’s policy is behind or nonexistent, and {stats.criticalThinking.value} name loss
+          of critical thinking as their leading concern. Students feel the pressure too. Roughly 70%
+          of college students now see AI as a danger to their future careers.
         </p>
-      </SectionHeader>
+        <p>
+          One principle ties all ten issues together, simple enough for a sticky note:
+          <strong>{site.tagline}</strong> Used well, AI extends what a capable person can do. Used as
+          a substitute for learning, it removes the work that builds human understanding and
+          capability in the first place.
+        </p>
+      </div>
+      <StatRow stats={reportStats} />
+      <div class="issues-report__actions">
+        <Button href={site.fullReportUrl} external>Full written analysis</Button>
+        <Button href="/schools" variant="secondary">What schools are doing</Button>
+      </div>
+    </div>
+  </section>
 
-      <blockquote class="issues-quote">
-        <p>{site.tagline}</p>
-        <footer>
-          Used well, AI is a force multiplier. Used poorly, it is a shortcut that hollows out the
-          skills education is supposed to build. Getting that distinction right is the work.
-        </footer>
+  <section class="section section--tight issues-report__list">
+    <div class="container">
+      <p class="eyebrow issues-report__list-eyebrow">The ten issues</p>
+      <IssueList />
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container issues-report__footer">
+      <blockquote>
+        <p>
+          “The desire to thoughtfully integrate AI while maintaining educational values centered on
+          human interaction, critical thinking, and ethical responsibility.”
+        </p>
+        <footer>Warren Wilson College educator respondents, 2026</footer>
       </blockquote>
 
-      <div class="issues-resources">
-        <a href={site.fullReportUrl} target="_blank" rel="noopener noreferrer">Full report</a>
-        <a href={site.campusesDoingUrl} target="_blank" rel="noopener noreferrer"
-          >What campuses are doing</a
-        >
-        <a href={site.educatorProjectsUrl} target="_blank" rel="noopener noreferrer"
-          >Educator projects in AI</a
-        >
-      </div>
-
-      <IssueList />
-
-      <div class="issues-authors">
+      <div class="issues-report__authors">
         <p class="eyebrow">Created by</p>
-        <div class="issues-authors__grid">
+        <div class="issues-report__authors-grid">
           {
             site.authors.map((author) => (
               <figure>
@@ -62,78 +81,91 @@ import { stats } from "../../content/stats";
             ))
           }
         </div>
-        <div class="issues-authors__vote">
-          <Button href={site.voteUrl} external>Vote on priorities</Button>
-        </div>
+        <Button href={site.voteUrl} external>Vote on priorities</Button>
       </div>
     </div>
   </section>
+
   <ContactCta />
 </BaseLayout>
 
 <style>
-  .issues-quote {
-    margin: 0 auto 2rem;
-    max-width: 40rem;
-    text-align: center;
-    padding: 1.5rem;
-    border-top: 1px solid color-mix(in srgb, var(--purple) 25%, transparent);
-    border-bottom: 1px solid color-mix(in srgb, var(--purple) 25%, transparent);
+  .issues-report__intro {
+    max-width: 46rem;
   }
 
-  .issues-quote p {
-    font-family: var(--font-display);
-    font-size: clamp(1.6rem, 3vw, 2.1rem);
-    color: var(--purple);
+  .issues-report h1 {
+    font-size: clamp(2.3rem, 5vw, 3.35rem);
+    margin: 0.4rem 0 0.85rem;
+    max-width: 16ch;
   }
 
-  .issues-quote footer {
-    margin-top: 0.75rem;
+  .issues-report__dek {
+    margin: 0 0 1.25rem;
     color: var(--muted);
+    font-size: 1.1rem;
   }
 
-  .issues-resources {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.85rem;
-    margin-bottom: 2rem;
+  .issues-report__overview {
+    margin-bottom: 1.5rem;
   }
 
-  .issues-resources a {
-    display: grid;
-    place-items: center;
-    text-align: center;
-    min-height: 4.5rem;
-    padding: 1rem;
-    border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--green-light) 40%, white);
-    color: var(--green);
-    font-weight: 700;
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-  }
-
-  .issues-resources a:hover {
-    background: color-mix(in srgb, var(--purple) 12%, white);
+  .issues-report__overview strong {
     color: var(--purple);
+    font-weight: 700;
   }
 
-  .issues-authors {
-    margin-top: 3rem;
-    padding-top: 2rem;
+  .issues-report__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .issues-report__list {
+    background: color-mix(in srgb, var(--green-light) 12%, var(--cream));
+  }
+
+  .issues-report__list-eyebrow {
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .issues-report__footer {
+    display: grid;
+    gap: 2.5rem;
+    max-width: 46rem;
+  }
+
+  .issues-report__footer blockquote {
+    margin: 0;
+    padding: 1.35rem 0;
     border-top: 1px solid color-mix(in srgb, var(--purple) 18%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--purple) 18%, transparent);
   }
 
-  .issues-authors__grid {
+  .issues-report__footer blockquote p {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
+  .issues-report__footer blockquote footer {
+    margin-top: 0.85rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .issues-report__authors-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 10rem));
     gap: 1.25rem;
-    margin-top: 1rem;
+    margin: 1rem 0 1.35rem;
   }
 
-  .issues-authors img {
+  .issues-report__authors img {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
@@ -141,23 +173,13 @@ import { stats } from "../../content/stats";
     background: color-mix(in srgb, var(--blue) 20%, white);
   }
 
-  .issues-authors figcaption {
+  .issues-report__authors figcaption {
     display: grid;
     margin-top: 0.55rem;
   }
 
-  .issues-authors figcaption span {
+  .issues-report__authors figcaption span {
     color: var(--muted);
     font-size: 0.9rem;
-  }
-
-  .issues-authors__vote {
-    margin-top: 1.5rem;
-  }
-
-  @media (max-width: 700px) {
-    .issues-resources {
-      grid-template-columns: 1fr;
-    }
   }
 </style>

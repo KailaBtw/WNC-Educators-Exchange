@@ -12,23 +12,21 @@ export const issues: Issue[] = [
     slug: "critical-thinking",
     title: "Protecting Critical Thinking",
     shortBlurb:
-      "True understanding cannot be fast-tracked. AI must sharpen thinking, not replace the deliberate work that builds it.",
+      "Real understanding can't be fast-tracked, so AI must sharpen thinking, not replace it.",
     body: [
-      "AI handles fast knowledge well: quick answers, error correction, lookup tasks. Education is built around slow knowledge—the kind of understanding that requires wrestling with something, getting it wrong, and arriving at an insight that sticks because you earned it.",
-      "Research increasingly documents the cost of early outsourcing. Students who lean on generative tools before building their own thinking risk cognitive debt: weaker recall, thinner idea ownership, and less durable judgment.",
-      "The practical principle for WNC classrooms is simple: brain first, then AI. Students should engage their own thinking before a tool enters the process—and educators should make that sequence visible in course design.",
+      "True understanding cannot be fast-tracked; it is a deliberate, deeply human process. While AI provides an illusion of instant learning, education must cultivate the deep critical thinking skills required to evaluate AI output, while still teaching the foundational skills.",
+      "AI handles fast knowledge well: quick answers, error correction, lookup tasks. Education is built around slow knowledge—the kind that requires wrestling with something, getting it wrong, and arriving at an insight that sticks because you earned it. Brain first, then AI.",
     ],
   },
   {
     number: 2,
     slug: "guidance-over-prohibition",
-    title: "Guidance Over Prohibition",
+    title: "Create an Open Dialog",
     shortBlurb:
-      "Students use AI at home regardless of syllabus bans. Bring AI into the open and teach judgment instead of driving use underground.",
+      "Many students already use AI, so teach good judgment skills and proper use instead of bans.",
     body: [
-      "Prohibition without education does not stop AI use. It drives it underground and removes the conversation entirely. When use goes undisclosed, it goes unexamined.",
-      "Educators across WNC who see the best results bring AI into the conversation early. A useful framing treats these tools like a strong teaching assistant: something that helps check thinking, clarify a concept already partly understood, or point toward resources—not something that generates the whole assignment.",
-      "Transparency also changes academic honesty culture. When students understand why certain uses are encouraged and others are not—and what the cognitive stakes are—they are more likely to engage honestly.",
+      "Students use AI at home no matter what the syllabus says. Banning it ends the chance to teach good judgment around using it. The educators with the best results bring AI into the open and frame it clearly as a tool for learning and not a replacement.",
+      "A useful framing treats these tools like a strong teaching assistant: something that helps check thinking, clarify a concept already partly understood, or point toward resources—not something that generates the whole assignment.",
     ],
   },
   {
@@ -36,22 +34,20 @@ export const issues: Issue[] = [
     slug: "policy-fast-moving-target",
     title: "Policy Built for a Fast-Moving Target",
     shortBlurb:
-      "65% of WNC educators say policy is behind or absent. Treat guidelines as living documents and update them through regional collaboration.",
+      "AI changes faster than policy can, so treat your guidelines as a living document.",
     body: [
-      "Standard policy cycles were designed for issues that stay roughly stable year over year. AI is not that. The lag between capability and policy is now a documented pattern across higher education.",
-      "Schools making progress treat AI policy as an evolving document. Shared frameworks—like ABTech’s red/yellow/green system—give everyone a common vocabulary that is simple enough to revise when conditions change.",
-      "Adaptive policy works better with shared infrastructure. A regional network that flags what has changed and surfaces what is working has a better chance of staying current than any campus working alone.",
+      "65% of WNC educators say their policy is behind or absent. The cause is structural: technology changes way faster than policy can keep up. The best schools treat policy as a living document and get input from front-line educators on which way to move.",
+      "Shared frameworks like ABTech’s red/yellow/green system give everyone a common vocabulary that is simple enough to revise when conditions change.",
     ],
   },
   {
     number: 4,
     slug: "judge-ai-output",
-    title: "Teaching Students to Judge AI Output",
+    title: "Judging AI Output",
     shortBlurb:
-      "AI never warns you when it is wrong. Critical evaluation of model output is a literacy skill that belongs in every discipline.",
+      "AI never warns you when it's wrong, so evaluating its output is a skill for every discipline.",
     body: [
-      "A hallucinated citation looks exactly like a real one. Fluent, confident prose can assert something false with the same polish as something true. The tool does not flag uncertainty.",
-      "This is not primarily a technology problem—it is a literacy problem. The same critical reading practices that help students evaluate sources apply directly to AI output, but many students are not applying them yet.",
+      "AI never tells you when it is wrong. Hallucinations are a common issue. A fabricated citation looks exactly like a real one. Critical evaluation of AI output is a literacy problem, and it is a skill that belongs in every discipline.",
       "75% of WNC educators believe AI literacy should be a core competency. That consensus needs to become cross-disciplinary policy: every student learns to ask how they know an AI answer is right.",
     ],
   },
@@ -60,11 +56,10 @@ export const issues: Issue[] = [
     slug: "assessment-process",
     title: "Assessment Must Shift to Process",
     shortBlurb:
-      "A model can produce a competent paper in under a minute. Grade the process of learning, not only the final product.",
+      "When AI can write the final paper in a minute, grade the process, not just the answer.",
     body: [
-      "Take-home work graded solely on polished final output increasingly measures tool capability more than student understanding.",
+      "A model can produce a competent final paper in under a minute. Educators who grade only the final product end up measuring the tool, not the student. 60% of WNC educators have already redesigned assignments toward evaluating the process.",
       "Process-based assessment—drafts, checkpoints, in-person components, iterative projects—gives better signal about where a student is and what they need. It is also stronger pedagogy with or without AI.",
-      "60% of WNC educators have already redesigned assignments along these lines, often without formal institutional support. Coordinated backing could accelerate what faculty are already proving works.",
     ],
   },
   {
@@ -72,11 +67,10 @@ export const issues: Issue[] = [
     slug: "workplace-preparation",
     title: "Workplace Preparation Creates Tension",
     shortBlurb:
-      "Employers want AI fluency, but foundational skills still require deliberate practice. Sequence the learning: foundations first, then professional tools.",
+      "Employers want AI fluency, but students need to build foundational skills first, then AI tools can be introduced.",
     body: [
-      "A working professional using AI to accelerate tasks they already know how to do is in a different position than a student skipping the practice that builds those skills.",
-      "Approaches gaining traction treat these as sequential: establish core competency, then introduce AI deliberately as a professional instrument—to accelerate work, pressure-test reasoning, and explore options quickly.",
-      "Equity matters here too. Gaps between free and premium tools can compound into preparation disparities unless institutions address access intentionally.",
+      "Employers are beginning to expect AI proficiency. But learning requires students to solve the issues themselves. A phased approach to AI introduction ensures students learn foundational skills without becoming dependent on AI in the process.",
+      "Establish core competency first. Once a student can reason through a problem without the tool, bring AI in deliberately as a professional instrument—to accelerate work, pressure-test reasoning, and explore options quickly.",
     ],
   },
   {
@@ -84,11 +78,10 @@ export const issues: Issue[] = [
     slug: "faculty-training",
     title: "Training Faculty for Appropriate Use",
     shortBlurb:
-      "Faculty want training and direction, not just logins. Institutional support raises enthusiasm and lowers anxiety.",
+      "Faculty want training and administrative direction, not just logins.",
     body: [
-      "The most consistent theme across two years of WNC educator conversations is that faculty want more: practical training, peer collaboration, and clear strategic direction.",
-      "Only 25% of WNC institutions provide faculty and staff with access to a private or secure AI tool. Expecting educators to figure this out alone with free-tier tools produces burnout, not progress.",
-      "Resources like the ACAWEB professional development course and regional summit exchanges are leverage points. Faculty who learn from neighboring campuses move faster than those building alone.",
+      "Faculty want training and direction, not just access to models. Only 25% of WNC institutions have invested in a dedicated AI tool for their faculty.",
+      "Faculty at schools with genuine institutional support show higher enthusiasm and lower anxiety than those left to figure this out on their own. Hands-on time with the tools, peer collaboration, and clear signals from leadership are what faculty are asking for.",
     ],
   },
   {
@@ -96,11 +89,10 @@ export const issues: Issue[] = [
     slug: "institutional-infrastructure",
     title: "AI as Institutional Infrastructure",
     shortBlurb:
-      "Chatbots, enrollment systems, and admin automation need human-in-the-loop design and clear data privacy practices.",
+      "AI now handles chatbots and enrollment systems, so build it with human in-the-loop and data privacy in mind.",
     body: [
-      "AI in education is no longer only a classroom question. Schools are deploying it for student support, CRM engagement, and administrative automation.",
-      "Done well, these tools extend capacity—especially after hours—while escalating real problems to people. Done poorly, students in need get stuck with a bot that cannot help and does not know when to hand off.",
-      "60% of WNC educators flagged data privacy directly. Institutions need clear governance for what is stored, where it goes, and who can access it.",
+      "Schools across WNC run AI for chatbots, enrollment systems, and administrative work. Done poorly, it routes a student in real need to a bot that cannot help. Good support requires mixed help-desk routing depending on the issue at hand.",
+      "60% of educators flagged data privacy directly as a concern. Any student-facing system needs a clear escalation path to a person, and clear governance for what is stored, where it goes, and who can access it.",
     ],
   },
   {
@@ -108,11 +100,10 @@ export const issues: Issue[] = [
     slug: "collaboration-beats-silos",
     title: "Collaboration Beats Silos",
     shortBlurb:
-      "Campuses that share strategies move faster than those going it alone. Regional summits are the infrastructure that makes that possible.",
+      "Campuses that share strategies move faster than those going it alone, same with colleagues.",
     body: [
-      "Institutions working in isolation fall behind. Shared strategies, faculty exchanges, and cross-institutional frameworks produce faster, more durable progress.",
-      "Education is structurally siloed—departments protect autonomy, campuses compete for enrollment, and workloads leave little room for extra convening. Someone has to resource the backbone work of bringing people together.",
-      "Land of Sky’s regional AI summits are that backbone. One summit is a conversation; a series with follow-through is infrastructure.",
+      "Campuses making real progress share strategies and build common frameworks. The Land of Sky regional summits are the kind of infrastructure that makes it possible.",
+      "Shared strategies, faculty exchanges, and cross-institutional frameworks produce faster, more durable progress than parallel but disconnected efforts. One summit is a conversation; a series with follow-through is infrastructure.",
     ],
   },
   {
@@ -120,11 +111,10 @@ export const issues: Issue[] = [
     slug: "human-connection",
     title: "AI Can’t Replace Human Connection",
     shortBlurb:
-      "In-person learning builds engagement, retention, and relationships no chatbot can replicate. Place still matters.",
+      "In-person learning builds the engagement and relationships no chatbot can.",
     body: [
-      "Online and asynchronous learning extend access in ways that matter—especially for students with work, family, or rural distance constraints. That does not erase what co-location uniquely provides.",
-      "Spontaneous mentorship, classroom disagreement that sharpens thinking, and the sense of belonging that keeps a struggling student enrolled rarely happen in a chat window.",
-      "For many students, particularly first-generation students, the physical campus is the support network. Preserving that human layer is part of getting AI right.",
+      "In-person settings produce stronger engagement, better retention, and relationships that change a student’s path. Learning ultimately works best in an engaging and cooperative environment, with active participation from students and educators.",
+      "Spontaneous mentorship, classroom disagreement that sharpens thinking, and the sense of belonging that keeps a struggling student enrolled rarely happen in a chat window. Place still matters.",
     ],
   },
 ];

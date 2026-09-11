@@ -2,100 +2,332 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
 import ContactCta from "../components/layout/ContactCta.astro";
-import { schoolPractices, schoolsIntro } from "../content/schools";
+import { institutions, institutionsIntro, institutionFilters } from "../content/institutions";
 ---
 
 <BaseLayout
   title="What Schools Are Doing"
-  description="Campus AI practices across Western North Carolina—policy frameworks, faculty development, and classroom redesign."
+  description="Campus snapshots from the 2026 WNC AI Integration Survey across Western North Carolina."
 >
-  <section class="section">
+  <section class="section schools">
     <div class="container">
-      <div data-reveal>
-        <SectionHeader eyebrow={schoolsIntro.eyebrow} title={schoolsIntro.title} align="center">
-          <p>{schoolsIntro.description}</p>
-        </SectionHeader>
+      <SectionHeader
+        eyebrow={institutionsIntro.eyebrow}
+        title={institutionsIntro.title}
+        align="center"
+      >
+        <p>{institutionsIntro.description}</p>
+        <p class="schools-credit">{institutionsIntro.credit}</p>
+      </SectionHeader>
+
+      <div class="schools-filters" role="toolbar" aria-label="Filter campuses">
+        {
+          institutionFilters.map((filter, index) => (
+            <button
+              type="button"
+              class:list={["schools-filters__btn", { "is-active": index === 0 }]}
+              data-filter={filter.id}
+            >
+              {filter.label}
+            </button>
+          ))
+        }
       </div>
 
-      <div class="schools-list">
+      <p class="schools-count" data-schools-count aria-live="polite">
+        Showing {institutions.length} campuses
+      </p>
+
+      <div class="schools-grid">
         {
-          schoolPractices.map((practice, index) => (
+          institutions.map((campus, index) => (
             <article
-              class="school-item"
+              class="school-card"
+              id={campus.id}
+              data-kind={campus.kind}
               data-reveal
-              data-reveal-delay={String(0.04 * (index % 4))}
-              data-reveal-y="28"
+              data-reveal-delay={String(0.04 * (index % 3))}
+              data-reveal-y="24"
+              style={`--accent: ${
+                campus.kind === "k12"
+                  ? "var(--blue)"
+                  : campus.kind === "university"
+                    ? "var(--purple)"
+                    : campus.kind === "other"
+                      ? "var(--green)"
+                      : "var(--green)"
+              }`}
             >
-              <p class="school-item__institution">{practice.institution}</p>
-              <h3>{practice.title}</h3>
-              <p class="school-item__summary">{practice.summary}</p>
-              {practice.detail.map((paragraph) => (
-                <p class="school-item__detail">{paragraph}</p>
-              ))}
-              {practice.link && (
-                <p>
-                  <a href={practice.link.href} target="_blank" rel="noopener noreferrer">
-                    {practice.link.label}
-                  </a>
-                </p>
-              )}
+              <div class="school-card__stripe" aria-hidden="true" />
+              <div class="school-card__head">
+                <p class="school-card__stance">{campus.stance}</p>
+                <h3>
+                  <span class="school-card__short">{campus.shortName}</span>
+                  <span class="school-card__full">{campus.name}</span>
+                </h3>
+                <p class="school-card__lead">{campus.lead}</p>
+              </div>
+
+              <ul class="school-card__focus">
+                {campus.focus.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+
+              <div class="school-card__tools">
+                {campus.tools.map((tool) => (
+                  <span>{tool}</span>
+                ))}
+              </div>
+
+              <details class="school-card__more">
+                <summary>More from the survey</summary>
+                <p>{campus.more}</p>
+              </details>
             </article>
           ))
         }
       </div>
+
+      <p class="schools-empty" data-schools-empty hidden>No campuses in this filter.</p>
     </div>
   </section>
-  <ContactCta />
+
+  <ContactCta
+    title="Is your campus missing or out of date?"
+    description="Send a note with corrections or additional practice—we will fold updates into the regional picture."
+  />
 </BaseLayout>
 
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+  const cards = document.querySelectorAll<HTMLElement>(".school-card");
+  const countEl = document.querySelector<HTMLElement>("[data-schools-count]");
+  const emptyEl = document.querySelector<HTMLElement>("[data-schools-empty]");
+
+  function applyFilter(kind: string) {
+    let visible = 0;
+    cards.forEach((card) => {
+      const match = kind === "all" || card.dataset.kind === kind;
+      card.hidden = !match;
+      if (match) visible += 1;
+    });
+    if (countEl) {
+      countEl.textContent = `Showing ${visible} campus${visible === 1 ? "" : "es"}`;
+    }
+    if (emptyEl) emptyEl.hidden = visible > 0;
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      buttons.forEach((b) => b.classList.toggle("is-active", b === btn));
+      applyFilter(btn.dataset.filter || "all");
+    });
+  });
+</script>
+
 <style>
-  .schools-list {
+  .schools-credit {
+    margin: 0.35rem 0 0;
+    color: var(--purple);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .schools-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem;
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  .schools-filters__btn {
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--white) 65%, var(--cream));
+    color: var(--muted);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .schools-filters__btn:hover {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--green-light) 45%, white);
+  }
+
+  .schools-filters__btn.is-active {
+    background: var(--green);
+    color: var(--white);
+  }
+
+  .schools-count {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0 0 1.25rem;
+  }
+
+  .schools-grid {
     display: grid;
-    gap: 0;
-    max-width: 48rem;
-    margin-inline: auto;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.5vw, 1.35rem);
   }
 
-  .school-item {
-    padding: 1.5rem 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--purple) 14%, transparent);
+  .school-card {
+    --accent: var(--green);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1.15rem 1.15rem 1.2rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--white) 72%, var(--cream));
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
-  .school-item:first-child {
-    border-top: 1px solid color-mix(in srgb, var(--purple) 14%, transparent);
+  .school-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px color-mix(in srgb, var(--ink) 8%, transparent);
   }
 
-  .school-item__institution {
-    color: var(--blue);
-    font-size: 0.72rem;
+  .school-card__stripe {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0.35rem;
+    background: var(--accent);
+  }
+
+  .school-card__stance {
+    margin: 0;
+    color: var(--accent);
+    font-size: 0.7rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     font-weight: 700;
-    margin-bottom: 0.35rem;
   }
 
-  .school-item h3 {
-    font-size: 1.45rem;
-    margin-bottom: 0.55rem;
+  .school-card h3 {
+    margin: 0.35rem 0 0;
+    display: grid;
+    gap: 0.15rem;
   }
 
-  .school-item__summary {
-    color: var(--ink);
-    margin-bottom: 0.65rem;
+  .school-card__short {
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    line-height: 1.2;
   }
 
-  .school-item__detail {
-    color: var(--muted);
-    margin-bottom: 0.55rem;
-  }
-
-  .school-item a {
-    color: var(--green);
+  .school-card__full {
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
     font-weight: 600;
-    text-decoration: none;
+    color: var(--muted);
+    letter-spacing: 0;
   }
 
-  .school-item a:hover {
-    color: var(--purple);
+  .school-card__lead {
+    margin: 0.55rem 0 0;
+    color: var(--ink);
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .school-card__focus {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .school-card__focus li {
+    position: relative;
+    padding-left: 0.85rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.35;
+  }
+
+  .school-card__focus li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .school-card__tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .school-card__tools span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 14%, white);
+    color: var(--ink);
+  }
+
+  .school-card__more {
+    margin-top: auto;
+    border-top: 1px solid color-mix(in srgb, var(--purple) 12%, transparent);
+    padding-top: 0.55rem;
+  }
+
+  .school-card__more summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--green);
+    list-style: none;
+  }
+
+  .school-card__more summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .school-card__more summary::after {
+    content: " +";
+  }
+
+  .school-card__more[open] summary::after {
+    content: " –";
+  }
+
+  .school-card__more p {
+    margin: 0.55rem 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .schools-empty {
+    text-align: center;
+    color: var(--muted);
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 980px) {
+    .schools-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .schools-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

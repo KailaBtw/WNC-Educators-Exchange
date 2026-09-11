@@ -23,6 +23,17 @@ export default function ScrollMotionRoot() {
       el.style.willChange = "opacity, transform, filter";
     });
 
+    // Failsafe: never leave content stuck invisible if inView misses.
+    const failsafe = window.setTimeout(() => {
+      elements.forEach((el) => {
+        if (getComputedStyle(el).opacity === "0") {
+          el.style.opacity = "1";
+          el.style.transform = "none";
+          el.style.filter = "none";
+        }
+      });
+    }, 1800);
+
     const unsubs = elements.map((el) => {
       const delay = Number(el.dataset.revealDelay ?? 0);
       return inView(
@@ -48,8 +59,10 @@ export default function ScrollMotionRoot() {
       );
     });
 
-    return () => unsubs.forEach((stop) => stop());
-  }, []);
+    return () => {
+      window.clearTimeout(failsafe);
+      unsubs.forEach((stop) => stop());
+    };  }, []);
 
   return null;
 }

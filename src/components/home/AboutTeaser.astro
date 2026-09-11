@@ -34,7 +34,7 @@ import { stats } from "../../content/stats";
 <style>
   .about-teaser__grid {
     display: grid;
-    grid-template-columns: 0.9fr 1.1fr;
+    grid-template-columns: minmax(0, 17rem) 1fr;
     gap: clamp(1.5rem, 4vw, 2.75rem);
     align-items: center;
   }
@@ -42,7 +42,10 @@ import { stats } from "../../content/stats";
   .about-teaser__image {
     border-radius: var(--radius-lg);
     aspect-ratio: 4 / 5;
-    min-height: 18rem;
+    width: 100%;
+    max-width: 17rem;
+    min-height: 0;
+    justify-self: center;
     background:
       linear-gradient(
         160deg,
@@ -68,11 +71,16 @@ import { stats } from "../../content/stats";
   @media (max-width: 900px) {
     .about-teaser__grid {
       grid-template-columns: 1fr;
+      justify-items: center;
     }
 
     .about-teaser__image {
-      aspect-ratio: 16 / 10;
-      min-height: 12rem;
+      aspect-ratio: 4 / 5;
+      max-width: 13rem;
+    }
+
+    .about-teaser__copy {
+      justify-self: stretch;
     }
   }
 </style>

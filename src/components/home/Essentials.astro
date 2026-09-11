@@ -1,49 +1,588 @@
 ---
-import SectionHeader from "../ui/SectionHeader.astro";
-import EssentialsHub from "./EssentialsHub";
 import { issues } from "../../content/issues";
 import { schoolPractices } from "../../content/schools";
+import { site } from "../../content/site";
 
-const hubIssues = issues.map(({ number, slug, title, shortBlurb, body }) => ({
-  number,
-  slug,
-  title,
-  shortBlurb,
-  body,
-}));
-
-const hubPractices = schoolPractices.map(
-  ({ id, institution, title, summary, detail, tags, link }) => ({
-    id,
-    institution,
-    title,
-    summary,
-    detail,
-    tags: [...tags],
-    link,
-  }),
-);
+const issuePreview = issues.slice(0, 3);
+const practicePreview = schoolPractices.slice(0, 3);
 ---
 
-<section class="section essentials">
+<section class="section unify" id="issues-home">
   <div class="container">
-    <div data-reveal>
-      <SectionHeader eyebrow="From the region" title="The issues, and what campuses are doing" align="center">
-        <p>
-          The survey named the pressure points. Campuses are already responding—often without much
-          institutional backing. Open either column for the full set.
-        </p>
-      </SectionHeader>
-    </div>
-
-    <div data-reveal data-reveal-delay="0.06" data-reveal-y="28">
-      <EssentialsHub client:load issues={hubIssues} practices={hubPractices} />
-    </div>
+    <article class="unify-card">
+      <div class="unify-card__media" aria-hidden="true"></div>
+      <div class="unify-card__body">
+        <p class="unify-card__eyebrow">Survey report</p>
+        <h2>Top 10 Issues</h2>
+        <p class="unify-card__lead">{site.tagline}</p>
+        <ol class="unify-card__list">
+          {
+            issuePreview.map((issue) => (
+              <li>
+                <span class="unify-card__num">{issue.number}</span>
+                <div>
+                  <strong>{issue.title}</strong>
+                  <p>{issue.shortBlurb}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <button type="button" class="unify-card__cta" data-open-modal="issues" data-index="0">
+          See more
+        </button>
+      </div>
+    </article>
   </div>
 </section>
 
+<section class="section unify unify--alt" id="schools-home">
+  <div class="container">
+    <article class="unify-card">
+      <div class="unify-card__media" aria-hidden="true"></div>
+      <div class="unify-card__body">
+        <p class="unify-card__eyebrow">Campus practice</p>
+        <h2>What schools are doing</h2>
+        <p class="unify-card__lead">A few approaches already in use across WNC.</p>
+        <ol class="unify-card__list">
+          {
+            practicePreview.map((practice, index) => (
+              <li>
+                <span class="unify-card__num">{index + 1}</span>
+                <div>
+                  <strong>{practice.title}</strong>
+                  <p>{practice.summary}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <button type="button" class="unify-card__cta" data-open-modal="schools" data-index="0">
+          See more
+        </button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<dialog class="info-dialog" id="issues-dialog" aria-labelledby="issues-dialog-title">
+  <div class="info-dialog__panel">
+    <div class="info-dialog__head">
+      <div class="info-dialog__intro">
+        <div class="info-dialog__thumb info-dialog__thumb--issues" aria-hidden="true"></div>
+        <div>
+          <p class="info-dialog__kicker">Top 10 Issues</p>
+          <h2 id="issues-dialog-title">Facing WNC educators</h2>
+        </div>
+      </div>
+      <button type="button" class="info-dialog__close" data-close-dialog>Close</button>
+    </div>
+    <div class="info-dialog__layout">
+      <nav class="info-dialog__nav" aria-label="Issues">
+        {
+          issues.map((issue) => (
+            <button type="button" data-show-panel="issues" data-index={issue.number - 1}>
+              <span>{issue.number}</span>
+              {issue.title}
+            </button>
+          ))
+        }
+      </nav>
+      <div>
+        {
+          issues.map((issue, index) => (
+            <article
+              class="info-dialog__detail"
+              data-panel="issues"
+              data-index={index}
+              hidden={index !== 0}
+            >
+              <p class="info-dialog__num">Issue {issue.number} of 10</p>
+              <h3>{issue.title}</h3>
+              <p class="info-dialog__lede">{issue.shortBlurb}</p>
+              {issue.body.map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="info-dialog" id="schools-dialog" aria-labelledby="schools-dialog-title">
+  <div class="info-dialog__panel">
+    <div class="info-dialog__head">
+      <div class="info-dialog__intro">
+        <div class="info-dialog__thumb info-dialog__thumb--schools" aria-hidden="true"></div>
+        <div>
+          <p class="info-dialog__kicker">Campus practice</p>
+          <h2 id="schools-dialog-title">What schools are doing</h2>
+        </div>
+      </div>
+      <button type="button" class="info-dialog__close" data-close-dialog>Close</button>
+    </div>
+    <div class="info-dialog__layout">
+      <nav class="info-dialog__nav" aria-label="Campus practices">
+        {
+          schoolPractices.map((practice, index) => (
+            <button type="button" data-show-panel="schools" data-index={index}>
+              <span>{index + 1}</span>
+              {practice.title}
+            </button>
+          ))
+        }
+      </nav>
+      <div>
+        {
+          schoolPractices.map((practice, index) => (
+            <article
+              class="info-dialog__detail"
+              data-panel="schools"
+              data-index={index}
+              hidden={index !== 0}
+            >
+              <p class="info-dialog__num">{practice.institution}</p>
+              <h3>{practice.title}</h3>
+              <p class="info-dialog__lede">{practice.summary}</p>
+              {practice.detail.map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+              {practice.link && (
+                <p>
+                  <a href={practice.link.href} target="_blank" rel="noopener noreferrer">
+                    {practice.link.label}
+                  </a>
+                </p>
+              )}
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  function setupDialog(dialogId: string, kind: string) {
+    const dialog = document.getElementById(dialogId) as HTMLDialogElement | null;
+    if (!dialog) return;
+
+    function showPanel(index: number) {
+      if (!dialog) return;
+      dialog.querySelectorAll(`[data-panel="${kind}"]`).forEach((panel) => {
+        const el = panel as HTMLElement;
+        el.hidden = Number(el.dataset.index) !== index;
+      });
+      dialog.querySelectorAll(`[data-show-panel="${kind}"]`).forEach((btn) => {
+        const el = btn as HTMLElement;
+        el.classList.toggle("is-active", Number(el.dataset.index) === index);
+      });
+    }
+
+    document.querySelectorAll(`[data-open-modal="${kind}"]`).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        showPanel(Number((btn as HTMLElement).dataset.index || 0));
+        dialog.showModal();
+      });
+    });
+
+    dialog.querySelectorAll(`[data-show-panel="${kind}"]`).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        showPanel(Number((btn as HTMLElement).dataset.index || 0));
+      });
+    });
+
+    dialog.querySelectorAll("[data-close-dialog]").forEach((btn) => {
+      btn.addEventListener("click", () => dialog.close());
+    });
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+
+    showPanel(0);
+  }
+
+  setupDialog("issues-dialog", "issues");
+  setupDialog("schools-dialog", "schools");
+</script>
+
 <style>
-  .essentials {
-    background: var(--white);
+  .unify {
+    background: var(--cream);
+    padding-block: clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+
+  .unify--alt {
+    background: color-mix(in srgb, var(--green-light) 18%, var(--cream));
+  }
+
+  .unify-card {
+    display: grid;
+    grid-template-columns: minmax(10rem, 0.85fr) minmax(0, 1.45fr);
+    gap: clamp(1.25rem, 3vw, 2rem);
+    align-items: center;
+    max-width: 54rem;
+    margin-inline: auto;
+    background: transparent;
+    border: 0;
+  }
+
+  .unify-card__media {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    min-height: 17rem;
+    position: relative;
+    background:
+      radial-gradient(circle at 20% 85%, color-mix(in srgb, var(--green-light) 55%, transparent), transparent 45%),
+      radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--ink) 18%, transparent), transparent 35%),
+      linear-gradient(
+        155deg,
+        color-mix(in srgb, var(--green) 78%, var(--cream)),
+        color-mix(in srgb, var(--purple) 72%, var(--cream))
+      );
+  }
+
+  .unify--alt .unify-card__media {
+    background:
+      radial-gradient(circle at 18% 80%, color-mix(in srgb, var(--green-light) 45%, transparent), transparent 42%),
+      radial-gradient(circle at 88% 18%, color-mix(in srgb, var(--ink) 12%, transparent), transparent 35%),
+      linear-gradient(
+        155deg,
+        color-mix(in srgb, var(--blue) 75%, var(--cream)),
+        color-mix(in srgb, var(--green) 60%, var(--cream))
+      );
+  }
+
+  .unify-card__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 55%,
+      color-mix(in srgb, var(--cream) 35%, transparent)
+    );
+    pointer-events: none;
+  }
+
+  .unify--alt .unify-card__media::after {
+    background: linear-gradient(
+      90deg,
+      transparent 55%,
+      color-mix(in srgb, var(--green-light) 22%, var(--cream) 40%, transparent)
+    );
+  }
+
+  .unify-card__body {
+    display: grid;
+    align-content: start;
+    gap: 0.45rem;
+    padding: 0.25rem 0;
+    background: transparent;
+  }
+
+  .unify-card__eyebrow {
+    margin: 0;
+    color: var(--purple);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .unify--alt .unify-card__eyebrow {
+    color: var(--blue);
+  }
+
+  .unify-card h2 {
+    margin: 0;
+    font-size: clamp(1.55rem, 3vw, 1.9rem);
+  }
+
+  .unify-card__lead {
+    margin: 0 0 0.35rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .unify-card__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .unify-card__list li {
+    display: grid;
+    grid-template-columns: 1.4rem minmax(0, 1fr);
+    gap: 0.55rem;
+  }
+
+  .unify-card__num {
+    color: var(--green);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.1rem;
+  }
+
+  .unify--alt .unify-card__num {
+    color: var(--blue);
+  }
+
+  .unify-card__list strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 0.15rem;
+  }
+
+  .unify-card__list p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .unify-card__cta {
+    justify-self: end;
+    margin-top: 0.55rem;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--purple);
+    color: var(--white);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.55rem 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  .unify--alt .unify-card__cta {
+    background: var(--blue);
+  }
+
+  .unify-card__cta:hover {
+    transform: scale(1.03);
+    filter: brightness(0.95);
+  }
+
+  .info-dialog {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    max-width: min(100vw - 2rem, 58rem);
+    width: 100%;
+  }
+
+  .info-dialog::backdrop {
+    background: color-mix(in srgb, var(--ink) 55%, transparent);
+  }
+
+  .info-dialog__panel {
+    background: var(--cream);
+    border-radius: 1.25rem;
+    padding: 1.25rem 1.25rem 1.5rem;
+    max-height: min(88vh, 46rem);
+    overflow: auto;
+    box-shadow: 0 24px 60px color-mix(in srgb, #000 28%, transparent);
+    animation: infoPop 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes infoPop {
+    from {
+      opacity: 0;
+      transform: translateY(1rem) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .info-dialog__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: start;
+    margin-bottom: 1rem;
+  }
+
+  .info-dialog__intro {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-width: 0;
+  }
+
+  .info-dialog__thumb {
+    flex: 0 0 auto;
+    width: 3.5rem;
+    height: 4.4rem;
+    border-radius: 0.7rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .info-dialog__thumb--issues {
+    background:
+      radial-gradient(circle at 20% 85%, color-mix(in srgb, var(--green-light) 55%, transparent), transparent 45%),
+      radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--ink) 18%, transparent), transparent 35%),
+      linear-gradient(
+        155deg,
+        color-mix(in srgb, var(--green) 78%, var(--cream)),
+        color-mix(in srgb, var(--purple) 72%, var(--cream))
+      );
+  }
+
+  .info-dialog__thumb--schools {
+    background:
+      radial-gradient(circle at 18% 80%, color-mix(in srgb, var(--green-light) 45%, transparent), transparent 42%),
+      radial-gradient(circle at 88% 18%, color-mix(in srgb, var(--ink) 12%, transparent), transparent 35%),
+      linear-gradient(
+        155deg,
+        color-mix(in srgb, var(--blue) 75%, var(--cream)),
+        color-mix(in srgb, var(--green) 60%, var(--cream))
+      );
+  }
+
+  .info-dialog__kicker {
+    color: var(--purple);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+
+  .info-dialog__head h2 {
+    margin: 0;
+    font-size: clamp(1.4rem, 3vw, 1.85rem);
+  }
+
+  .info-dialog__close {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+  }
+
+  .info-dialog__close:hover {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--purple) 10%, transparent);
+  }
+
+  .info-dialog__layout {
+    display: grid;
+    grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr);
+    gap: 1.15rem;
+  }
+
+  .info-dialog__nav {
+    display: grid;
+    gap: 0.2rem;
+    align-content: start;
+  }
+
+  .info-dialog__nav button {
+    text-align: left;
+    border: 0;
+    background: transparent;
+    border-radius: 0.6rem;
+    padding: 0.5rem 0.6rem;
+    cursor: pointer;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.85rem;
+    display: flex;
+    gap: 0.4rem;
+    line-height: 1.3;
+  }
+
+  .info-dialog__nav button span {
+    color: var(--green);
+    font-weight: 700;
+    min-width: 1rem;
+  }
+
+  .info-dialog__nav button.is-active,
+  .info-dialog__nav button:hover {
+    background: color-mix(in srgb, var(--green-light) 45%, white);
+    color: var(--ink);
+  }
+
+  .info-dialog__detail h3 {
+    font-size: 1.45rem;
+    margin: 0.15rem 0 0.55rem;
+  }
+
+  .info-dialog__num {
+    color: var(--green);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .info-dialog__lede {
+    color: var(--muted);
+    margin: 0 0 0.75rem;
+  }
+
+  .info-dialog__detail p {
+    margin: 0 0 0.7rem;
+    color: var(--ink);
+  }
+
+  .info-dialog__detail a {
+    color: var(--green);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .info-dialog__detail a:hover {
+    color: var(--purple);
+  }
+
+  @media (max-width: 720px) {
+    .unify-card {
+      grid-template-columns: 1fr;
+    }
+
+    .unify-card__media {
+      min-height: 11rem;
+      max-height: 12rem;
+    }
+
+    .info-dialog__layout {
+      grid-template-columns: 1fr;
+    }
+
+    .info-dialog__nav {
+      grid-auto-flow: column;
+      grid-auto-columns: max-content;
+      overflow-x: auto;
+    }
+
+    .info-dialog__nav button {
+      white-space: nowrap;
+    }
   }
 </style>

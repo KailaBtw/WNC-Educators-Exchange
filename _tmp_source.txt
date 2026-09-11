@@ -1,0 +1,312 @@
+[Image]
+[Image]
+[Image]
+[Image]
+[Image]
+[Image]
+[Image]
+[Image]
+<image_files>
+The following images were provided by the user and saved to disk for future use:
+1. C:\Users\Admin\.cursor\projects\m-software-projects-AI-billsite/assets/c__Users_Admin_AppData_Roaming_Cursor_User_workspaceStorage_3460a1413f8bf2674d5cc62cff84fc1b_images_image-03e6c7ba-c394-4c2a-8db8-7601b81fd01a.png
+2. C:\Users\Admin\.cursor\projects\m-software-projects-AI-billsite/assets/c__Users_Admin_AppData_Roaming_Cursor_User_workspaceStorage_3460a1413f8bf2674d5cc62cff84fc1b_images_image-0e6aeae9-9451-47c5-9833-8e969f6f8846.png
+3. C:\Users\Admin\.cursor\projects\m-software-projects-AI-billsite/assets/c__Users_Admin_AppData_Roaming_Cursor_User_workspaceStorage_3460a1413f8bf2674d5cc62cff84fc1b_images_image-373aee25-ea85-4b40-a457-ac60cf05b39a.png
+4. C:\Users\Admin\.cursor\projects\m-software-projects-AI-billsite/assets/c__Users_Admin_AppData_Roaming_Cursor_User_workspaceStorage_3460a1413f8bf2674d5cc62cff84fc1b_images_image-acaf9a7b-5332-455f-ae8a-1d70c1fc28ca.png
+5. C:\Users\Admin\.cursor\projects\m-software-projects-AI-billsite/assets/c__Users_Admin_AppData_Roaming_Cursor_User_workspaceStorage_3460a1413f8bf2674d5cc62cff84fc1b_images_image-18402ddf-a8a6-4e0b-a8c0-649bc9d13946.png
+6. C:\Users\Admin\.cursor\projects\m-software-projects-AI-billsite/assets/c__Users_Admin_AppData_Roaming_Cursor_User_workspaceStorage_3460a1413f8bf2674d5cc62cff84fc1b_images_image-d1b10f68-a2aa-4f9b-b0ea-512503f71fac.png
+7. C:\Users\Admin\.cursor\projects\m-software-projects-AI-billsite/assets/c__Users_Admin_AppData_Roaming_Cursor_User_workspaceStorage_3460a1413f8bf2674d5cc62cff84fc1b_images_image-850f68c6-1e7b-48a7-b6a3-389b47cff111.png
+8. C:\Users\Admin\.cursor\projects\m-software-projects-AI-billsite/assets/c__Users_Admin_AppData_Roaming_Cursor_User_workspaceStorage_3460a1413f8bf2674d5cc62cff84fc1b_images_image-ee421634-993c-468d-ba83-e95b34736a0a.png
+
+These files can be read with tools, copied to other locations, or attached to subagents using the file_attachments parameter.
+</image_files>
+<timestamp>Friday, Sep 11, 2026, 10:38 AM (UTC-4)</timestamp>
+<user_query>
+Hello, SO this is a brand new project, new folder, and I want to do a quick rush to something like an 80% complete project, so we can spend the rest of the time refining. I am going to share the results of a design meeting - that we used figma to iron out design layout and colors, etc. We will need placeholder content in a few places but I will share all that I can. Make sure to make a very comprehensive plan document so we can refine fully, then generate. use placeholders like lorem ipsum etc where needed.
+
+1. Make plan document
+2. generate folder structure
+3. decide frameworks in our plan (more on that below)
+
+WHAT IT IS
+We held a series of AI for educators events to help facilitate proper use of AI and ensure our area schools and colleges stay up to par with the rest of the nation, etc. We are celebrating what came before, sharing some info, and introducing our november event.   wncExchange.com
+
+FRAMEWORKS:
+We are trying to deploy on github withb a custom domain name, this website will live on there indefinately since we dont want to pay hosting costs for a BE, so this is FE only effectively which should be FINE for what we need. I am good with whatever, but maybe something like blazor would be easy to deploy? LMK
+
+COLOR CODES
+
+Blues and greens, hints of purple
+
+825D83
+5989C5
+C7DB9D
+5B9A74
+
+COLORS  
+
+LAYOUT HOME PAGE - for the most part colors are good here. 
+
+- Banner with pictures and an explanation of what we do. ALSO this is our upcoming event! register here.
+
+- Section with Event information (past/future)
+REGISTER HERE (under upcoming) -> goes to nov event page (event program list) [ this might be an external page to us ] 
+
+- Events page -> image carousel for each event
+
+- Top 10 issues, what schools are doing
+(2 side by side cards sort of)
+
+- About Us - Transformational work
+
+- Contact Us
+
+and INFO
+Resources:
+*  photos from brainhub and from Jan event
+* UPCOMING people interested in the nov 17th event
+	* Able to register for the event on separate website
+	* We can list the actual program there
+* Section with each schools policy on AI
+* Section with my work on top 10 issues (show top 3 on home page?)
+	* Link to written analysis
+* Faculty we recognize (award winners) - DEAD END PAGE (link to the google drive)
+* About section
+	* Contact us section (questions, etc) sends and email
+* (HODL) Resource section
+
+EVENT NOTES/TRANSCRIPT
+
+**• WNC educators exchange:**
+
+- Tanya - WCES - Blueridge CC
+
+**• Physical Colleges have a place in education**
+- They provide community, a sense of "place", the place you learn matters (co-location improves learning outcomes)
+- The world always wants "fast" results - we live in a fast society and business want fast results
+- education is about _introspectives_ (by nature, these are "slow" results)
+- Fast vs Slow knowledge
+    -  wisdom, not knowledge, the point of education -> wisdom takes time
+    - fast knowledge – how to fix an error, etc. (what we often need in the marketplace)
+	    - (AI is pretty good at these tasks)
+    - slow knowledge – how and _why_ something works, deeper understand. 
+	    - (Humans are much better at this than AI)
+    - is there a middle ground? – can we get better at decerning when fast and slow knowledge is useful.
+
+**• Faculty Course on A.I. in edu** - acaweb.org/AI-PD
+
+- Online course – 1 hr per week
+- Five E-model of education: (repeats each module)
+    - engage – spark interest, determine their prior knowledge (a poll is good here)
+    - exploring – hands on investigation, explore the subject
+    - explain – this is the time to provide instruction (fill in gaps in their knowledge)
+    - elaborate – give them a real world example, apply that knowledge
+    - evaluate – check required knowledge (a quick quiz)
+- opening again in early march – message if you want to.
+
+**• What other educators are doing** 
+- Change is **here**, we need to evolve our approaches
+- "the opposite of cheating" book is an interesting read
+-  AI use policy - red, yellow, green system on assignments (ABtech)
+	- Red  - no use allowed 
+	- yellow - with supervision 
+	- green - all uses allowed 
+- We should teach students the best ways to _benefit_ from AI use (while limiting negative uses)
+	- use it like a TA - students can ask those quick clarifying questions while on an assignment
+	- local or private models excel here - if school can host an AI model we can have more safeguards and prevent bad use and ensure data privacy.
+- We **NEED** to be clear on policy
+
+**• Student Community Service project** (UPCOMING)
+- meant as extra curricular learning/service and for networking in community
+- To find it go to Branch hub 2026 AI → workforce development board
+- Plan is to address a community issue as a team (AI is allowed for development and solutions)
+    - June 4th/5th, 2026. – Winners will present at the big event
+    - There will also be many employers and recruiters at the event
+
+**• UNCA CS AI** (by Ellie)
+- Looking at adjusting 3 pillars of the program.
+- assessment – more paper in-person exams
+    - assessing the _processes_ of development more than final output.
+- usefulness – professors do encourage using it (responsibly) to clear blockers or assist learning.
+    - Ask it to _explain_ a concept
+    - "interpreting" error messages to find solution
+    - However, "your code should be your own" - you are responsible for what you submit
+- Workplace – currently exploring tools to speed up development in _some_ higher level classes 
+	- By then students know the basics - good time to learn workplace skills with these tools.
+    - Considering using Cursor to reduce development time (this is an integrated IDE that lets you run a model inside the development environment where it has easy access to context from your entire code base. Context is largely the issue with "bad" responses)
+    - Goal is just to help prepare students for future workplace uses.
+    
+
+**• Other schools actions**
+- AI ethics module (1st assignment of the class)
+- Changing the types of assignments
+    - long project – first assignment: make business plan while using AI
+        - Spend the semester analyzing and rewriting that plan, teaching along the way
+        - By the end it shows students the benefits AND Shortfalls of using AI
+	        - Shows students how to use it as a tool (responsible use is essential like any tool)
+- AI is useful in education for...
+	- Teacher training & workshops - Can reduce time spent on these
+	- assist departments - An AI powered TA can provide support to students in places we could not afford to pay a human, which should improve learning outcomes
+	- administrative work - does a great job at paperwork
+- Students **need** guidance on proper and ethical use.
+    - L they **are** using the tools at home, regardless of Policy.
+    - We need to keep the loop of engaging, creating, and then retrospectives
+    - Track AI workplace uses (I think this is talking about needing to adapt to workforce uses quicker than we are)
+    - teach student to better judge the responses - 
+	    - there are no safeguards so we have to teach those. 
+	    - we need to ensure students are still centering learning.
+- transparency – syllabus statements & self-identification by students
+- Great for practicing presentations & public speaking (can get quick feedback 24/7)
+- Cybersecurity uses, it is great at finding vulnerabilities. Writing DOCS.
+- Mentioned Tools:
+    - NotebookLM –
+    - *Ignite AI
+
+---
+
+- these businesses are using these tools and students need to be prepared and knowledgeable w/ these tools.
+- new way of doing CRMs – Customer relation management
+	- One school has an AI model on their pages for new students
+	- Prospective students want FAST results and do not want to search (dig) for them
+		- Every prospective student that clicks off that page is a potentially lost customer.
+	- IIRC it also can function as a TA with 24/7 access
+		- Uses retrieval augmented generation (RAG) to reference actual course documents
+			- Educators can upload syllabus, etc and model can directly reference it
+				- Gives WAY better results with more accuracy on niche topics
+	- Tool is programmed to direct to resources where appropriate
+		- Medical questions -> it links you to the health center, can even schedule for you.
+	- If they need more support then the chat can seamlessly swap to CRM people 
+		- only during office hours, but it can sit in queue overnight
+- initiatives like these fail due to silos -> where relationships build success.
+
+FULL REPORT
+
+Ten Issues Facing Educators in the Age of AI
+A Report on A.I. in Western North Carolina Education
+Based on the 2026 WNC Educator Survey and Regional Educator Summits
+June 2026
+Land of Sky Workforce Development Board
+
+Summary
+Artificial intelligence has arrived in WNC classrooms whether educators are ready for it or not. The 2026 WNC Educator Survey, drawing on responses from 54 educators across the region, makes that clear: 85% of AI-active faculty are already using these tools, 65% believe institutional policy is behind or effectively nonexistent, and 92% rank loss of critical thinking as their single greatest concern. That last one is the most worrying issue and necessitates making changes now in order to set ourselves up better for the future. 
+This report distills the findings from that survey alongside two years of regional educator summits into ten issues that are actively shaping how teaching and learning happen in Western North Carolina. These are not hypothetical future problems. They are showing up in classrooms across the region, and the educators closest to students are feeling the pressure most acutely.
+These ten issues fall into three broad categories. The first concerns the classroom itself: how students learn, how their cognitive development is affected, and how educators can structure AI use so it supports rather than replaces genuine understanding. The second is about institutional structure: how schools write policy, train faculty, deploy AI administratively, and avoid working in silos. The third is about the bridge between education and the workplace, preparing students for a labor market that already expects AI proficiency while not cutting corners on the foundational skills that make someone inherently good at their job.
+The overarching take away of this report is simple: brain first, then AI. When students outsource thinking before they have built the cognitive scaffolding to support it, they accumulate what MIT researchers have started calling "cognitive debt": a measurable, neurologically documented deficit in recall, reasoning, and idea ownership. Used well, AI is a force multiplier. Used poorly, it is a shortcut that hollows out the very skills education is supposed to build. Getting that distinction right is a central challenge for educators in this region.
+
+Summary of the Ten Issues
+1. Fast vs. Slow Knowledge 
+AI handles fast knowledge well: quick answers, error correction, lookup tasks. Education is built around slow knowledge, the kind of understanding that requires wrestling with something, getting it wrong, and arriving at an insight that sticks because you earned it. Educators are increasingly responsible for helping students understand that distinction, and for building it into how their courses are structured.
+2. Guidance Over Prohibition (focus on policy here)
+Students are using AI at home regardless of what classroom policy says. Prohibition alone does not work, and it eliminates any opportunity to teach responsible use. The educators who see the best results bring AI into the conversation openly, framing it the way a good teaching assistant works, something that helps you check your thinking, not something that thinks for you. 
+
+3. Policy Built for a Fast Moving Target (focus on fast pace of change)
+65% of WNC educators feel their institution’s AI policy is behind or nonexistent, but the cause is structural: the technology changes faster than standard policy cycles can follow. The lag strains faculty asked to continuously retool; and feeds student anxiety about the durability of the skills they are building now (roughly 70% of college students see AI as a threat to their future jobs). Institutions making progress treat AI policy as an evolving document, using shared frameworks like ABTech’s red/yellow/green system, and update frequently through regional collaboration.
+4. Assessment Is Shifting to Process
+Final outputs are increasingly unreliable as measures of student understanding. Schools moving ahead on this are shifting toward process-based assessment: iterative projects, in-person components, and checkpoints that reveal how understanding is developing. 60% of WNC educators have already begun redesigning assignments along these lines, most of them without formal institutional support.
+5. Workplace Preparation Creates Tension
+Employers expect AI proficiency. Educators know that foundational skills require deliberate practice, and that shortcuts during the learning phase produce graduates who are dependent on tools they do not fully understand. The most promising approaches treat these as sequential: build the foundation first, then introduce AI as a professional instrument once core competency is established.
+6. Faculty Hunger for Training Continues (rewrite – how to use appropriately)
+The most consistent theme in the survey data is that faculty want more: more training, more collaboration, more strategic direction from their institutions. Faculty at schools with genuine institutional support show measurably higher enthusiasm and lower anxiety than those left to figure this out on their own. That is not a coincidence.
+7. AI as Institutional Infrastructure
+AI is not just a classroom tool. Schools across WNC are deploying it for student support chatbots, enrollment systems, and administrative automation. Done well, these tools extend institutional capacity meaningfully. Done poorly, they create support gaps when students with real problems get routed to a bot that cannot help them and does not know when to hand off to a person.
+8. Collaboration Beats Silos
+Institutions working in isolation are falling behind. The campus-by-campus picture from the regional review is clear: shared strategies, faculty exchanges, and cross-institutional frameworks produce faster, more durable progress than parallel but disconnected efforts. The regional summit model that Land of Sky has built is exactly the infrastructure this kind of collaboration requires.
+9. Physical Place Still Matters
+In-person settings consistently produce stronger learning outcomes: better engagement, better retention, stronger professional networks. That does not make online learning wrong, but it does make the case for being honest about what each modality provides and does not provide. The spontaneous mentorship conversation, the classroom disagreement that sharpens everyone's thinking, the sense of belonging that keeps a struggling student enrolled: none of that happens in a chat window.
+10. Teaching Students to Judge AI Output (move up to 4 or 5)
+AI systems have no mechanism for flagging when they are wrong. A hallucinated citation looks exactly like a real one. Teaching students to critically evaluate what these tools produce is not a computer science problem; it is a literacy problem, and it belongs in every discipline. 75% of WNC educators believe AI literacy should be a core competency requirement. The regional conversation needs to turn that consensus into policy.
+
+The Full Report
+The following essay develops each of the ten issues in depth, drawing on the 2026 WNC Educator Survey, findings from regional educator summits, peer-reviewed research on AI and cognitive development, and the practical experience of educators across Western North Carolina's colleges and universities.
+
+Issue 1: Fast vs. Slow Knowledge
+There is a distinction that does not get talked about enough in education: the difference between fast knowledge and slow knowledge.
+AI is extraordinarily good at fast knowledge. Ask it to fix a syntax error, look up a date, summarize a document, or explain the surface-level mechanics of a concept and it will do all of that quickly and often accurately. That is genuinely useful. The problem is that education has never primarily been about fast knowledge. Education is about slow knowledge: the kind of understanding that requires sitting with something difficult, wrestling with it, getting it wrong, revising, and eventually arriving at an insight that sticks because you earned it. 
+The research on this is increasingly concrete. A 2025 MIT Media Lab preprint, "Your Brain on ChatGPT," tracked 54 students across four essay-writing sessions using EEG to measure neural engagement. Students who relied on ChatGPT from the start showed the weakest brain connectivity, up to 55% lower cognitive engagement than students who wrote without any tools. More troubling: when those students were later asked to write without AI assistance, their performance declined further. They had not just avoided the effortful work. They had accumulated what the researchers named "cognitive debt": a measurable deficit in recall, idea ownership, and neural engagement that compounded across sessions.
+
+"Early reliance on AI may impair memory, meaning-making, and idea synthesis, all of which are essential to critical thinking."  — Kosmyna et al., MIT Media Lab, 2025
+The “cognitive debt” framing is familiar to a concept in software development - technical debt. Shortcuts taken now to ship faster accumulate into a structural problem that becomes harder and more expensive to fix the longer it sits. A codebase entirely held together with workarounds eventually collapses under its own weight. A student who has consistently outsourced cognitive work throughout their education arrives at their first real professional challenge without the mental architecture to handle it. They got the answer without building the system.
+A 2025 study by Gerlich, published in the journal Societies, used a mixed-method approach with 665 participants across three age groups and found a significant negative correlation between frequent AI tool use and critical thinking performance (r = -0.75), mediated by cognitive offloading. The participants who showed the highest AI dependence had the lowest critical thinking scores. That is not a distant risk. It is already showing up in classrooms.
+For educators, the practical implication is a clear principle: students should engage with their own thinking before AI enters the process. The MIT data supports this directly. Students who wrote independently first and then used ChatGPT for revision showed stronger neural activation and better recall than those who started with the tool. The sequence matters enormously, and course design either reinforces it or undermines it. Most course design right now is not doing enough to reinforce it. This sequence also improves the product, as the AI can easily pull sources and build out from the conceptual understanding of the writer. The other way around gives very little context for the model to build from and ultimately the result does not represent the thinking process of the writer. 
+Explaining the why to students matters, they may not be aware of the cognitive cost of outsourcing early in a task. When educators present the research, not as a scare tactic but as a straightforward explanation of how learning works neurologically, students will respond. They are not indifferent to their own development, they are here to learn in good faith. They just need someone to level with them about what is actually at stake when they let a tool do all their thinking.
+Issue 2: Guidance Over Prohibition
+Every educator working in higher education already knows the reality: students are using AI tools at home, on their phones, in their residence halls, before class and after. Institutional policy that proceeds as though prohibition can change this is not policy. It is wishful thinking that forfeits any opportunity to teach responsible use.
+Prohibition without education does not stop AI use. It drives it underground and removes the conversation entirely. When use goes undisclosed, it goes unexamined. Students are not thinking about what the tool costs them cognitively or where appropriate boundaries are; they are thinking about whether they are going to get caught. That is a terrible pedagogical frame to be operating in.
+The educators across WNC who are having the most success with this are the ones who brought AI into the conversation openly and early. A framing that comes up repeatedly in summit discussions is treating these tools the way a good teaching assistant functions: something that helps you check your thinking, clarifies a concept you already partially understand, or points you toward resources when you are stuck. Not something that generates the assignment for you. The line between those two uses is one students can easily internalize and apply in their studies. 
+Transparency also changes the culture around academic honesty in a productive way. When students understand why their instructor made the choices they did, why certain uses are encouraged and others are not, and what the cognitive stakes of those choices are, they are more likely to engage honestly. Academic honesty is a culture problem, not just an enforcement problem. Culture changes when educators treat students like adults capable of understanding a real explanation.
+Issue 3: Policy Built for a Fast Moving Target
+65% of WNC educators feel their institution’s AI policy is behind or effectively nonexistent. That number is easy to read as an indictment of institutional leadership, but the problem is more structural than that. Standard policy cycles — going through committee review, stakeholder input, draft, revision, and approval — were designed for a world where the issues under discussion stayed roughly the same year over year. AI is not that, and the lag between capability and policy is now a documented pattern across higher education (Azevedo & Mallinson, 2025; AAUP, 2025). Schools across WNC are definitely not ignoring the problem. They are trying to hit a target that keeps moving.
+The cost of that lag is visible on both sides of the classroom. Faculty are being asked to redesign assessments and guide students through responsible AI use while the tools change underneath them semester to semester, a pattern the AAUP’s 2025 report tied directly to AI decisions made without faculty input. Students feel it forward. A 2025 Harvard Kennedy School Institute of Politics poll found roughly 70% of college students view AI as a threat to their future jobs, and a Handshake survey of the class of 2025 found over half pessimistic about their careers, with computer science majors most concerned. The anxiety is not irrational. If capabilities advance this fast, the skills being built today may not match the labor market in two years.
+The research and the regional practice converge on the same response: build policy that can move. Recent governance frameworks — including living-document models (Azevedo & Mallinson, 2025; Wu et al., 2024) and the tiered, risk-based HEAT-AI framework adapted from EU AI Act principles (Temper et al., 2025) — share a simple idea. Schools that revisit their frameworks regularly, with people actively working with the tools rather than observing from a distance, hold up better than schools that write one comprehensive policy and enforce it unchanged for five years. ABTech’s red/yellow/green tiered framework is a working example in WNC: red means no AI use, yellow means disclosed or supervised use, green means open use. The specific categories matter less than the fact that everyone is working from the same vocabulary, and that the framework is simple enough to revise when conditions change. Transparency in syllabus statements and student self-identification of AI use remains the practical companion to that framework; AI detection tools alone produce false positives that disproportionately affect non-native English speakers, and a culture of disclosure ages better than a culture of surveillance.
+Adaptive policy works better with shared infrastructure behind it. An individual institution trying to keep up alone is going to fall behind; a regional network that flags what has changed, surfaces what is working, and updates collectively has a much better chance of staying current. The same principle applies to what gets taught. Faculty development focused on transferable critical thinking about technology will age better than training tied to a specific tool that may not exist next year, and students taught to evaluate and adapt to new tools will be better positioned for an unpredictable labor market than students trained on whichever model happened to be dominant during their junior year. The goal of policy has not changed: the student’s thinking is the work, not the tool’s output. What has changed is that the policy itself has to be built to keep up.
+Issue 4: Assessment Is Shifting to Process
+If a student is given an essay prompt and a generous deadline, a language model can produce a competent response in under a minute. That is not a prediction anymore; it is what is happening. The take-home assignment graded entirely on the quality of the final product is no longer a reliable measure of whether a student learned anything. Educators who are still designing primarily around final outputs are assessing AI capabilities more than student understanding.
+The shift toward process-based assessment is the right response, and it is also, practically speaking, better pedagogy regardless of AI. Evaluating how understanding develops over time, through drafts, checkpoints, in-person discussions, and iterative projects, gives educators far more useful information about where a student is and what they need than a single polished output ever could. The challenge is that designing process-based assessment well takes more planning, and many faculty are already operating at capacity.
+The WNC survey found that 60% of educators have already redesigned assignments to be more AI-resilient, shifting toward oral exams, in-person components, and process documentation. That is a substantial share of the regional educator community moving in the right direction, largely on their own initiative and without coordinated institutional support. The fact that this is happening without institutional backing is a sign of how urgent educators feel the problem is. It is also a sign of how much further this could go with actual support behind it.
+Research by Akgun and Toker (2024), studying 73 undergraduates, found that students who engaged in pretesting before using AI showed significantly better retention and engagement than the control group that used AI directly. The act of attempting the work first, of bringing your own thinking to the problem before any tool enters the picture, produces measurable differences in what actually gets learned and retained. Assessment design can build that principle in or design it out. Right now, a lot of it is still designing it out by default.
+Small, frequent memory checks are also worth naming specifically. Distributed retrieval practice, low-stakes quizzing that requires recall rather than recognition, is one of the most reliably documented methods for building durable knowledge. These are not high-stakes assessments. They are cognitive exercises that keep the brain engaged in the material rather than delegating it. Weaving them into course rhythms alongside larger projects is one of the most practical things an educator can do right now, at essentially no additional cost to design or grading.
+Issue 5: Workplace Preparation Creates Tension
+The tension between workforce expectations and educational fundamentals is real, and it does not resolve neatly. Employers are using AI tools and they expect graduates to arrive with meaningful proficiency. At the same time, foundational skills require deliberate practice, and students who skip that practice in favor of AI-assisted output arrive at work with a surface competence they cannot back up when the tool is not available or when the stakes are high enough to require genuine judgment.
+80% of WNC educators agree that better alignment is needed between how AI is used in education and how it is used in professional settings. That consensus is useful, but alignment does not mean equivalence. A working professional using AI to accelerate tasks they already know how to do well is in a fundamentally different position than a student who has not yet built those skills and is using AI to skip the part where they build them. Treating those two situations as the same is the mistake.
+The approaches gaining the most traction in regional classrooms are sequential rather than binary. Establish core competency first. Once a student can demonstrate genuine understanding of the underlying concepts, once they can reason through a problem without the tool, bring AI in explicitly and deliberately as a professional instrument. Show students how a practitioner actually uses it: to accelerate work, to pressure-test reasoning, to explore options quickly. Not to replace judgment, but to extend the reach of judgment they have already developed.
+This is, in essence, a "shift left" principle applied to cognitive development: move the hard cognitive work earlier in the learning process, so that by the time AI enters the workflow it is augmenting something real rather than substituting for something that was never built. It is the same logic that makes rigorous code review early in a project more valuable than emergency debugging after deployment. The foundation determines the structural integrity of everything built on top of it.
+The equity dimension of this tension is also worth naming directly. 40% of WNC educators observe a meaningful disadvantage for students using free AI tools compared to those with access to premium subscriptions. The gap in capability between a free-tier tool and a paid one is significant and widening. Institutions that do not address this are allowing an access disparity to compound into a preparation disparity, graduating students with very different levels of AI fluency based largely on what they could afford during school.
+Issue 6: Faculty Hunger for Training Continues
+The most consistent finding across two years of WNC educator conversations is that faculty want more: more practical training, more collaboration across institutions, more strategic direction from their administrations. The appetite is not the problem. The infrastructure to meet it is.
+Only 25% of WNC institutions provide faculty and staff with access to a private or secure AI tool. Most are working with whatever they can access on their own, frequently the free tier of ChatGPT or whatever their institution's Microsoft license happens to include. That is not a foundation for thoughtful AI pedagogy. An educator who has never had the chance to work seriously with these tools is not equipped to teach students how to use them well. The expectation that faculty will figure this out independently, with no time, no tools, and no institutional support, produces burnout, not progress.
+The sentiment from one STEM faculty member in the survey captures what is being asked of individual educators right now: "How do I influence my institution to support me in teaching AI without delegating all the work and responsibility to me?" That is not a complaint about the technology. It is a systems problem, and it has a systems solution. Bottom-up change agents, the faculty members who are experimenting, learning, and sharing what they find, are driving most of the meaningful progress in WNC right now. That energy deserves institutional recognition and backing, not just personal heroism.
+The survey data on faculty sentiment by institutional approach tells the story quantitatively. Faculty at institutions with strong financial and structural support show the highest enthusiasm scores and the lowest worry scores. Faculty at institutions with no official stance show the inverse: low enthusiasm, high worry. This is not about individual temperament. It is about whether an institution has made a real commitment or left its faculty to navigate alone.
+What faculty are asking for is practical and achievable: hands-on time with the tools, structured conversations with peers across disciplines, and clear signals from institutional leadership about where this is heading. Resources like the ACAWEB professional development course are a start. The regional summit model and cross-institutional exchanges are where the real leverage is. Faculty who can learn from what a colleague at a neighboring institution is actually doing, not just read about it, move faster and more confidently than those building from scratch in isolation.
+Issue 7: AI as Institutional Infrastructure
+AI in education is not just a classroom question anymore. Schools across WNC are deploying it at the institutional level: student support chatbots, CRM systems for prospective student engagement, administrative paperwork automation, faculty training pipelines. This is AI as infrastructure, and it introduces a different set of considerations than AI as a pedagogical tool.
+The potential is genuine. A well-designed student support chatbot can answer questions at 2 AM when the advising office is closed, route students to the right resources without requiring them to navigate a maze of phone trees, and flag when a student's question suggests they need human intervention. That last capability is the critical one. Any AI system deployed in a student-facing support role needs a clear escalation path: a mechanism for recognizing when a problem is above what the bot can handle and routing the student to a person, ideally within the same interaction window if it is during business hours. The technology to do this well exists. The question is whether institutions are building it in from the start or treating it as an afterthought.
+Data privacy is a serious concern at the infrastructure level, one that 60% of WNC educators flagged explicitly in the survey. When AI systems are processing student records, enrollment data, and academic performance information, the question of what gets stored, where it goes, and who has access is not a technicality. It is a matter of institutional trust. Only 25% of WNC institutions currently provide a private or secure AI tool for faculty and staff. That number needs to grow, and institutions need to be able to explain their data governance clearly to the people using these systems and the students whose data flows through them.
+The administrative efficiency gains from AI are real: reduced paperwork, faster response times, more consistent communication. The goal should be to reinvest those gains into the human capacity that AI cannot replicate. The advisor who notices something is off with a student. The faculty member who stays after class. The counselor who knows when a conversation needs to happen face-to-face. AI handles the routine well enough to free those people up for the irreplaceable work. That is a good trade, as long as institutions do not use the efficiency gains as justification for reducing the human roles that matter most.
+Issue 8: Collaboration Beats Silos
+The campus-by-campus picture from the regional review is unambiguous: institutions working in isolation are falling behind. The ones making faster, more durable progress are sharing strategies, exchanging faculty, and building frameworks together. This pattern is consistent enough that it is worth stating plainly as a finding, not just an observation.
+The challenge is that education is structurally siloed. Departments protect their autonomy. Institutions compete for enrollment. Faculty workloads leave little space for anything that looks like additional work, even work that would ultimately reduce the burden. Cross-institutional collaboration requires someone to create and sustain the conditions for it: to organize the convening, schedule the exchange, build the shared framework, and maintain the relationship between events. That person needs to be resourced to do it, not just volunteered into it.
+Land of Sky's role in organizing the regional AI summits is exactly the kind of backbone infrastructure that makes sustained collaboration possible. The fact that 27 education leaders from 9 institutions came together to work through these questions is evidence of real regional will. The challenge now is sustaining and expanding that. One summit is a conversation. A series of summits with working groups, documented outcomes, and genuine follow-through is infrastructure.
+Cross-institutional collaboration has specific practical value beyond goodwill: it prevents institutions from making the same expensive mistakes independently, it surfaces what is actually working before those strategies get lost when a faculty champion leaves, and it creates the kind of regional coherence that makes WNC a place where educators are genuinely building something together. The goal of expanding summit participation to 100 educators from across WNC campuses is the right ambition. More diverse participation, across disciplines, institutional sizes, and student populations, produces more robust solutions than a room full of people with similar contexts.
+Issue 9: Physical Place Still Matters
+Online and asynchronous learning extends access in ways that matter, particularly for students with work and family obligations, or those in rural areas without convenient campus access. That is worth acknowledging directly. The case for in-person learning is not a case against online learning; it is a case for being honest about what each modality actually provides.
+In-person settings consistently produce stronger learning outcomes across the measures that matter most: engagement, retention, sense of belonging, and the development of professional relationships. Research on co-location and learning outcomes has been consistent on this for decades, and nothing about AI changes it. What AI does is accelerate a cultural pull toward speed and convenience that was already making it harder to justify the friction of showing up somewhere in person. That friction is often where the learning actually happens.
+Spontaneous mentorship is a good example. The conversation that happens when a student lingers after class, when a faculty member notices something in the hallway, when two students end up talking through a problem in a common area: none of that is engineered or predictable, and none of it happens in a chat window. A classroom disagreement that forces everyone to sharpen their thinking cannot be replicated by a well-designed discussion board. The kind of introspective, identity-forming work that education requires at its best is fundamentally relational and situational.
+There is also an equity dimension here that tends to get overlooked in efficiency-focused conversations. For many students, particularly first-generation students and those navigating significant personal challenges, the physical campus is the support network. It is where they find out about resources they did not know existed, where they encounter faculty who change their trajectory, where they build the professional relationships that eventually get them their first job. A campus that has hollowed out its in-person experience in the name of scalability has given up something that is very hard to get back.
+Issue 10: Teaching Students to Judge AI Output
+AI systems have no built-in mechanism for flagging when they are wrong. A hallucinated citation looks exactly like a real one. A confident, well-structured paragraph asserting something false reads identically to a confident, well-structured paragraph asserting something true. The tool does not know the difference, and it does not tell you when you should be skeptical. That makes critical evaluation of AI output a non-negotiable skill, and right now most students do not have it.
+This is not primarily a technology problem. It is a literacy problem. The same critical reading practices that help a student evaluate a source, check a claim against evidence, and recognize when an argument is superficially coherent but logically weak, apply directly to AI output. The issue is that many students are not applying those practices to AI at all. The fluency and confidence of the output triggers a trust response that well-written but uncertain sources do not. Educators across disciplines need to explicitly interrupt that response.
+The concern raised in the survey about AI detection tools and marginalized students is directly connected to this issue. Detection algorithms are not neutral evaluators. They are trained on particular patterns and they produce false positives that, as multiple researchers have documented, disproportionately flag the writing of non-native English speakers. When institutions deploy these tools without understanding their failure modes, they are using AI uncritically to police AI use. That is exactly the kind of unexamined reliance that this report is arguing against.
+The systematic review of AI overreliance published in Smart Learning Environments (2024) found that in studies of students across Pakistani and Chinese universities, over two-thirds showed increased cognitive passivity, and more than a quarter showed measurable degradation in decision-making abilities after sustained AI use. Cognitive passivity is the specific risk here: students who accept AI output without scrutiny are not developing the evaluative muscles that make them capable of independent judgment. Teaching them to ask "how do I know this is right?" about every AI output is not skepticism for its own sake. It is the practice that keeps those muscles from atrophying.
+75% of WNC educators believe AI literacy should be a core competency requirement for all students. That consensus is the strongest signal in the survey data, and it needs to become policy. Not an elective. Not a single module buried in a first-year seminar. A genuine, cross-disciplinary expectation that every student, in every program, develops the capacity to critically evaluate what these tools produce. The loop of engage, create, and reflect, with reflection being the non-negotiable step, is what keeps students at the center of their own learning rather than along for the ride.
+
+Closing: The Region at a Decision Point
+WNC's educators are not starting from zero. The conversations that have happened, the summits that have been organized, the individual faculty members who have done the hard work of figuring this out in their own classrooms without institutional support: that is real progress and it deserves recognition. It is also fragile. Progress that lives in the initiative of a few dedicated individuals and has not been institutionalized does not survive turnover.
+The research is clear about the stakes. Unstructured AI use produces measurable cognitive deficits. A policy vacuum produces inequitable and inconsistent learning environments. Faculty left to navigate this alone produce burnout rather than sustainable change. These are not hypothetical trajectories. They are the direction the region is already moving in the absence of deliberate intervention.
+The opportunity is just as real. WNC has a network of educators who have shown up, who are talking to each other, and who are genuinely trying to get this right. The infrastructure for regional collaboration exists. The appetite is there. What is needed now is the institutional commitment to resource it, sustain it, and build on it. Brain first, then AI. Guidance rather than prohibition. Adaptive policy. Assessment that measures learning. A phased approach to workforce preparation. Supported faculty. Thoughtful infrastructure. Cross-institutional collaboration. Preserved human connection. Students who can critically evaluate the tools they are using. Those ten things are not a wish list. They are a workplan.
+
+Sources: WNC Educator Survey 2026 (54 respondents, January 2026); Kosmyna et al. (2025), “Your Brain on ChatGPT: Accumulation of Cognitive Debt when Using an AI Assistant for Essay Writing Task,” MIT Media Lab, arXiv:2506.08872; Gerlich, M. (2025), “AI Tools in Society: Impacts on Cognitive Offloading and the Future of Critical Thinking,” Societies, 15(1), 6; Akgun & Toker (2024); Bai, Liu & Su (2023), “ChatGPT: The Cognitive Effects on Learning and Memory,” Brain-X, 1(3); Ahmad et al. (2023), in Smart Learning Environments (Springer), “The Effects of Over-Reliance on AI Dialogue Systems on Students’ Cognitive Abilities”; Frontiers in Psychology (2025), “The Cognitive Paradox of AI in Education”; Lee et al. (2025), “The Impact of Generative AI on Critical Thinking,” CHI 2025; Azevedo & Mallinson (2025), “Institutional Policies on Artificial Intelligence in Higher Education: Frameworks and Best Practices for Faculty,” New Directions for Adult and Continuing Education, 2025(188), 70–78; American Association of University Professors (2025), “Artificial Intelligence and Academic Professions”; Harvard Kennedy School Institute of Politics (2025), Youth Poll on AI and Career Prospects; Handshake (2025), Class of 2025 Senior Survey; Wu et al. (2024), institutional living-document AI policy frameworks; Temper et al. (2025), HEAT-AI tiered governance framework.
+
+SHORT FORM OF THE WRITEUP<  THESE NEED MORE SHORTENING FOR THE WEBSITE PROBABLY
+
+OVERVIEW – Top 10 Issues Facing Educators
+The 2026 WNC Educator Survey makes the picture clear: 85% of the faculty who engage with AI are already using these tools, 65% say their institution’s policy is behind or nonexistent, and 92% name loss of critical thinking as their leading concern. Students feel the pressure too. Roughly 70% of college students now see AI as a danger to their future careers.
+One principle ties all ten issues together, simple enough for a sticky note:
+Brain first, then AI.
+Used well, AI extends what a capable person can do. Used as a substitute for learning, it removes the work that builds human understanding and capability in the first place.
+
+1. Critical Thinking Skills.  True understanding cannot be fast-tracked; it is a deliberate, deeply human process of piecing together complex puzzles to understand and solve real-world problems. While AI provides an illusion of instant learning, education must focus on cultivating the deep critical thinking skills required to evaluate AI output, while still teaching the foundational skills.
+2. Guidance Over Prohibition.  Students use AI at home no matter what the syllabus says. Banning it ends the chance to teach good judgment around using it. The educators with the best results bring AI into the open and frame it clearly as a tool for learning and not a replacement.
+3. Policy Built for a Fast-Moving Target.  65% of WNC educators say their policy is behind or absent. The cause is structural: technology changes way faster than policy can keep up. The best schools treat policy as a living document and get input from front line educators on which way to move.
+4. Teaching Students to Judge AI Output.  AI never tells you when it is wrong, hallucinations are a common issue. A fabricated citation looks exactly like a real one. Critical evaluation of AI output is a literacy problem, and it is a skill that belongs in every discipline.
+5. Assessment Must Shift to Process.  A model can produce a competent final paper in under a minute. Educators who grade only the final product end up measuring the tool, not the student. 60% of WNC educators have already redesigned assignments toward evaluating the process.
+6. Workplace Preparation Creates Tension.  Employers are beginning to expect AI proficiency. But learning requires students to solve the issues themselves. A phased approach to AI introduction ensures students learn foundational skills without becoming dependent on AI in the process.
+7. Training Faculty for Appropriate Use.  Faculty want training and direction, not just access to models. Only 25% of WNC institutions have invested in a dedicated AI tool for their faculty.
+8. AI as Institutional Infrastructure.  Schools across WNC run AI for chatbots, enrollment systems, and administrative work. Done poorly, it routes a student in real need to a bot that cannot help, good customer relation management requires offering mixed help desk support, depending on the issue at hand. Also, 60% of educators flagged data privacy directly as a concern.
+9. Collaboration Beats Silos.  Campuses making real progress share strategies and build common frameworks. The Land of Sky regional summits are the kind of infrastructure that makes it possible.
+10. AI cannot replace physical place or human connection:  In-person settings produce stronger engagement, better retention, and relationships that change a student’s path. Learning ultimately works best in an engaging and cooperative environment, with active participation from students and educators. 
+
+“The desire to thoughtfully integrate AI while maintaining educational values centered on human interaction, critical thinking, and ethical responsibility.”
+Warren Wilson College educator respondents, 2026
+
+### Here is the actual flyer I made
+
+</user_query>

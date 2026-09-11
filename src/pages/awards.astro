@@ -1,49 +1,164 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
 import Button from "../components/ui/Button.astro";
+import ContactCta from "../components/layout/ContactCta.astro";
+import { awardsIntro, awardees } from "../content/awards";
 import { site } from "../content/site";
 ---
 
 <BaseLayout
   title="Faculty Awards"
-  description="Faculty we recognize—award winners and featured educators. Archive hosted on Google Drive."
+  description="Faculty we recognize—educators shaping responsible AI practice across Western North Carolina."
 >
-  <section class="section">
-    <div class="container awards-page">
-      <p class="eyebrow">Recognition</p>
-      <h1>Faculty we recognize</h1>
-      <p class="muted">
-        Award winners and featured educators from regional AI work live in a shared Google Drive
-        archive. This page is intentionally a dead end on the site—open the Drive folder for photos,
-        citations, and materials.
-      </p>
-      <Button href={site.awardsDriveUrl} external>Open awards archive</Button>
-      <p class="awards-page__note">
-        Placeholder Drive URL — replace <code>awardsDriveUrl</code> in
-        <code>src/content/site.ts</code> when the folder is ready.
-      </p>
+  <section class="section awards">
+    <div class="container">
+      <SectionHeader eyebrow={awardsIntro.eyebrow} title={awardsIntro.title} align="center">
+        <p>{awardsIntro.description}</p>
+      </SectionHeader>
+
+      <div class="awards-grid">
+        {
+          awardees.map((person, index) => (
+            <article
+              class="award-card"
+              data-reveal
+              data-reveal-delay={String(0.05 * (index % 3))}
+              data-reveal-y="28"
+            >
+              <div class="award-card__media">
+                <img src={person.image} alt={person.imageAlt} />
+              </div>
+              <div class="award-card__body">
+                <p class="award-card__year">{person.year}</p>
+                <h3>{person.name}</h3>
+                <p class="award-card__institution">{person.institution}</p>
+                <p class="award-card__recognition">{person.recognition}</p>
+                <p class="award-card__summary">{person.summary}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="awards-archive">
+        <h2>Full awards archive</h2>
+        <p>
+          Photos, citations, and additional materials live in the shared Drive folder. Swap in real
+          portraits here when those files are ready.
+        </p>
+        <Button href={site.awardsDriveUrl} external>Open awards archive</Button>
+      </div>
     </div>
   </section>
+
+  <ContactCta
+    title="Know an educator who should be here?"
+    description="Send a note about faculty doing careful AI work on your campus—we will follow up."
+  />
 </BaseLayout>
 
 <style>
-  .awards-page {
-    max-width: 40rem;
+  .awards-grid {
     display: grid;
-    gap: 1rem;
-    justify-items: start;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.25rem, 3vw, 1.75rem);
+    margin-top: 0.5rem;
   }
 
-  .awards-page h1 {
-    font-size: clamp(2.4rem, 5vw, 3.4rem);
+  .award-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
   }
 
-  .awards-page__note {
+  .award-card__media {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: color-mix(in srgb, var(--green-light) 35%, white);
+  }
+
+  .award-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .award-card__body {
+    display: grid;
+    gap: 0.35rem;
+    padding-top: 1rem;
+    flex: 1;
+  }
+
+  .award-card__year {
+    margin: 0;
+    color: var(--purple);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .award-card h3 {
+    margin: 0;
+    font-size: clamp(1.35rem, 2.4vw, 1.55rem);
+    line-height: 1.2;
+  }
+
+  .award-card__institution {
+    margin: 0;
+    color: var(--blue);
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  .award-card__recognition {
+    margin: 0.15rem 0 0;
+    color: var(--green);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  .award-card__summary {
+    margin: 0.35rem 0 0;
     color: var(--muted);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 
-  .awards-page code {
-    font-size: 0.85em;
+  .awards-archive {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    padding-top: 1.75rem;
+    border-top: 1px solid color-mix(in srgb, var(--purple) 14%, transparent);
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+    max-width: 36rem;
+  }
+
+  .awards-archive h2 {
+    margin: 0;
+    font-size: 1.55rem;
+  }
+
+  .awards-archive p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  @media (max-width: 960px) {
+    .awards-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .awards-grid {
+      grid-template-columns: 1fr;
+      max-width: 22rem;
+      margin-inline: auto;
+    }
   }
 </style>

@@ -12,7 +12,7 @@ export const schoolsIntro = {
   eyebrow: "Campus practice",
   title: "What schools are doing",
   description:
-    "Change is already here. These are approaches WNC educators reported at summits: clearer policy language, redesigned assessment, faculty training, and tools that keep a human in the loop.",
+    "Change is here. These are approaches WNC educators reported at summits: clearer policy language, redesigned assessment, faculty training, and tools that keep a human in the loop.",
 };
 
 export const schoolPractices: SchoolPractice[] = [
@@ -21,11 +21,10 @@ export const schoolPractices: SchoolPractice[] = [
     institution: "ABTech",
     title: "Red / Yellow / Green AI policy on assignments",
     summary:
-      "A shared vocabulary for AI use: red means no use allowed, yellow means disclosed or supervised use, and green means open use.",
+      "Red: no use allowed. Yellow: with supervision. Green: all uses allowed.",
     detail: [
-      "The categories matter less than the shared language. Faculty and students can talk about permitted use without inventing a new policy every semester.",
-      "Transparency in syllabus statements and student self-identification of AI use sits alongside the framework. Detection tools alone produce false positives and do not teach judgment.",
-      "Because the scheme is simple, it can be revised when tools change—policy built for a moving target rather than a five-year freeze.",
+      "ABTech’s AI use policy uses a red, yellow, green system on assignments so faculty and students share one vocabulary for what is permitted.",
+      "Transparency sits alongside it: syllabus statements and student self-identification of AI use. Detection tools alone produce false positives and do not teach judgment.",
     ],
     tags: ["Policy", "Transparency"],
   },
@@ -34,11 +33,10 @@ export const schoolPractices: SchoolPractice[] = [
     institution: "ACAWEB",
     title: "Faculty course on AI in education",
     summary:
-      "An online professional development course (~1 hour per week) organized around the Five E model: engage, explore, explain, elaborate, evaluate.",
+      "Online course (~1 hour per week) organized around the Five E model: engage, explore, explain, elaborate, evaluate.",
     detail: [
-      "Each module repeats the Five E cycle so faculty practice the same pedagogical loop they might use with students.",
-      "The course is practical: prior knowledge checks, hands-on exploration, instruction to fill gaps, real-world application, and a short evaluation.",
-      "It opens again in early March. Message through ACAWEB if you want a seat: acaweb.org/AI-PD.",
+      "Each module repeats the Five E cycle: engage (prior knowledge), explore (hands-on), explain (instruction to fill gaps), elaborate (real-world application), evaluate (quick check).",
+      "Opening again in early March—message if you want a seat: acaweb.org/AI-PD.",
     ],
     tags: ["Faculty development", "Five E"],
     link: { href: "https://acaweb.org/AI-PD", label: "Visit ACAWEB AI-PD" },
@@ -48,11 +46,11 @@ export const schoolPractices: SchoolPractice[] = [
     institution: "UNC Asheville CS",
     title: "Three pillars: assessment, usefulness, workplace",
     summary:
-      "Process-based assessment, responsible classroom AI use, and workplace tools introduced after foundations are solid.",
+      "Process-based assessment, responsible classroom AI use, and workplace tools after foundations are solid.",
     detail: [
-      "Assessment is shifting toward in-person components and process documentation—how understanding develops, not only the final artifact a model can polish in a minute.",
-      "Usefulness: professors encourage AI to explain concepts and interpret error messages, while students remain responsible for what they submit. “Your code should be your own.”",
-      "Workplace: higher-level courses can introduce tools like Cursor once students know the basics—preparing for professional use without skipping the scaffolding that makes judgment possible.",
+      "Assessment: more in-person components and process documentation—how understanding develops, not only the final output.",
+      "Usefulness: professors encourage AI to explain concepts and interpret error messages; students remain responsible for what they submit. “Your code should be your own.”",
+      "Workplace: higher-level courses can introduce tools like Cursor once students know the basics—preparing for professional use without skipping the scaffolding.",
     ],
     tags: ["Assessment", "Curriculum"],
   },
@@ -63,8 +61,8 @@ export const schoolPractices: SchoolPractice[] = [
     summary:
       "Several programs open with an ethics module so students confront responsible use before high-stakes work begins.",
     detail: [
-      "Students are already using tools at home. Starting with ethics and disclosure sets the frame before the first major paper or project.",
-      "The goal is judgment, not scare tactics: when AI helps learning, when it hollows it out, and how to say what you used.",
+      "Students are already using tools at home, regardless of policy. Starting with ethics and disclosure sets the frame before the first major paper or project.",
+      "Students need guidance on proper and ethical use—when AI helps learning, when it hollows it out, and how to say what you used.",
     ],
     tags: ["Ethics", "Syllabus"],
   },
@@ -73,10 +71,9 @@ export const schoolPractices: SchoolPractice[] = [
     institution: "Regional classrooms",
     title: "Semester-long rewrite of an AI-assisted plan",
     summary:
-      "Students draft a business plan with AI, then spend the term analyzing and rewriting it.",
+      "First assignment: make a business plan while using AI. Spend the semester analyzing and rewriting it.",
     detail: [
-      "The first assignment deliberately uses AI. The rest of the semester teaches students to see what the draft got right, what it invented, and what still requires human judgment.",
-      "By the end, students have practiced using the tool as a tool—benefits and shortfalls included—rather than treating the first output as the finished product.",
+      "By the end it shows students the benefits and shortfalls of using AI—and how to use it as a tool. Responsible use is essential like any tool.",
     ],
     tags: ["Pedagogy", "Process"],
   },
@@ -87,9 +84,8 @@ export const schoolPractices: SchoolPractice[] = [
     summary:
       "Teams address a community issue with AI allowed for development; winners present with employers in the room.",
     detail: [
-      "Framed as extracurricular learning and networking, not a replacement for coursework.",
-      "Find it under Branch Hub 2026 AI → workforce development board. Event dates: June 4–5; winners present at the larger convening.",
-      "Employers and recruiters are expected on site—another reason workplace AI fluency and foundational skill both matter.",
+      "Meant as extracurricular learning/service and for networking. Find it under Branch Hub 2026 AI → workforce development board.",
+      "June 4–5, 2026. Winners present at the larger convening. Employers and recruiters expected on site.",
     ],
     tags: ["Students", "Workforce"],
   },
@@ -101,8 +97,8 @@ export const schoolPractices: SchoolPractice[] = [
       "Chat that retrieves from real course documents, routes sensitive questions to people, and can hand off during office hours.",
     detail: [
       "Prospective students want fast answers. Every click-off is a potential lost enrollment. RAG against syllabus and campus docs improves accuracy on niche questions.",
-      "Medical or high-stakes needs should route to the health center or a human—not linger in a bot that cannot help.",
-      "Only 25% of WNC institutions currently provide a private or secure AI tool for faculty and staff. Data privacy remains a live concern in survey responses.",
+      "Medical questions link to the health center. If more support is needed, chat can swap to CRM people during office hours—or sit in queue overnight.",
+      "Only 25% of WNC institutions currently provide a private or secure AI tool for faculty and staff. Data privacy remains a live concern.",
     ],
     tags: ["Infrastructure", "Privacy"],
   },
@@ -113,9 +109,8 @@ export const schoolPractices: SchoolPractice[] = [
     summary:
       "Colleges provide community and co-location. Fast marketplace knowledge and slow educational wisdom both matter.",
     detail: [
-      "The world wants fast results. Education is about introspective, slower gains—wisdom, not only lookup knowledge.",
-      "AI is strong at fast knowledge. Humans remain stronger at deep understanding. The teaching task is helping students discern when each is useful.",
-      "That framing came through clearly in regional conversations, including from WCES / Blue Ridge CC colleagues.",
+      "Physical colleges have a place in education—they provide community, a sense of place. Co-location improves learning outcomes.",
+      "The world wants fast results. Education is about introspective, slower gains—wisdom, not only lookup knowledge. AI is strong at fast knowledge; humans remain stronger at deep understanding.",
     ],
     tags: ["Place", "Philosophy"],
   },

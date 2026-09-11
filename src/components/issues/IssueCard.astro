@@ -6,55 +6,102 @@ interface Props {
 }
 
 const { issue } = Astro.props;
+const preview = issue.body[0];
 ---
 
-<article class="issue-card">
-  <p class="issue-card__num">Issue {issue.number}</p>
-  <h3><a href={`/issues/${issue.slug}`}>{issue.title}</a></h3>
-  <p>{issue.shortBlurb}</p>
-  <a class="issue-card__link" href={`/issues/${issue.slug}`}>Read more →</a>
+<article class="issue-entry">
+  <div class="issue-entry__num" aria-hidden="true">{String(issue.number).padStart(2, "0")}</div>
+  <div class="issue-entry__content">
+    <p class="issue-entry__label">Issue {issue.number} of 10</p>
+    <h2>
+      <a href={`/issues/${issue.slug}`}>{issue.title}</a>
+    </h2>
+    <p class="issue-entry__flyer">{issue.shortBlurb}</p>
+    <p class="issue-entry__preview">{preview}</p>
+    <a class="issue-entry__link" href={`/issues/${issue.slug}`}>Open full issue →</a>
+  </div>
 </article>
 
 <style>
-  .issue-card {
+  .issue-entry {
     display: grid;
-    gap: 0.55rem;
-    padding: 1.35rem 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--purple) 18%, transparent);
+    grid-template-columns: minmax(3.5rem, 5rem) minmax(0, 1fr);
+    gap: clamp(0.85rem, 2vw, 1.5rem);
+    padding: clamp(1.5rem, 3vw, 2rem) 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--purple) 14%, transparent);
   }
 
-  .issue-card__num {
-    color: var(--green);
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
+  .issue-entry:first-of-type {
+    border-top: 1px solid color-mix(in srgb, var(--purple) 14%, transparent);
+  }
+
+  .issue-entry__num {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    line-height: 1;
+    color: color-mix(in srgb, var(--green) 70%, var(--cream));
+    font-weight: 550;
+    letter-spacing: -0.03em;
+    padding-top: 0.15rem;
+  }
+
+  .issue-entry__label {
+    margin: 0 0 0.3rem;
+    color: var(--purple);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     font-weight: 700;
   }
 
-  .issue-card h3 {
-    font-size: 1.45rem;
+  .issue-entry h2 {
+    margin: 0;
+    font-size: clamp(1.45rem, 2.8vw, 1.85rem);
+    line-height: 1.2;
   }
 
-  .issue-card h3 a {
+  .issue-entry h2 a {
     text-decoration: none;
+    color: inherit;
   }
 
-  .issue-card h3 a:hover {
+  .issue-entry h2 a:hover {
     color: var(--purple);
   }
 
-  .issue-card p {
-    color: var(--muted);
+  .issue-entry__flyer {
+    margin: 0.65rem 0 0;
+    color: var(--ink);
+    font-size: 1.05rem;
+    font-weight: 600;
   }
 
-  .issue-card__link {
+  .issue-entry__preview {
+    margin: 0.65rem 0 0;
+    color: var(--muted);
+    max-width: 46rem;
+  }
+
+  .issue-entry__link {
+    display: inline-block;
+    margin-top: 0.85rem;
     color: var(--green);
     font-weight: 600;
     text-decoration: none;
-    width: fit-content;
   }
 
-  .issue-card__link:hover {
+  .issue-entry__link:hover {
     color: var(--purple);
+  }
+
+  @media (max-width: 560px) {
+    .issue-entry {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+
+    .issue-entry__num {
+      font-size: 2rem;
+    }
   }
 </style>
