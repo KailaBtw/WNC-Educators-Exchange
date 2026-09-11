@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#825D83"/>
+      <stop offset="100%" stop-color="#C7DB9D"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#g)"/>
+  <circle cx="620" cy="180" r="120" fill="#825D83" opacity="0.25"/>
+  <circle cx="160" cy="780" r="160" fill="#C7DB9D" opacity="0.35"/>
+  <text x="50%" y="48%" text-anchor="middle" fill="#1a2e24" font-family="Georgia, serif" font-size="36">Brain Hub Workshop</text>
+  <text x="50%" y="54%" text-anchor="middle" fill="#5c6b63" font-family="Arial, sans-serif" font-size="22">Photo placeholder</text>
+</svg>

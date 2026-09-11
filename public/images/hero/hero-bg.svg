@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5B9A74"/>
+      <stop offset="55%" stop-color="#825D83"/>
+      <stop offset="100%" stop-color="#5989C5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <g fill="none" stroke="#C7DB9D" stroke-opacity="0.25" stroke-width="2">
+    <path d="M0 200 C300 100, 500 300, 800 220 S1300 80, 1600 180"/>
+    <path d="M0 420 C280 340, 520 520, 820 430 S1280 300, 1600 400"/>
+    <path d="M0 680 C320 600, 540 760, 860 690 S1300 560, 1600 660"/>
+  </g>
+  <text x="80" y="820" fill="#F5F5F0" fill-opacity="0.55" font-family="Georgia, serif" font-size="42">WNC Educators Exchange</text>
+</svg>
