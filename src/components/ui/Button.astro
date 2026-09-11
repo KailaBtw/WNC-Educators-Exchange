@@ -1,7 +1,7 @@
 ---
 interface Props {
   href: string;
-  variant?: "primary" | "secondary" | "ghost" | "light";
+  variant?: "primary" | "secondary" | "ghost" | "light" | "quiet";
   external?: boolean;
   class?: string;
 }
@@ -66,8 +66,30 @@ const { href, variant = "primary", external = false, class: className = "" } = A
     color: var(--purple);
   }
 
+  .btn--quiet {
+    background: transparent;
+    color: var(--green);
+    text-transform: none;
+    letter-spacing: 0.01em;
+    font-weight: 600;
+    min-height: 2.35rem;
+    padding: 0.4rem 0.85rem;
+  }
+
+  .btn--quiet:hover {
+    transform: none;
+    background: color-mix(in srgb, var(--green) 10%, transparent);
+    color: var(--ink);
+  }
+
   .btn--light {
     background: var(--white);
-    color: var(--green);
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .btn--light:hover {
+    background: var(--green-light);
+    color: var(--ink);
   }
 </style>

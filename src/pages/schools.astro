@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
-import Button from "../components/ui/Button.astro";
 import ContactCta from "../components/layout/ContactCta.astro";
 import { schoolPractices, schoolsIntro } from "../content/schools";
 ---
@@ -18,27 +17,27 @@ import { schoolPractices, schoolsIntro } from "../content/schools";
         </SectionHeader>
       </div>
 
-      <div class="schools-grid">
+      <div class="schools-list">
         {
           schoolPractices.map((practice, index) => (
             <article
-              class="school-card"
+              class="school-item"
               data-reveal
-              data-reveal-delay={String(0.06 * (index % 4))}
-              data-reveal-y="40"
+              data-reveal-delay={String(0.04 * (index % 4))}
+              data-reveal-y="28"
             >
-              <p class="school-card__institution">{practice.institution}</p>
+              <p class="school-item__institution">{practice.institution}</p>
               <h3>{practice.title}</h3>
-              <p>{practice.summary}</p>
-              <ul class="school-card__tags">
-                {practice.tags.map((tag) => (
-                  <li>{tag}</li>
-                ))}
-              </ul>
+              <p class="school-item__summary">{practice.summary}</p>
+              {practice.detail.map((paragraph) => (
+                <p class="school-item__detail">{paragraph}</p>
+              ))}
               {practice.link && (
-                <Button href={practice.link.href} variant="ghost" external>
-                  {practice.link.label} →
-                </Button>
+                <p>
+                  <a href={practice.link.href} target="_blank" rel="noopener noreferrer">
+                    {practice.link.label}
+                  </a>
+                </p>
               )}
             </article>
           ))
@@ -50,57 +49,53 @@ import { schoolPractices, schoolsIntro } from "../content/schools";
 </BaseLayout>
 
 <style>
-  .schools-grid {
+  .schools-list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem;
+    gap: 0;
+    max-width: 48rem;
+    margin-inline: auto;
   }
 
-  .school-card {
-    display: grid;
-    gap: 0.65rem;
-    padding: 1.5rem;
-    border-radius: var(--radius-lg);
-    background: var(--white);
-    border: 1px solid color-mix(in srgb, var(--purple) 12%, transparent);
+  .school-item {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--purple) 14%, transparent);
   }
 
-  .school-card__institution {
+  .school-item:first-child {
+    border-top: 1px solid color-mix(in srgb, var(--purple) 14%, transparent);
+  }
+
+  .school-item__institution {
     color: var(--blue);
     font-size: 0.72rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     font-weight: 700;
+    margin-bottom: 0.35rem;
   }
 
-  .school-card h3 {
-    font-size: 1.35rem;
+  .school-item h3 {
+    font-size: 1.45rem;
+    margin-bottom: 0.55rem;
   }
 
-  .school-card p {
+  .school-item__summary {
+    color: var(--ink);
+    margin-bottom: 0.65rem;
+  }
+
+  .school-item__detail {
     color: var(--muted);
+    margin-bottom: 0.55rem;
   }
 
-  .school-card__tags {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .school-card__tags li {
-    font-size: 0.75rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+  .school-item a {
     color: var(--green);
-    background: color-mix(in srgb, var(--green-light) 45%, white);
-    padding: 0.25rem 0.55rem;
-    border-radius: var(--radius-pill);
+    font-weight: 600;
+    text-decoration: none;
   }
 
-  @media (max-width: 800px) {
-    .schools-grid {
-      grid-template-columns: 1fr;
-    }
+  .school-item a:hover {
+    color: var(--purple);
   }
 </style>

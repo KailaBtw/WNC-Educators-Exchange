@@ -15,10 +15,10 @@ const carouselSlides = events.flatMap((event) => event.images).slice(0, 6);
 >
   <section class="section">
     <div class="container">
-      <SectionHeader eyebrow="Events" title="Past, present, and November next">
+      <SectionHeader eyebrow="Events" title="Summits, past and upcoming">
         <p>
-          Browse summit archives and register for the upcoming November convening. Each event page
-          includes a photo carousel and program notes.
+          Archives from Brain Hub and January, plus the November 17 program and registration link.
+          Photo placeholders mark where event images will go.
         </p>
       </SectionHeader>
       <div class="events-page__grid">
@@ -29,13 +29,18 @@ const carouselSlides = events.flatMap((event) => event.images).slice(0, 6);
 
   <section class="section section--tight">
     <div class="container">
-      <EventCarousel client:load slides={carouselSlides} heading="Real-world exchange" />
+      <EventCarousel
+        client:load
+        slides={carouselSlides}
+        heading="From the room"
+        body="Photos from Brain Hub, January, and upcoming convenings will live here. Until then, these slides hold the layout."
+      />
     </div>
   </section>
 
   <ContactCta
-    title="Planning to attend November 17?"
-    description="Questions about registration, program, or bringing a campus team? Send a note."
+    title="Questions about November 17?"
+    description="Registration, program details, or bringing a campus team—send a note and we will follow up."
   />
 </BaseLayout>
 

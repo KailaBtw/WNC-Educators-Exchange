@@ -5,7 +5,7 @@ export const site = {
   url: "https://wncexchange.com",
   tagline: "Brain first, then AI.",
   description:
-    "A regional hub for Western North Carolina educators navigating AI in teaching and learning—celebrating past summits, sharing findings, and introducing our November event.",
+    "Findings from the 2026 WNC Educator Survey and regional summits: ten issues facing educators, campus practices in motion, and the November 17 event.",
   contactEmail: "contact@wncexchange.com",
   registerUrl: "https://example.com/register-november-2026",
   fullReportUrl: "https://example.com/full-report-top-10-issues",

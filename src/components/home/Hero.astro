@@ -9,11 +9,11 @@ import { site } from "../../content/site";
     <p class="hero__brand">{site.name}</p>
     <h1>AI for educators, grounded in Western North Carolina.</h1>
     <p class="hero__support">
-      Celebrating what came before, sharing what we learned, and inviting you to our November 17
-      gathering.
+      AI is already in WNC classrooms. This site collects what regional educators reported, what
+      campuses are trying, and how to register for the November 17 summit.
     </p>
-    <div class="hero__actions" data-reveal data-reveal-delay="0.12" data-reveal-y="18">
-      <Button href={site.registerUrl} external>Register for Nov 17</Button>
+    <div class="hero__actions" data-reveal data-reveal-delay="0.1" data-reveal-y="16">
+      <Button href={site.registerUrl} variant="light" external>Register for Nov 17</Button>
       <Button href="/events" variant="secondary">Explore events</Button>
     </div>
   </div>
@@ -47,7 +47,7 @@ import { site } from "../../content/site";
     position: relative;
     z-index: 1;
     padding-block: clamp(2.75rem, 6vh, 4rem);
-    max-width: 40rem;
+    max-width: 52rem;
     margin-inline: auto;
     text-align: center;
     display: grid;
@@ -63,12 +63,12 @@ import { site } from "../../content/site";
 
   .hero h1 {
     font-size: clamp(2.1rem, 4.8vw, 3.15rem);
-    max-width: 16ch;
+    max-width: 24ch;
     margin-bottom: 0.85rem;
   }
 
   .hero__support {
-    max-width: 34rem;
+    max-width: 38rem;
     color: color-mix(in srgb, var(--white) 90%, transparent);
     margin-bottom: 1.35rem;
   }
@@ -82,6 +82,10 @@ import { site } from "../../content/site";
 
   .hero__actions :global(.btn--secondary) {
     color: var(--white);
-    box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--white) 55%, transparent);
+    box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--white) 70%, transparent);
+  }
+
+  .hero__actions :global(.btn--light) {
+    box-shadow: 0 8px 24px color-mix(in srgb, #000 22%, transparent);
   }
 </style>

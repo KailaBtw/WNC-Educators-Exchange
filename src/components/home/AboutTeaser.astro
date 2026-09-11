@@ -6,29 +6,26 @@ import { stats } from "../../content/stats";
 
 <section class="section about-teaser">
   <div class="container about-teaser__grid">
-    <div class="about-teaser__images" aria-hidden="true" data-reveal data-reveal-y="40">
-      <div class="about-teaser__img about-teaser__img--a"></div>
-      <div class="about-teaser__img about-teaser__img--b"></div>
-    </div>
-    <div class="about-teaser__copy" data-reveal data-reveal-delay="0.12" data-reveal-y="32">
-      <p class="eyebrow">About Us</p>
-      <h2>Transformational Work</h2>
+    <div class="about-teaser__image" aria-hidden="true" data-reveal data-reveal-y="40"></div>
+    <div class="about-teaser__copy" data-reveal data-reveal-delay="0.1" data-reveal-y="32">
+      <p class="eyebrow">About</p>
+      <h2>Why this exchange exists</h2>
       <div class="prose muted">
         <p>
-          The WNC Educators Exchange grew from regional summits and a 2026 educator survey: faculty
-          already using AI, institutions racing to keep policy current, and a shared worry about
-          critical thinking.
+          Artificial intelligence has arrived in WNC classrooms whether educators are ready for it or
+          not. The regional educator survey made that plain: most AI-active faculty are already using
+          the tools, many say policy is behind or missing, and loss of critical thinking tops the list
+          of concerns.
         </p>
         <p>
-          We celebrate what campuses have already built, publish the Top 10 Issues facing educators,
-          and gather again in November—so Western North Carolina stays in conversation with the rest
-          of the nation.
+          The Exchange is the regional infrastructure for that conversation—summits, shared practice,
+          and a written account of the ten issues that keep showing up. Brain first, then AI.
         </p>
       </div>
       <StatRow stats={stats.aboutTeaser} />
       <div class="about-teaser__actions">
-        <Button href="/about">Our story</Button>
-        <Button href="/awards" variant="ghost">Faculty we recognize →</Button>
+        <Button href="/about" variant="quiet">About the Exchange</Button>
+        <Button href="/awards" variant="quiet">Faculty we recognize</Button>
       </div>
     </div>
   </div>
@@ -37,46 +34,35 @@ import { stats } from "../../content/stats";
 <style>
   .about-teaser__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(1.75rem, 4vw, 3rem);
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(1.5rem, 4vw, 2.75rem);
     align-items: center;
   }
 
-  .about-teaser__images {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    align-items: stretch;
-  }
-
-  .about-teaser__img {
+  .about-teaser__image {
     border-radius: var(--radius-lg);
-    aspect-ratio: 3 / 4;
-    min-height: 0;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .about-teaser__img--a {
-    background-image: url("/images/about/story-1.svg");
-  }
-
-  .about-teaser__img--b {
-    background-image: url("/images/about/story-2.svg");
+    aspect-ratio: 4 / 5;
+    min-height: 18rem;
+    background:
+      linear-gradient(
+        160deg,
+        color-mix(in srgb, var(--green) 55%, transparent),
+        color-mix(in srgb, var(--purple) 65%, transparent)
+      ),
+      url("/images/about/story-1.svg") center / cover no-repeat;
   }
 
   .about-teaser__copy h2 {
-    font-size: clamp(2rem, 3.5vw, 2.6rem);
-    margin: 0.45rem 0 0.9rem;
+    font-size: clamp(1.85rem, 3.2vw, 2.4rem);
+    margin: 0.35rem 0 0.75rem;
   }
 
   .about-teaser__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.35rem;
     align-items: center;
-    margin-top: 1.35rem;
+    margin-top: 1rem;
   }
 
   @media (max-width: 900px) {
@@ -84,8 +70,9 @@ import { stats } from "../../content/stats";
       grid-template-columns: 1fr;
     }
 
-    .about-teaser__img {
-      aspect-ratio: 4 / 5;
+    .about-teaser__image {
+      aspect-ratio: 16 / 10;
+      min-height: 12rem;
     }
   }
 </style>

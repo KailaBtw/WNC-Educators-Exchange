@@ -19,36 +19,36 @@ export const events: EventItem[] = [
     dateLabel: "November 17, 2026",
     status: "upcoming",
     summary:
-      "Join educators from across Western North Carolina to share practice, refine policy, and prepare classrooms for responsible AI use.",
+      "Educators from across WNC meet to compare practice, pressure-test policy, and keep the regional conversation moving. Register on the external site.",
     location: "Western North Carolina (venue TBA)",
     registerUrl: "https://example.com/register-november-2026",
     images: [
       {
         src: "/images/events/nov-1.svg",
-        alt: "Placeholder: educators collaborating at a regional summit",
-        caption: "Regional gathering",
-        subtitle: "Educators from across WNC campuses",
+        alt: "Placeholder: educators at a regional summit",
+        caption: "November summit",
+        subtitle: "Replace with event photos when available",
       },
       {
         src: "/images/events/nov-2.svg",
         alt: "Placeholder: workshop discussion on AI policy",
-        caption: "Policy in practice",
+        caption: "Policy sessions",
         subtitle: "Living documents and shared frameworks",
       },
       {
         src: "/images/events/nov-3.svg",
         alt: "Placeholder: faculty panel discussion",
-        caption: "Faculty voices",
-        subtitle: "Classroom strategies that travel across campuses",
+        caption: "Faculty panels",
+        subtitle: "What is working on neighboring campuses",
       },
     ],
     program: [
-      "Welcome & regional framing — Land of Sky Workforce Development Board",
-      "Top 10 Issues flash briefing and discussion",
-      "Campus practice roundtables: policy, assessment, and faculty training",
-      "Student community service project preview (June 2026 winners pathway)",
-      "Networking & next steps for cross-institutional collaboration",
-      "Lorem ipsum dolor sit amet — closing remarks and registration follow-up",
+      "Welcome and regional framing — Land of Sky Workforce Development Board",
+      "Top 10 Issues briefing and discussion",
+      "Campus roundtables: policy, assessment, and faculty training",
+      "Student community service project preview (June 4–5, 2026 pathway)",
+      "Next steps for cross-institutional collaboration",
+      "Closing remarks and registration follow-up (agenda details TBA)",
     ],
   },
   {
@@ -58,32 +58,32 @@ export const events: EventItem[] = [
     dateLabel: "2025–2026",
     status: "past",
     summary:
-      "Hands-on sessions connecting AI literacy, workforce pathways, and educator collaboration across the region.",
+      "Sessions linking AI literacy, workforce pathways, and educator collaboration across the region.",
     images: [
       {
         src: "/images/events/brainhub-1.svg",
         alt: "Placeholder: Brain Hub event photo",
         caption: "Brain Hub",
-        subtitle: "Photo placeholder — replace with event archive",
+        subtitle: "Photo placeholder — replace with archive",
       },
       {
         src: "/images/events/brainhub-2.svg",
         alt: "Placeholder: Brain Hub workshop",
-        caption: "Workshop energy",
-        subtitle: "Collaborative problem-solving with peers",
+        caption: "Workshops",
+        subtitle: "Photo placeholder — replace with archive",
       },
       {
         src: "/images/events/brainhub-3.svg",
         alt: "Placeholder: Brain Hub networking",
-        caption: "Connections that stick",
-        subtitle: "Cross-campus relationships in the room",
+        caption: "Cross-campus contacts",
+        subtitle: "Photo placeholder — replace with archive",
       },
     ],
     program: [
       "Opening context: AI in WNC classrooms",
       "Breakout: guidance over prohibition",
       "Workforce board pathway discussion",
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Closing notes and next convening (details TBA)",
     ],
   },
   {
@@ -93,13 +93,13 @@ export const events: EventItem[] = [
     dateLabel: "January 2026",
     status: "past",
     summary:
-      "Survey-informed summit conversations that shaped the Top 10 Issues report and regional priorities.",
+      "Survey-informed summit conversations that fed directly into the Top 10 Issues report and regional priorities.",
     images: [
       {
         src: "/images/events/jan-1.svg",
         alt: "Placeholder: January event photo",
         caption: "January summit",
-        subtitle: "Photo placeholder — replace with Jan archive",
+        subtitle: "Photo placeholder — replace with archive",
       },
       {
         src: "/images/events/jan-2.svg",
@@ -110,15 +110,15 @@ export const events: EventItem[] = [
       {
         src: "/images/events/jan-3.svg",
         alt: "Placeholder: January closing session",
-        caption: "Shared takeaways",
-        subtitle: "From conversation to regional workplan",
+        caption: "Takeaways",
+        subtitle: "From conversation toward a regional workplan",
       },
     ],
     program: [
       "Survey snapshot: what 54 educators reported",
       "Fast vs. slow knowledge dialogue",
       "Campus updates and open problems",
-      "Lorem ipsum dolor sit amet — next convening preview",
+      "Preview of the next convening (details TBA)",
     ],
   },
 ];

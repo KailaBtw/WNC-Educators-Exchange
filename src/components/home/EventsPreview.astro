@@ -8,20 +8,23 @@ import { events } from "../../content/events";
 <section class="section" id="events">
   <div class="container">
     <div data-reveal>
-      <SectionHeader eyebrow="Gatherings" title="Event information">
-        <p>Past summits and our upcoming November convening—register under the upcoming card.</p>
+      <SectionHeader eyebrow="Events" title="Event information">
+        <p>
+          Educator perspectives through summits, helped shape the Top 10 Issues report, detailing the top issues in AI that are facing educators. The next summit is November 17 —
+          register from the upcoming event card.
+        </p>
       </SectionHeader>
     </div>
     <div class="events-grid">
       {
         events.map((event, index) => (
-          <div data-reveal data-reveal-delay={String(0.08 * index)} data-reveal-y="44">
+          <div data-reveal data-reveal-delay={String(0.06 * index)} data-reveal-y="40">
             <EventCard event={event} />
           </div>
         ))
       }
     </div>
-    <div class="events-grid__cta" data-reveal data-reveal-delay="0.2">
+    <div class="events-grid__cta" data-reveal data-reveal-delay="0.14" data-reveal-y="28">
       <Button href="/events">Explore All Events</Button>
     </div>
   </div>

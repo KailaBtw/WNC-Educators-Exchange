@@ -1,76 +1,43 @@
 ---
 import SectionHeader from "../ui/SectionHeader.astro";
-import Button from "../ui/Button.astro";
-import { getFeaturedIssues } from "../../content/issues";
+import EssentialsHub from "./EssentialsHub";
+import { issues } from "../../content/issues";
 import { schoolPractices } from "../../content/schools";
 
-const featuredIssues = getFeaturedIssues(3);
-const schoolsTeaser = schoolPractices.slice(0, 2);
+const hubIssues = issues.map(({ number, slug, title, shortBlurb, body }) => ({
+  number,
+  slug,
+  title,
+  shortBlurb,
+  body,
+}));
+
+const hubPractices = schoolPractices.map(
+  ({ id, institution, title, summary, detail, tags, link }) => ({
+    id,
+    institution,
+    title,
+    summary,
+    detail,
+    tags: [...tags],
+    link,
+  }),
+);
 ---
 
 <section class="section essentials">
   <div class="container">
     <div data-reveal>
-      <SectionHeader eyebrow="The Essentials" title="Formulated for radiant classrooms" align="center">
+      <SectionHeader eyebrow="From the region" title="The issues, and what campuses are doing" align="center">
         <p>
-          Survey findings and campus practice—side by side. Start with the top concerns, then see what
-          schools are already trying.
+          The survey named the pressure points. Campuses are already responding—often without much
+          institutional backing. Open either column for the full set.
         </p>
       </SectionHeader>
     </div>
 
-    <div class="essentials__grid">
-      <article class="essentials__card" data-reveal data-reveal-delay="0.05" data-reveal-y="40">
-        <div class="essentials__image" style={`background-image: url("/images/about/issues-card.svg")`}
-        ></div>
-        <div class="essentials__meta">
-          <p class="essentials__label">Regional report</p>
-          <p class="essentials__note">Top 3 of 10</p>
-        </div>
-        <h3>Top 10 Issues</h3>
-        <ul class="essentials__list">
-          {
-            featuredIssues.map((issue) => (
-              <li>
-                <a href={`/issues/${issue.slug}`}>
-                  <strong>{issue.number}. {issue.title}</strong>
-                  <span>{issue.shortBlurb}</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-        <div class="essentials__cta">
-          <Button href="/issues">Explore All Issues</Button>
-        </div>
-      </article>
-
-      <article class="essentials__card" data-reveal data-reveal-delay="0.16" data-reveal-y="40">
-        <div
-          class="essentials__image"
-          style={`background-image: url("/images/about/schools-card.svg")`}
-        ></div>
-        <div class="essentials__meta">
-          <p class="essentials__label">Campus practice</p>
-          <p class="essentials__note">Policy in motion</p>
-        </div>
-        <h3>What Schools Are Doing</h3>
-        <ul class="essentials__list">
-          {
-            schoolsTeaser.map((practice) => (
-              <li>
-                <a href="/schools">
-                  <strong>{practice.title}</strong>
-                  <span>{practice.summary}</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-        <div class="essentials__cta">
-          <Button href="/schools">Explore Campus Practices</Button>
-        </div>
-      </article>
+    <div data-reveal data-reveal-delay="0.06" data-reveal-y="28">
+      <EssentialsHub client:load issues={hubIssues} practices={hubPractices} />
     </div>
   </div>
 </section>
@@ -78,82 +45,5 @@ const schoolsTeaser = schoolPractices.slice(0, 2);
 <style>
   .essentials {
     background: var(--white);
-  }
-
-  .essentials__grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2rem;
-  }
-
-  .essentials__card {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .essentials__image {
-    aspect-ratio: 16 / 10;
-    border-radius: var(--radius-lg);
-    background-size: cover;
-    background-position: center;
-    margin-bottom: 1rem;
-  }
-
-  .essentials__meta {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .essentials__label {
-    color: var(--blue);
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-
-  .essentials__note {
-    color: var(--muted);
-    font-size: 0.85rem;
-  }
-
-  .essentials__card h3 {
-    font-size: 1.85rem;
-    margin-bottom: 0.85rem;
-  }
-
-  .essentials__list {
-    list-style: none;
-    display: grid;
-    gap: 0.85rem;
-    flex: 1;
-  }
-
-  .essentials__list a {
-    display: grid;
-    gap: 0.25rem;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .essentials__list a:hover strong {
-    color: var(--purple);
-  }
-
-  .essentials__list span {
-    color: var(--muted);
-    font-size: 0.95rem;
-  }
-
-  .essentials__cta {
-    margin-top: 1.25rem;
-  }
-
-  @media (max-width: 800px) {
-    .essentials__grid {
-      grid-template-columns: 1fr;
-    }
   }
 </style>

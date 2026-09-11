@@ -15,7 +15,7 @@ type Props = {
 
 export default function EventCarousel({
   slides,
-  heading = "Moments from the exchange",
+  heading = "From the room",
   body = "Photos from Brain Hub, January, and upcoming convenings will live here. Placeholders mark the layout until archives are uploaded.",
 }: Props) {
   const [index, setIndex] = useState(0);

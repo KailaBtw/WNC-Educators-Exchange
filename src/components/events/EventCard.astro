@@ -20,17 +20,14 @@ const primaryExternal = event.status === "upcoming";
     <img src={event.images[0]?.src} alt={event.images[0]?.alt ?? event.title} />
   </a>
   <div class="event-card__body">
-    <div class="event-card__meta">
-      <p class="event-card__category">{event.category}</p>
-      <p class="event-card__date">{event.dateLabel}</p>
-    </div>
+    <p class="event-card__category">{event.category}</p>
     <h3>{event.title}</h3>
     <p class="event-card__summary">{event.summary}</p>
     <div class="event-card__actions">
-      <Button href={primaryHref} variant="ghost" external={primaryExternal}>{primaryLabel}</Button>
+      <Button href={primaryHref} variant="quiet" external={primaryExternal}>{primaryLabel}</Button>
       {
         event.status === "upcoming" && (
-          <Button href={`/events/${event.slug}`} variant="ghost">
+          <Button href={`/events/${event.slug}`} variant="quiet">
             Program
           </Button>
         )
@@ -67,15 +64,9 @@ const primaryExternal = event.status === "upcoming";
   .event-card__body {
     padding-top: 1rem;
     display: grid;
-    gap: 0.55rem;
+    grid-template-rows: auto minmax(3.4rem, auto) 1fr auto;
+    gap: 0.45rem;
     flex: 1;
-  }
-
-  .event-card__meta {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.75rem;
-    align-items: baseline;
   }
 
   .event-card__category {
@@ -86,25 +77,25 @@ const primaryExternal = event.status === "upcoming";
     font-weight: 700;
   }
 
-  .event-card__date {
-    color: var(--muted);
-    font-size: 0.85rem;
-  }
-
   .event-card h3 {
-    font-size: 1.55rem;
+    font-size: 1.45rem;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .event-card__summary {
     color: var(--muted);
-    font-size: 0.98rem;
+    font-size: 0.95rem;
   }
 
   .event-card__actions {
     margin-top: auto;
     display: flex;
     justify-content: flex-end;
-    gap: 0.75rem;
-    padding-top: 0.5rem;
+    gap: 0.35rem;
+    padding-top: 0.35rem;
   }
 </style>

@@ -8,9 +8,9 @@ interface Props {
 }
 
 const {
-  eyebrow = "WNC Exchange",
-  title = "Questions about the work?",
-  description = "Reach out about the November event, the Top 10 Issues report, or regional collaboration. Zero spam—just a direct line to the team.",
+  eyebrow = "Contact",
+  title = "Questions or follow-up?",
+  description = "Write about the November event, the Top 10 Issues report, campus practice, or joining the next summit. The form opens your email client.",
 } = Astro.props;
 ---
 
@@ -24,7 +24,7 @@ const {
       id="contact-mailto-form"
       data-contact-email={site.contactEmail}
       data-reveal
-      data-reveal-delay="0.1"
+      data-reveal-delay="0.08"
       data-reveal-y="20"
     >
       <label class="sr-only" for="cta-email">Email</label>
