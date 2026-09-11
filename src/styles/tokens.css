@@ -1,0 +1,18 @@
+:root {
+  --purple: #825d83;
+  --blue: #5989c5;
+  --green-light: #c7db9d;
+  --green: #5b9a74;
+  --cream: #f5f5f0;
+  --ink: #1a2e24;
+  --muted: #5c6b63;
+  --white: #ffffff;
+  --radius-lg: 1.75rem;
+  --radius-md: 1rem;
+  --radius-pill: 999px;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Source Sans 3", "Segoe UI", sans-serif;
+  --space-section: clamp(3.5rem, 8vw, 6rem);
+  --content-width: 70rem;
+  --header-h: 4.25rem;
+}

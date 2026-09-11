@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wncexchange.com/sitemap-index.xml
