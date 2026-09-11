@@ -19,7 +19,11 @@ const {
     <p class="contact-cta__eyebrow">{eyebrow}</p>
     <h2>{title}</h2>
     <p class="contact-cta__desc">{description}</p>
-    <form class="contact-cta__form" id="contact-mailto-form">
+    <form
+      class="contact-cta__form"
+      id="contact-mailto-form"
+      data-contact-email={site.contactEmail}
+    >
       <label class="sr-only" for="cta-email">Email</label>
       <input
         id="cta-email"
@@ -49,12 +53,14 @@ const {
   const form = document.getElementById("contact-mailto-form");
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
-    const data = new FormData(form as HTMLFormElement);
+    const target = form as HTMLFormElement;
+    const to = target.dataset.contactEmail || "contact@wncexchange.com";
+    const data = new FormData(target);
     const email = String(data.get("email") || "").trim();
     const message = String(data.get("message") || "").trim();
     const subject = encodeURIComponent("WNC Educators Exchange inquiry");
     const body = encodeURIComponent(`From: ${email}\n\n${message}`);
-    window.location.href = `mailto:contact@wncexchange.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
   });
 </script>
 
