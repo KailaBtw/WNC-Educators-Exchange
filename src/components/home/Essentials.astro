@@ -1,5 +1,5 @@
 ---
-import { issues } from "../../content/issues";
+import { issues, issueCategoryLabel } from "../../content/issues";
 import { schoolPractices } from "../../content/schools";
 import { site } from "../../content/site";
 
@@ -38,9 +38,12 @@ const practicePreview = schoolPractices.slice(0, 3);
             ))
           }
         </ol>
-        <button type="button" class="unify-card__cta" data-open-modal="issues" data-index="0">
-          See more
-        </button>
+        <div class="unify-card__actions">
+          <button type="button" class="unify-card__cta" data-open-modal="issues" data-index="0">
+            See more
+          </button>
+          <a class="unify-card__readmore" href="/issues">Read more →</a>
+        </div>
       </div>
     </article>
   </div>
@@ -77,38 +80,48 @@ const practicePreview = schoolPractices.slice(0, 3);
             ))
           }
         </ol>
-        <button type="button" class="unify-card__cta" data-open-modal="schools" data-index="0">
-          See more
-        </button>
+        <div class="unify-card__actions">
+          <button type="button" class="unify-card__cta" data-open-modal="schools" data-index="0">
+            See more
+          </button>
+          <a class="unify-card__readmore" href="/schools">Read more →</a>
+        </div>
       </div>
     </article>
   </div>
 </section>
 
-<dialog class="info-dialog" id="issues-dialog" aria-labelledby="issues-dialog-title">
+<dialog class="info-dialog info-dialog--issues" id="issues-dialog" aria-labelledby="issues-dialog-title">
   <div class="info-dialog__panel">
-    <div class="info-dialog__head">
-      <div class="info-dialog__intro">
-        <div class="info-dialog__thumb info-dialog__thumb--issues" aria-hidden="true"></div>
-        <div>
-          <p class="info-dialog__kicker">Top 10 Issues</p>
-          <h2 id="issues-dialog-title">Facing WNC educators</h2>
-        </div>
+    <header class="info-dialog__banner">
+      <div class="info-dialog__banner-copy">
+        <p class="info-dialog__kicker">Survey report</p>
+        <h2 id="issues-dialog-title">Top 10 Issues</h2>
+        <p class="info-dialog__banner-lead">Facing WNC educators · Brain first, then AI.</p>
+        <a class="info-dialog__readmore" href="/issues">Read more →</a>
       </div>
-      <button type="button" class="info-dialog__close" data-close-dialog>Close</button>
-    </div>
+      <button type="button" class="info-dialog__close" data-close-dialog aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+
     <div class="info-dialog__layout">
       <nav class="info-dialog__nav" aria-label="Issues">
+        <p class="info-dialog__nav-label">Browse</p>
         {
           issues.map((issue) => (
             <button type="button" data-show-panel="issues" data-index={issue.number - 1}>
-              <span>{issue.number}</span>
-              {issue.title}
+              <span class="info-dialog__nav-num">{issue.number}</span>
+              <span class="info-dialog__nav-text">
+                <span class="info-dialog__nav-title">{issue.title}</span>
+                <span class="info-dialog__nav-meta">{issueCategoryLabel[issue.category]}</span>
+              </span>
             </button>
           ))
         }
       </nav>
-      <div>
+
+      <div class="info-dialog__stage">
         {
           issues.map((issue, index) => (
             <article
@@ -117,12 +130,41 @@ const practicePreview = schoolPractices.slice(0, 3);
               data-index={index}
               hidden={index !== 0}
             >
-              <p class="info-dialog__num">Issue {issue.number} of 10</p>
+              <div class="info-dialog__detail-top">
+                <span class="info-dialog__watermark" aria-hidden="true">
+                  {String(issue.number).padStart(2, "0")}
+                </span>
+                <p class="info-dialog__num">Issue {issue.number} of 10</p>
+                <span class="info-dialog__chip">{issueCategoryLabel[issue.category]}</span>
+              </div>
               <h3>{issue.title}</h3>
               <p class="info-dialog__lede">{issue.shortBlurb}</p>
-              {issue.body.map((paragraph) => (
-                <p>{paragraph}</p>
-              ))}
+              <div class="info-dialog__prose">
+                {issue.body.map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </div>
+              <div class="info-dialog__footer">
+                <div class="info-dialog__stepper">
+                  <button
+                    type="button"
+                    data-step="prev"
+                    data-kind="issues"
+                    disabled={index === 0}
+                  >
+                    ← Prev
+                  </button>
+                  <button
+                    type="button"
+                    data-step="next"
+                    data-kind="issues"
+                    disabled={index === issues.length - 1}
+                  >
+                    Next →
+                  </button>
+                </div>
+                <a class="info-dialog__more" href={`/issues/${issue.slug}`}>Full issue page →</a>
+              </div>
             </article>
           ))
         }
@@ -131,30 +173,37 @@ const practicePreview = schoolPractices.slice(0, 3);
   </div>
 </dialog>
 
-<dialog class="info-dialog" id="schools-dialog" aria-labelledby="schools-dialog-title">
+<dialog class="info-dialog info-dialog--schools" id="schools-dialog" aria-labelledby="schools-dialog-title">
   <div class="info-dialog__panel">
-    <div class="info-dialog__head">
-      <div class="info-dialog__intro">
-        <div class="info-dialog__thumb info-dialog__thumb--schools" aria-hidden="true"></div>
-        <div>
-          <p class="info-dialog__kicker">Campus practice</p>
-          <h2 id="schools-dialog-title">What schools are doing</h2>
-        </div>
+    <header class="info-dialog__banner">
+      <div class="info-dialog__banner-copy">
+        <p class="info-dialog__kicker">Campus practice</p>
+        <h2 id="schools-dialog-title">What schools are doing</h2>
+        <p class="info-dialog__banner-lead">Approaches already in use across WNC campuses.</p>
+        <a class="info-dialog__readmore" href="/schools">Read more →</a>
       </div>
-      <button type="button" class="info-dialog__close" data-close-dialog>Close</button>
-    </div>
+      <button type="button" class="info-dialog__close" data-close-dialog aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+
     <div class="info-dialog__layout">
       <nav class="info-dialog__nav" aria-label="Campus practices">
+        <p class="info-dialog__nav-label">Practices</p>
         {
           schoolPractices.map((practice, index) => (
             <button type="button" data-show-panel="schools" data-index={index}>
-              <span>{index + 1}</span>
-              {practice.title}
+              <span class="info-dialog__nav-num">{index + 1}</span>
+              <span class="info-dialog__nav-text">
+                <span class="info-dialog__nav-title">{practice.title}</span>
+                <span class="info-dialog__nav-meta">{practice.institution}</span>
+              </span>
             </button>
           ))
         }
       </nav>
-      <div>
+
+      <div class="info-dialog__stage">
         {
           schoolPractices.map((practice, index) => (
             <article
@@ -163,19 +212,58 @@ const practicePreview = schoolPractices.slice(0, 3);
               data-index={index}
               hidden={index !== 0}
             >
-              <p class="info-dialog__num">{practice.institution}</p>
+              <div class="info-dialog__detail-top">
+                <span class="info-dialog__watermark" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <p class="info-dialog__num">{practice.institution}</p>
+              </div>
               <h3>{practice.title}</h3>
               <p class="info-dialog__lede">{practice.summary}</p>
-              {practice.detail.map((paragraph) => (
-                <p>{paragraph}</p>
-              ))}
-              {practice.link && (
-                <p>
-                  <a href={practice.link.href} target="_blank" rel="noopener noreferrer">
-                    {practice.link.label}
+              <div class="info-dialog__tags">
+                {practice.tags.map((tag) => (
+                  <span>{tag}</span>
+                ))}
+              </div>
+              <div class="info-dialog__prose">
+                {practice.detail.map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </div>
+              <div class="info-dialog__footer">
+                <div class="info-dialog__stepper">
+                  <button
+                    type="button"
+                    data-step="prev"
+                    data-kind="schools"
+                    disabled={index === 0}
+                  >
+                    ← Prev
+                  </button>
+                  <button
+                    type="button"
+                    data-step="next"
+                    data-kind="schools"
+                    disabled={index === schoolPractices.length - 1}
+                  >
+                    Next →
+                  </button>
+                </div>
+                {practice.link ? (
+                  <a
+                    class="info-dialog__more"
+                    href={practice.link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {practice.link.label} →
                   </a>
-                </p>
-              )}
+                ) : (
+                  <a class="info-dialog__more" href="/schools">
+                    All campus practices →
+                  </a>
+                )}
+              </div>
             </article>
           ))
         }
@@ -188,17 +276,30 @@ const practicePreview = schoolPractices.slice(0, 3);
   function setupDialog(dialogId: string, kind: string) {
     const dialog = document.getElementById(dialogId) as HTMLDialogElement | null;
     if (!dialog) return;
+    const total = dialog.querySelectorAll(`[data-show-panel="${kind}"]`).length;
+    let current = 0;
 
     function showPanel(index: number) {
       if (!dialog) return;
+      current = Math.max(0, Math.min(total - 1, index));
       dialog.querySelectorAll(`[data-panel="${kind}"]`).forEach((panel) => {
         const el = panel as HTMLElement;
-        el.hidden = Number(el.dataset.index) !== index;
+        const active = Number(el.dataset.index) === current;
+        el.hidden = !active;
+        if (active) {
+          el.classList.remove("is-enter");
+          void el.offsetWidth;
+          el.classList.add("is-enter");
+        }
       });
       dialog.querySelectorAll(`[data-show-panel="${kind}"]`).forEach((btn) => {
         const el = btn as HTMLElement;
-        el.classList.toggle("is-active", Number(el.dataset.index) === index);
+        el.classList.toggle("is-active", Number(el.dataset.index) === current);
       });
+      const activeNav = dialog.querySelector<HTMLElement>(
+        `[data-show-panel="${kind}"].is-active`,
+      );
+      activeNav?.scrollIntoView({ block: "nearest", inline: "nearest" });
     }
 
     document.querySelectorAll(`[data-open-modal="${kind}"]`).forEach((btn) => {
@@ -214,12 +315,31 @@ const practicePreview = schoolPractices.slice(0, 3);
       });
     });
 
+    dialog.querySelectorAll(`[data-kind="${kind}"][data-step]`).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const step = (btn as HTMLElement).dataset.step;
+        showPanel(current + (step === "next" ? 1 : -1));
+      });
+    });
+
     dialog.querySelectorAll("[data-close-dialog]").forEach((btn) => {
       btn.addEventListener("click", () => dialog.close());
     });
 
     dialog.addEventListener("click", (event) => {
       if (event.target === dialog) dialog.close();
+    });
+
+    dialog.addEventListener("keydown", (event) => {
+      if (!dialog.open) return;
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        showPanel(current + 1);
+      }
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        showPanel(current - 1);
+      }
     });
 
     showPanel(0);
@@ -412,9 +532,16 @@ const practicePreview = schoolPractices.slice(0, 3);
     overflow: hidden;
   }
 
-  .unify-card__cta {
-    justify-self: end;
+  .unify-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.65rem;
     margin-top: 0.55rem;
+  }
+
+  .unify-card__cta {
     border: 0;
     border-radius: var(--radius-pill);
     background: var(--purple);
@@ -438,32 +565,81 @@ const practicePreview = schoolPractices.slice(0, 3);
     filter: brightness(0.95);
   }
 
+  .unify-card__readmore {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.85rem;
+    padding: 0.65rem 1.35rem;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--purple) 12%, white);
+    color: var(--purple);
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .unify--alt .unify-card__readmore {
+    background: color-mix(in srgb, var(--blue) 14%, white);
+    color: var(--blue);
+  }
+
+  .unify-card__readmore:hover {
+    transform: scale(1.03);
+    background: var(--purple);
+    color: var(--white);
+  }
+
+  .unify--alt .unify-card__readmore:hover {
+    background: var(--blue);
+    color: var(--white);
+  }
+
   .info-dialog {
+    --dialog-accent: var(--green);
+    --dialog-accent-soft: var(--purple);
     border: 0;
     padding: 0;
     background: transparent;
-    max-width: min(100vw - 2rem, 58rem);
+    max-width: min(100vw - 1.5rem, 64rem);
     width: 100%;
   }
 
+  .info-dialog--issues {
+    --dialog-accent: var(--green);
+    --dialog-accent-soft: var(--purple);
+  }
+
+  .info-dialog--schools {
+    --dialog-accent: var(--blue);
+    --dialog-accent-soft: var(--green);
+  }
+
   .info-dialog::backdrop {
-    background: color-mix(in srgb, var(--ink) 55%, transparent);
+    background:
+      radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--dialog-accent-soft) 28%, transparent), transparent 42%),
+      color-mix(in srgb, var(--ink) 62%, transparent);
+    backdrop-filter: blur(4px);
   }
 
   .info-dialog__panel {
     background: var(--cream);
-    border-radius: 1.25rem;
-    padding: 1.25rem 1.25rem 1.5rem;
-    max-height: min(88vh, 46rem);
-    overflow: auto;
-    box-shadow: 0 24px 60px color-mix(in srgb, #000 28%, transparent);
-    animation: infoPop 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    max-height: min(90vh, 48rem);
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    box-shadow:
+      0 28px 70px color-mix(in srgb, #000 30%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--white) 35%, transparent);
+    animation: infoPop 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   @keyframes infoPop {
     from {
       opacity: 0;
-      transform: translateY(1rem) scale(0.97);
+      transform: translateY(1.1rem) scale(0.97);
     }
     to {
       opacity: 1;
@@ -471,153 +647,352 @@ const practicePreview = schoolPractices.slice(0, 3);
     }
   }
 
-  .info-dialog__head {
+  .info-dialog__banner {
+    position: relative;
     display: flex;
     justify-content: space-between;
     gap: 1rem;
     align-items: start;
-    margin-bottom: 1rem;
+    padding: 1.35rem 1.4rem 1.25rem;
+    color: var(--white);
+    background:
+      radial-gradient(circle at 12% 80%, color-mix(in srgb, var(--green-light) 40%, transparent), transparent 42%),
+      radial-gradient(circle at 88% 18%, color-mix(in srgb, var(--ink) 18%, transparent), transparent 36%),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--dialog-accent) 82%, var(--cream)),
+        color-mix(in srgb, var(--dialog-accent-soft) 78%, var(--cream))
+      );
   }
 
-  .info-dialog__intro {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
+  .info-dialog__banner-copy {
     min-width: 0;
   }
 
-  .info-dialog__thumb {
-    flex: 0 0 auto;
-    width: 3.5rem;
-    height: 4.4rem;
-    border-radius: 0.7rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .info-dialog__thumb--issues {
-    background:
-      radial-gradient(circle at 20% 85%, color-mix(in srgb, var(--green-light) 55%, transparent), transparent 45%),
-      radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--ink) 18%, transparent), transparent 35%),
-      linear-gradient(
-        155deg,
-        color-mix(in srgb, var(--green) 78%, var(--cream)),
-        color-mix(in srgb, var(--purple) 72%, var(--cream))
-      );
-  }
-
-  .info-dialog__thumb--schools {
-    background:
-      radial-gradient(circle at 18% 80%, color-mix(in srgb, var(--green-light) 45%, transparent), transparent 42%),
-      radial-gradient(circle at 88% 18%, color-mix(in srgb, var(--ink) 12%, transparent), transparent 35%),
-      linear-gradient(
-        155deg,
-        color-mix(in srgb, var(--blue) 75%, var(--cream)),
-        color-mix(in srgb, var(--green) 60%, var(--cream))
-      );
-  }
-
   .info-dialog__kicker {
-    color: var(--purple);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    margin: 0 0 0.3rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     font-weight: 700;
-    margin: 0 0 0.25rem;
+    opacity: 0.9;
   }
 
-  .info-dialog__head h2 {
+  .info-dialog__banner h2 {
     margin: 0;
-    font-size: clamp(1.4rem, 3vw, 1.85rem);
+    font-size: clamp(1.55rem, 3vw, 2rem);
+    color: var(--white);
+  }
+
+  .info-dialog__banner-lead {
+    margin: 0.4rem 0 0;
+    font-size: 0.95rem;
+    opacity: 0.88;
+    max-width: 36rem;
+  }
+
+  .info-dialog__readmore {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.95rem;
+    min-height: 2.9rem;
+    padding: 0.7rem 1.45rem;
+    border-radius: var(--radius-pill);
+    background: var(--white);
+    color: var(--ink);
+    font-size: 1.08rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 8px 20px color-mix(in srgb, #000 12%, transparent);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  .info-dialog__readmore:hover {
+    transform: scale(1.03);
+    background: color-mix(in srgb, var(--green-light) 55%, white);
   }
 
   .info-dialog__close {
     border: 0;
-    background: transparent;
-    color: var(--muted);
-    font: inherit;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 0.35rem 0.7rem;
+    flex: 0 0 auto;
+    width: 2.4rem;
+    height: 2.4rem;
     border-radius: 999px;
+    background: color-mix(in srgb, var(--white) 18%, transparent);
+    color: var(--white);
+    font: inherit;
+    font-size: 1.45rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
   }
 
   .info-dialog__close:hover {
-    color: var(--ink);
-    background: color-mix(in srgb, var(--purple) 10%, transparent);
+    background: color-mix(in srgb, var(--white) 32%, transparent);
   }
 
   .info-dialog__layout {
     display: grid;
-    grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr);
-    gap: 1.15rem;
+    grid-template-columns: minmax(13rem, 16.5rem) minmax(0, 1fr);
+    min-height: 0;
+    max-height: 100%;
   }
 
   .info-dialog__nav {
     display: grid;
-    gap: 0.2rem;
+    gap: 0.25rem;
     align-content: start;
+    padding: 1rem 0.75rem 1rem 0.9rem;
+    border-right: 1px solid color-mix(in srgb, var(--purple) 12%, transparent);
+    background: color-mix(in srgb, var(--white) 55%, var(--cream));
+    overflow: auto;
+    max-height: min(68vh, 36rem);
+  }
+
+  .info-dialog__nav-label {
+    margin: 0 0.4rem 0.45rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--muted);
   }
 
   .info-dialog__nav button {
     text-align: left;
     border: 0;
     background: transparent;
-    border-radius: 0.6rem;
-    padding: 0.5rem 0.6rem;
+    border-radius: 0.85rem;
+    padding: 0.55rem 0.55rem;
     cursor: pointer;
     color: var(--muted);
     font: inherit;
-    font-size: 0.85rem;
-    display: flex;
-    gap: 0.4rem;
-    line-height: 1.3;
+    display: grid;
+    grid-template-columns: 1.7rem minmax(0, 1fr);
+    gap: 0.5rem;
+    align-items: start;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
   }
 
-  .info-dialog__nav button span {
-    color: var(--green);
+  .info-dialog__nav-num {
+    width: 1.7rem;
+    height: 1.7rem;
+    display: grid;
+    place-items: center;
+    border-radius: 0.5rem;
+    background: color-mix(in srgb, var(--dialog-accent) 14%, white);
+    color: var(--dialog-accent);
     font-weight: 700;
-    min-width: 1rem;
+    font-size: 0.82rem;
+    font-variant-numeric: tabular-nums;
   }
 
-  .info-dialog__nav button.is-active,
+  .info-dialog__nav-text {
+    display: grid;
+    gap: 0.12rem;
+    min-width: 0;
+  }
+
+  .info-dialog__nav-title {
+    font-size: 0.86rem;
+    line-height: 1.3;
+    font-weight: 600;
+    color: inherit;
+  }
+
+  .info-dialog__nav-meta {
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
   .info-dialog__nav button:hover {
-    background: color-mix(in srgb, var(--green-light) 45%, white);
+    background: color-mix(in srgb, var(--dialog-accent) 10%, white);
     color: var(--ink);
   }
 
-  .info-dialog__detail h3 {
-    font-size: 1.45rem;
-    margin: 0.15rem 0 0.55rem;
+  .info-dialog__nav button.is-active {
+    background: color-mix(in srgb, var(--dialog-accent) 16%, white);
+    color: var(--ink);
+    box-shadow: inset 3px 0 0 var(--dialog-accent);
+  }
+
+  .info-dialog__nav button.is-active .info-dialog__nav-num {
+    background: var(--dialog-accent);
+    color: var(--white);
+  }
+
+  .info-dialog__stage {
+    min-width: 0;
+    overflow: auto;
+    max-height: min(68vh, 36rem);
+    padding: 1.25rem 1.35rem 1.35rem;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--white) 70%, var(--cream)),
+        var(--cream)
+      );
+  }
+
+  .info-dialog__detail {
+    position: relative;
+  }
+
+  .info-dialog__detail[hidden] {
+    display: none !important;
+  }
+
+  .info-dialog__detail.is-enter {
+    animation: detailIn 0.32s ease both;
+  }
+
+  @keyframes detailIn {
+    from {
+      opacity: 0;
+      transform: translateY(0.45rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .info-dialog__detail-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .info-dialog__watermark {
+    position: absolute;
+    right: 0;
+    top: -0.35rem;
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 8vw, 5rem);
+    line-height: 1;
+    color: color-mix(in srgb, var(--dialog-accent) 14%, transparent);
+    pointer-events: none;
+    user-select: none;
   }
 
   .info-dialog__num {
-    color: var(--green);
+    margin: 0;
+    color: var(--dialog-accent);
     font-size: 0.72rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     font-weight: 700;
-    margin: 0;
+  }
+
+  .info-dialog__chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--dialog-accent-soft) 16%, white);
+    color: var(--dialog-accent-soft);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .info-dialog__detail h3 {
+    position: relative;
+    font-size: clamp(1.45rem, 2.8vw, 1.85rem);
+    margin: 0.2rem 0 0.65rem;
+    max-width: 18ch;
+    line-height: 1.2;
   }
 
   .info-dialog__lede {
-    color: var(--muted);
-    margin: 0 0 0.75rem;
+    position: relative;
+    color: var(--ink);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 0.85rem;
+    max-width: 40rem;
   }
 
-  .info-dialog__detail p {
-    margin: 0 0 0.7rem;
+  .info-dialog__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0 0 0.95rem;
+  }
+
+  .info-dialog__tags span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--dialog-accent) 12%, white);
     color: var(--ink);
   }
 
-  .info-dialog__detail a {
-    color: var(--green);
-    font-weight: 600;
-    text-decoration: none;
+  .info-dialog__prose {
+    position: relative;
+    display: grid;
+    gap: 0.7rem;
+    max-width: 40rem;
   }
 
-  .info-dialog__detail a:hover {
-    color: var(--purple);
+  .info-dialog__prose p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.98rem;
+  }
+
+  .info-dialog__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.35rem;
+    padding-top: 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--purple) 12%, transparent);
+  }
+
+  .info-dialog__stepper {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .info-dialog__stepper button {
+    border: 0;
+    border-radius: 0.65rem;
+    padding: 0.45rem 0.8rem;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: color-mix(in srgb, var(--dialog-accent) 12%, white);
+    color: var(--ink);
+  }
+
+  .info-dialog__stepper button:hover:not(:disabled) {
+    background: var(--dialog-accent);
+    color: var(--white);
+  }
+
+  .info-dialog__stepper button:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .info-dialog__more {
+    color: var(--dialog-accent);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+
+  .info-dialog__more:hover {
+    color: var(--dialog-accent-soft);
   }
 
   @media (max-width: 720px) {
@@ -636,12 +1011,20 @@ const practicePreview = schoolPractices.slice(0, 3);
 
     .info-dialog__nav {
       grid-auto-flow: column;
-      grid-auto-columns: max-content;
+      grid-auto-columns: minmax(11rem, 70vw);
       overflow-x: auto;
+      max-height: none;
+      border-right: 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--purple) 12%, transparent);
+      padding-bottom: 0.75rem;
     }
 
-    .info-dialog__nav button {
-      white-space: nowrap;
+    .info-dialog__stage {
+      max-height: min(55vh, 28rem);
+    }
+
+    .info-dialog__watermark {
+      font-size: 3.2rem;
     }
   }
 </style>

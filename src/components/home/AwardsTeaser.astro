@@ -17,7 +17,7 @@ const featured = awardees.slice(0, 3);
       </SectionHeader>
     </div>
 
-    <div class="awards-teaser__grid">
+    <div class="awards-teaser__rail">
       {
         featured.map((person, index) => (
           <article
@@ -25,15 +25,22 @@ const featured = awardees.slice(0, 3);
             data-reveal
             data-reveal-delay={String(0.06 * index)}
             data-reveal-y="28"
+            style={`--accent: ${index === 0 ? "var(--purple)" : index === 1 ? "var(--blue)" : "var(--green)"}`}
           >
             <a class="awards-teaser__media" href="/awards">
               <img src={person.image} alt={person.imageAlt} />
+              <span class="awards-teaser__year">{person.year}</span>
             </a>
             <div class="awards-teaser__body">
-              <p class="awards-teaser__year">{person.year}</p>
+              <p class="awards-teaser__stance">{person.stance}</p>
               <h3>{person.name}</h3>
               <p class="awards-teaser__institution">{person.institution}</p>
               <p class="awards-teaser__recognition">{person.recognition}</p>
+              <div class="awards-teaser__focus">
+                {person.focus.slice(0, 2).map((item) => (
+                  <span>{item}</span>
+                ))}
+              </div>
             </div>
           </article>
         ))
@@ -41,31 +48,46 @@ const featured = awardees.slice(0, 3);
     </div>
 
     <div class="awards-teaser__cta" data-reveal data-reveal-delay="0.14" data-reveal-y="24">
-      <Button href="/awards" variant="quiet">See all recognized faculty</Button>
+      <Button href="/awards">See all recognized faculty →</Button>
     </div>
   </div>
 </section>
 
 <style>
   .awards-teaser {
-    background: color-mix(in srgb, var(--purple) 6%, var(--cream));
+    background:
+      radial-gradient(circle at 12% 20%, color-mix(in srgb, var(--purple) 12%, transparent), transparent 40%),
+      radial-gradient(circle at 90% 80%, color-mix(in srgb, var(--green-light) 28%, transparent), transparent 42%),
+      var(--cream);
   }
 
-  .awards-teaser__grid {
+  .awards-teaser__rail {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(1rem, 2.5vw, 1.5rem);
   }
 
   .awards-teaser__card {
+    --accent: var(--purple);
     display: flex;
     flex-direction: column;
     min-height: 100%;
+    padding: 0.75rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--white) 72%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--purple) 10%, transparent);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .awards-teaser__card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px color-mix(in srgb, var(--ink) 8%, transparent);
   }
 
   .awards-teaser__media {
+    position: relative;
     display: block;
-    border-radius: var(--radius-lg);
+    border-radius: calc(var(--radius-lg) - 0.3rem);
     overflow: hidden;
     aspect-ratio: 4 / 5;
     background: color-mix(in srgb, var(--green-light) 35%, white);
@@ -82,16 +104,30 @@ const featured = awardees.slice(0, 3);
     transform: scale(1.04);
   }
 
+  .awards-teaser__year {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 0.55rem;
+    background: color-mix(in srgb, var(--cream) 92%, white);
+    color: var(--accent);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
   .awards-teaser__body {
     display: grid;
     gap: 0.25rem;
-    padding-top: 0.9rem;
+    padding: 0.9rem 0.2rem 0.25rem;
   }
 
-  .awards-teaser__year {
+  .awards-teaser__stance {
     margin: 0;
-    color: var(--purple);
-    font-size: 0.7rem;
+    color: var(--accent);
+    font-size: 0.68rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     font-weight: 700;
@@ -111,9 +147,25 @@ const featured = awardees.slice(0, 3);
   }
 
   .awards-teaser__recognition {
-    margin: 0.2rem 0 0;
+    margin: 0.15rem 0 0;
     color: var(--muted);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+  }
+
+  .awards-teaser__focus {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.55rem;
+  }
+
+  .awards-teaser__focus span {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 12%, white);
+    color: var(--ink);
   }
 
   .awards-teaser__cta {
@@ -123,9 +175,9 @@ const featured = awardees.slice(0, 3);
   }
 
   @media (max-width: 900px) {
-    .awards-teaser__grid {
+    .awards-teaser__rail {
       grid-template-columns: 1fr;
-      max-width: 18rem;
+      max-width: 20rem;
       margin-inline: auto;
     }
   }
