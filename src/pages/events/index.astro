@@ -1,177 +1,157 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Button from "../../components/ui/Button.astro";
+import ScheduleTimeline from "../../components/events/ScheduleTimeline.astro";
 import EventCarousel from "../../components/events/EventCarousel";
 import ContactCta from "../../components/layout/ContactCta.astro";
 import { events, getProgramLines } from "../../content/events";
 
-const upcoming = events.filter((e) => e.status === "upcoming");
+const upcoming = events.find((e) => e.status === "upcoming");
 const past = events.filter((e) => e.status === "past");
-const carouselSlides = events.flatMap((event) => event.images).slice(0, 6);
 
-const filters = [
-  { id: "all", label: "All events" },
-  { id: "upcoming", label: "Upcoming" },
-  { id: "past", label: "Past" },
-] as const;
+const archiveSlides = past.flatMap((event) =>
+  event.images.map((img) => ({
+    src: img.src,
+    alt: img.alt,
+    caption: img.caption ?? event.title,
+    subtitle: img.subtitle ? `${event.dateLabel} · ${img.subtitle}` : event.dateLabel,
+  })),
+);
 ---
 
 <BaseLayout
   title="Events"
   description="Past and upcoming WNC Educators Exchange gatherings, including the November 13 event at Mars Hill University."
 >
-  <section class="section events-hero">
-    <div class="container events-hero__inner">
+  <section class="section events-page-hero">
+    <div class="container events-page-hero__inner">
       <p class="eyebrow">Events</p>
-      <h1>Regional Summits</h1>
-      <p class="events-hero__dek">
-        Brain Hub and January shaped the Top 10 Issues report. November 13 at Mars Hill is next—register, scan the
-        program, or revisit what came before.
+      <h1>Regional gatherings</h1>
+      <p class="events-page-hero__dek">
+        Brain Hub and January shaped the Top 10 Issues report. November 13 at Mars Hill is next—scan
+        the day schedule, register, or reopen what came before.
       </p>
-
-      <div class="events-filters" role="toolbar" aria-label="Filter events">
-        {
-          filters.map((filter, index) => (
-            <button
-              type="button"
-              class:list={["events-filters__btn", { "is-active": index === 0 }]}
-              data-events-filter={filter.id}
-            >
-              {filter.label}
-            </button>
-          ))
-        }
+      <div class="events-page-hero__jumps">
+        <a href="#upcoming">Upcoming</a>
+        <a href="#archive">Previous</a>
+        <a href="#photos">Photos</a>
       </div>
-      <p class="events-count" data-events-count aria-live="polite">
-        Showing {events.length} events
-      </p>
     </div>
   </section>
 
-  <section class="section section--tight events-upcoming" data-events-block="upcoming">
-    <div class="container">
-      <p class="eyebrow">Next up</p>
-      <div class="events-featured-list">
-        {
-          upcoming.map((event) => (
-            <article class="events-featured" data-reveal data-reveal-y="28">
-              <a class="events-featured__media" href={`/events/${event.slug}`}>
-                <img src={event.images[0]?.src} alt={event.images[0]?.alt ?? event.title} />
-                <span class="events-featured__date">
-                  <strong>{event.dateLabel.split(",")[0]}</strong>
-                  <span>{event.dateLabel.includes(",") ? event.dateLabel.split(",")[1]?.trim() : ""}</span>
-                </span>
-              </a>
-              <div class="events-featured__body">
-                <p class="events-featured__status">Upcoming · {event.category}</p>
-                <h2>{event.title}</h2>
-                <p class="events-featured__summary">{event.summary}</p>
-                {event.location && <p class="events-featured__loc">{event.location}</p>}
-                <div class="events-featured__actions">
-                  {event.registerUrl && (
-                    <Button href={event.registerUrl} external>
-                      Register
+  {
+    upcoming && (
+      <section class="section section--tight" id="upcoming">
+        <div class="container">
+          <article class="events-page__featured" data-reveal data-reveal-y="28">
+            <header class="events-page__featured-head">
+              <div class="events-page__featured-copy">
+                <p class="events-page__status">Upcoming · {upcoming.category}</p>
+                <h2>{upcoming.title}</h2>
+                <p class="events-page__meta">
+                  <span>{upcoming.dateLabel}</span>
+                  {upcoming.location && <span>· {upcoming.location}</span>}
+                </p>
+                <p class="events-page__summary">{upcoming.summary}</p>
+                <div class="events-page__actions">
+                  <Button href={`/events/${upcoming.slug}`}>Event details</Button>
+                  {upcoming.registerUrl && (
+                    <Button href={upcoming.registerUrl} variant="secondary" external>
+                      Register for Nov 13
                     </Button>
                   )}
-                  <Button href={`/events/${event.slug}`} variant="secondary">
-                    Full event page
-                  </Button>
                 </div>
-                <details class="events-program">
-                  <summary>Program preview</summary>
-                  <ol>
-                    {getProgramLines(event).map((item) => (
-                      <li>{item}</li>
-                    ))}
-                  </ol>
-                </details>
               </div>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+              {upcoming.images[0] && (
+                <figure class="events-page__featured-photo">
+                  <img
+                    src={upcoming.images[0].src}
+                    alt={upcoming.images[0].alt}
+                    width="480"
+                    height="360"
+                  />
+                  <figcaption>{upcoming.images[0].caption ?? "November Exchange"}</figcaption>
+                </figure>
+              )}
+            </header>
 
-  <section class="section events-past" data-events-block="past">
-    <div class="container">
-      <div class="events-past__head">
-        <p class="eyebrow">Archive</p>
-        <h2>Previous Events</h2>
-        <p>Earlier convenings that fed the survey conversation and the regional workplan.</p>
-      </div>
-
-      <div class="events-timeline">
-        {
-          past.map((event, index) => (
-            <article
-              class:list={["events-row", { "events-row--alt": index % 2 === 1 }]}
-              data-reveal
-              data-reveal-delay={String(0.05 * index)}
-              data-reveal-y="28"
-            >
-              <a class="events-row__media" href={`/events/${event.slug}`}>
-                <img src={event.images[0]?.src} alt={event.images[0]?.alt ?? event.title} />
-              </a>
-              <div class="events-row__body">
-                <p class="events-row__meta">
-                  <span>{event.dateLabel}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>Past</span>
-                </p>
-                <h3>
-                  <a href={`/events/${event.slug}`}>{event.title}</a>
-                </h3>
-                <p>{event.summary}</p>
-                <div class="events-row__thumbs">
-                  {event.images.map((img, imgIndex) => (
-                    <button
-                      type="button"
-                      class="events-row__thumb"
-                      data-photo-open
-                      data-src={img.src}
-                      data-alt={img.alt}
-                      data-caption={img.caption ?? event.title}
-                      data-subtitle={img.subtitle ?? ""}
-                      data-group={event.slug}
-                      data-index={imgIndex}
-                      aria-label={`Open photo: ${img.caption ?? event.title}`}
-                    >
-                      <img src={img.src} alt="" />
-                    </button>
-                  ))}
+            {upcoming.sessions?.length ? (
+              <div class="events-page__schedule">
+                <div class="events-page__schedule-head">
+                  <p class="eyebrow">Program</p>
+                  <h3>Full day schedule</h3>
+                  <p class="muted">
+                    Scroll sideways across the day. Select a session for speakers, notes, and table
+                    topics—or open the event page for the same schedule in context.
+                  </p>
                 </div>
-                <div class="events-row__actions">
-                  <Button href={`/events/${event.slug}`} variant="quiet">
-                    View event
-                  </Button>
-                </div>
-                <details class="events-program">
-                  <summary>Session outline</summary>
-                  <ol>
-                    {getProgramLines(event).map((item) => (
-                      <li>{item}</li>
-                    ))}
-                  </ol>
-                </details>
+                <ScheduleTimeline
+                  sessions={upcoming.sessions}
+                  idPrefix="events-index-nov"
+                  size="full"
+                />
               </div>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+            ) : null}
+          </article>
+        </div>
+      </section>
+    )
+  }
 
-  <section class="section section--tight" data-events-block="gallery">
-    <div class="container">
-      <EventCarousel
-        client:load
-        slides={carouselSlides}
-        heading="From the room"
-        body="Photos from Brain Hub, January, and upcoming convenings will live here. Until then, these slides hold the layout."
-      />
-    </div>
-  </section>
+  {
+    past.length > 0 && (
+      <section class="section" id="archive">
+        <div class="container">
+          <div class="events-page__past-head" data-reveal>
+            <p class="eyebrow">Archive</p>
+            <h2>Previous gatherings</h2>
+            <p class="muted">
+              Earlier convenings that fed the survey conversation and the regional workplan. Open a
+              card for the session outline.
+            </p>
+          </div>
+
+          <div class="events-page__past-grid">
+            {past.map((event, index) => (
+              <button
+                type="button"
+                class="events-page__past-card"
+                data-open-past-event={event.slug}
+                data-reveal
+                data-reveal-delay={String(0.06 * index)}
+                data-reveal-y="24"
+                aria-haspopup="dialog"
+              >
+                <span class="events-page__past-thumb" aria-hidden="true">
+                  <img src={event.images[0]?.src} alt="" width="72" height="72" />
+                </span>
+                <span class="events-page__past-copy">
+                  <span class="events-page__past-date">{event.dateLabel}</span>
+                  <span class="events-page__past-title">{event.title}</span>
+                  <span class="events-page__past-summary">{event.summary}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    archiveSlides.length > 0 && (
+      <section class="section section--tight" id="photos">
+        <div class="container" data-reveal data-reveal-y="24">
+          <EventCarousel
+            client:load
+            slides={archiveSlides}
+            heading="From past gatherings"
+            body="Placeholder frames for Brain Hub and January archives—swap in real photos when ready. Browse here, then open an event card above for the outline."
+          />
+        </div>
+      </section>
+    )
+  }
 
   <ContactCta
     title="Questions about November 13?"
@@ -179,534 +159,414 @@ const filters = [
   />
 </BaseLayout>
 
-<dialog class="photo-dialog" id="photo-dialog" aria-label="Event photo">
-  <div class="photo-dialog__panel">
-    <button type="button" class="photo-dialog__close" data-photo-close>Close</button>
-    <img class="photo-dialog__img" data-photo-img src="" alt="" />
-    <div class="photo-dialog__meta">
-      <p class="photo-dialog__caption" data-photo-caption></p>
-      <p class="photo-dialog__subtitle" data-photo-subtitle></p>
-    </div>
-    <div class="photo-dialog__nav">
-      <button type="button" data-photo-prev aria-label="Previous photo">←</button>
-      <span data-photo-count></span>
-      <button type="button" data-photo-next aria-label="Next photo">→</button>
-    </div>
-  </div>
-</dialog>
+{
+  past.map((event) => (
+    <dialog
+      class="past-dialog"
+      id={`past-dialog-${event.slug}`}
+      aria-labelledby={`past-dialog-title-${event.slug}`}
+    >
+      <div class="past-dialog__panel">
+        <header class="past-dialog__header">
+          <div>
+            <p class="past-dialog__kicker">Previous gathering</p>
+            <h2 id={`past-dialog-title-${event.slug}`}>{event.title}</h2>
+            <p class="past-dialog__meta">{event.dateLabel}</p>
+          </div>
+          <button type="button" class="past-dialog__close" data-close-past-dialog aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </header>
+        <div class="past-dialog__body">
+          <p class="past-dialog__summary">{event.summary}</p>
+          <div class="past-dialog__program">
+            <h3>Session outline</h3>
+            <ol>
+              {getProgramLines(event).map((item) => (
+                <li>{item}</li>
+              ))}
+            </ol>
+          </div>
+          <div class="past-dialog__actions">
+            <Button href={`/events/${event.slug}`} variant="quiet">
+              Open event page
+            </Button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+  ))
+}
 
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-events-filter]");
-  const upcomingBlock = document.querySelector<HTMLElement>('[data-events-block="upcoming"]');
-  const pastBlock = document.querySelector<HTMLElement>('[data-events-block="past"]');
-  const galleryBlock = document.querySelector<HTMLElement>('[data-events-block="gallery"]');
-  const countEl = document.querySelector<HTMLElement>("[data-events-count]");
-  const upcomingCount = document.querySelectorAll(".events-featured").length;
-  const pastCount = document.querySelectorAll(".events-row").length;
-
-  function setHidden(el: HTMLElement | null, hidden: boolean) {
-    if (!el) return;
-    el.hidden = hidden;
-  }
-
-  function applyFilter(kind: string) {
-    const showUpcoming = kind === "all" || kind === "upcoming";
-    const showPast = kind === "all" || kind === "past";
-    setHidden(upcomingBlock, !showUpcoming || upcomingCount === 0);
-    setHidden(pastBlock, !showPast || pastCount === 0);
-    setHidden(galleryBlock, kind !== "all" && kind !== "past");
-
-    let visible = 0;
-    if (showUpcoming) visible += upcomingCount;
-    if (showPast) visible += pastCount;
-    if (countEl) {
-      countEl.textContent = `Showing ${visible} event${visible === 1 ? "" : "s"}`;
-    }
-  }
-
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      buttons.forEach((b) => b.classList.toggle("is-active", b === btn));
-      applyFilter(btn.dataset.eventsFilter || "all");
+  document.querySelectorAll<HTMLElement>("[data-open-past-event]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const slug = el.dataset.openPastEvent;
+      if (!slug) return;
+      const dialog = document.getElementById(`past-dialog-${slug}`) as HTMLDialogElement | null;
+      dialog?.showModal();
     });
   });
 
-  const dialog = document.getElementById("photo-dialog") as HTMLDialogElement | null;
-  const photoImg = document.querySelector<HTMLImageElement>("[data-photo-img]");
-  const photoCaption = document.querySelector<HTMLElement>("[data-photo-caption]");
-  const photoSubtitle = document.querySelector<HTMLElement>("[data-photo-subtitle]");
-  const photoCount = document.querySelector<HTMLElement>("[data-photo-count]");
-  const openers = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-photo-open]"));
-
-  let activeGroup = "";
-  let activeIndex = 0;
-
-  function groupButtons(group: string) {
-    return openers.filter((btn) => btn.dataset.group === group);
-  }
-
-  function showPhoto(group: string, index: number) {
-    if (!dialog || !photoImg || !photoCaption || !photoSubtitle || !photoCount) return;
-    const groupBtns = groupButtons(group);
-    if (!groupBtns.length) return;
-    const safeIndex = ((index % groupBtns.length) + groupBtns.length) % groupBtns.length;
-    const btn = groupBtns[safeIndex];
-    activeGroup = group;
-    activeIndex = safeIndex;
-    photoImg.src = btn.dataset.src || "";
-    photoImg.alt = btn.dataset.alt || "";
-    photoCaption.textContent = btn.dataset.caption || "";
-    photoSubtitle.textContent = btn.dataset.subtitle || "";
-    photoCount.textContent = `${safeIndex + 1} / ${groupBtns.length}`;
-    if (!dialog.open) dialog.showModal();
-  }
-
-  openers.forEach((btn) => {
+  document.querySelectorAll<HTMLButtonElement>("[data-close-past-dialog]").forEach((btn) => {
     btn.addEventListener("click", () => {
-      showPhoto(btn.dataset.group || "", Number(btn.dataset.index || 0));
+      const dialog = btn.closest("dialog") as HTMLDialogElement | null;
+      dialog?.close();
     });
   });
 
-  document.querySelector("[data-photo-close]")?.addEventListener("click", () => dialog?.close());
-  document.querySelector("[data-photo-prev]")?.addEventListener("click", () => {
-    showPhoto(activeGroup, activeIndex - 1);
-  });
-  document.querySelector("[data-photo-next]")?.addEventListener("click", () => {
-    showPhoto(activeGroup, activeIndex + 1);
-  });
-
-  dialog?.addEventListener("click", (event) => {
-    if (event.target === dialog) dialog.close();
-  });
-
-  dialog?.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowLeft") showPhoto(activeGroup, activeIndex - 1);
-    if (event.key === "ArrowRight") showPhoto(activeGroup, activeIndex + 1);
+  document.querySelectorAll<HTMLDialogElement>(".past-dialog").forEach((dialog) => {
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
   });
 </script>
 
 <style>
-  .events-hero__inner {
+  .events-page-hero__inner {
     max-width: 42rem;
   }
 
-  .events-hero h1 {
+  .events-page-hero h1 {
     font-size: clamp(2.3rem, 5vw, 3.4rem);
-    margin: 0.4rem 0 0.85rem;
-    max-width: 14ch;
+    margin: 0.35rem 0 0.75rem;
   }
 
-  .events-hero__dek {
-    margin: 0;
+  .events-page-hero__dek {
     color: var(--muted);
-    font-size: 1.08rem;
+    margin: 0 0 1.15rem;
   }
 
-  .events-filters {
+  .events-page-hero__jumps {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.45rem;
-    margin-top: 1.5rem;
+    gap: 0.75rem 1.15rem;
   }
 
-  .events-filters__btn {
-    border: 0;
-    cursor: pointer;
-    font: inherit;
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 0.45rem 0.9rem;
-    border-radius: var(--radius-pill);
-    background: color-mix(in srgb, var(--white) 65%, var(--cream));
-    color: var(--muted);
-    transition: background 0.2s ease, color 0.2s ease;
+  .events-page-hero__jumps a {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 0.92rem;
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--green) 35%, transparent);
   }
 
-  .events-filters__btn:hover {
-    color: var(--ink);
-    background: color-mix(in srgb, var(--green-light) 45%, white);
+  .events-page-hero__jumps a:hover {
+    border-bottom-color: var(--green);
   }
 
-  .events-filters__btn.is-active {
-    background: var(--blue);
-    color: var(--white);
-  }
-
-  .events-count {
-    margin: 0.75rem 0 0;
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-
-  .events-upcoming[hidden],
-  .events-past[hidden],
-  [data-events-block="gallery"][hidden] {
-    display: none !important;
-  }
-
-  .events-upcoming {
-    background: color-mix(in srgb, var(--green-light) 14%, var(--cream));
-  }
-
-  .events-featured-list {
+  .events-page__featured {
     display: grid;
     gap: 1.5rem;
-    margin-top: 0.75rem;
-  }
-
-  .events-featured {
-    display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-    gap: clamp(1.25rem, 3vw, 2rem);
-    align-items: center;
-  }
-
-  .events-featured__media {
-    position: relative;
-    display: block;
+    padding: clamp(1.15rem, 3vw, 1.85rem);
     border-radius: var(--radius-lg);
-    overflow: hidden;
-    aspect-ratio: 5 / 4;
-    background: color-mix(in srgb, var(--purple) 20%, white);
+    background:
+      linear-gradient(
+        160deg,
+        color-mix(in srgb, var(--green-light) 28%, white),
+        color-mix(in srgb, var(--cream) 88%, white)
+      );
+    border: 1px solid color-mix(in srgb, var(--green) 14%, transparent);
   }
 
-  .events-featured__media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.45s ease;
-  }
-
-  .events-featured__media:hover img {
-    transform: scale(1.04);
-  }
-
-  .events-featured__date {
-    position: absolute;
-    left: 1rem;
-    bottom: 1rem;
+  .events-page__featured-head {
     display: grid;
-    gap: 0.1rem;
-    padding: 0.75rem 0.9rem;
-    border-radius: 0.85rem;
-    background: color-mix(in srgb, var(--cream) 92%, white);
-    color: var(--ink);
-    min-width: 7.5rem;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.85fr);
+    gap: clamp(1rem, 3vw, 1.75rem);
+    align-items: start;
   }
 
-  .events-featured__date strong {
-    font-family: var(--font-display);
-    font-size: 1.15rem;
-    font-weight: 550;
-  }
-
-  .events-featured__date span {
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-
-  .events-featured__status {
-    margin: 0;
+  .events-page__status {
+    margin: 0 0 0.35rem;
     color: var(--green);
     font-size: 0.72rem;
+    font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    font-weight: 700;
   }
 
-  .events-featured h2 {
-    margin: 0.4rem 0 0.65rem;
-    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  .events-page__featured-copy h2 {
+    margin: 0 0 0.45rem;
+    font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+    line-height: 1.15;
+    max-width: 18ch;
   }
 
-  .events-featured__summary {
-    margin: 0;
-    color: var(--muted);
-  }
-
-  .events-featured__loc {
-    margin: 0.55rem 0 0;
+  .events-page__meta {
+    margin: 0 0 0.75rem;
     color: var(--blue);
     font-weight: 600;
-    font-size: 0.95rem;
   }
 
-  .events-featured__actions {
+  .events-page__summary {
+    margin: 0 0 1.1rem;
+    color: var(--muted);
+    max-width: 40rem;
+  }
+
+  .events-page__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.65rem;
-    margin-top: 1.1rem;
   }
 
-  .events-past__head {
-    max-width: 36rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .events-past__head h2 {
-    margin: 0.35rem 0 0.55rem;
-    font-size: clamp(1.7rem, 3vw, 2.2rem);
-  }
-
-  .events-past__head p {
+  .events-page__featured-photo {
     margin: 0;
-    color: var(--muted);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--green-light) 35%, white);
+    border: 1px solid color-mix(in srgb, var(--green) 12%, transparent);
   }
 
-  .events-timeline {
-    display: grid;
-    gap: 1.75rem;
-  }
-
-  .events-row {
-    display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: clamp(1rem, 2.5vw, 1.75rem);
-    align-items: center;
-    padding-bottom: 1.75rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--purple) 12%, transparent);
-  }
-
-  .events-row--alt {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  }
-
-  .events-row--alt .events-row__media {
-    order: 2;
-  }
-
-  .events-row__media {
+  .events-page__featured-photo img {
     display: block;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    aspect-ratio: 4 / 3;
-    background: color-mix(in srgb, var(--blue) 18%, white);
-  }
-
-  .events-row__media img {
     width: 100%;
-    height: 100%;
+    aspect-ratio: 4 / 3;
+    max-height: 16rem;
     object-fit: cover;
-    transition: transform 0.45s ease;
   }
 
-  .events-row__media:hover img {
-    transform: scale(1.04);
-  }
-
-  .events-row__meta {
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    color: var(--purple);
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-
-  .events-row h3 {
-    margin: 0.4rem 0 0.5rem;
-    font-size: clamp(1.4rem, 2.5vw, 1.75rem);
-  }
-
-  .events-row h3 a {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .events-row h3 a:hover {
-    color: var(--purple);
-  }
-
-  .events-row__body > p {
-    margin: 0;
+  .events-page__featured-photo figcaption {
+    padding: 0.55rem 0.75rem 0.7rem;
+    font-size: 0.8rem;
     color: var(--muted);
+    background: color-mix(in srgb, var(--white) 70%, transparent);
   }
 
-  .events-row__thumbs {
+  .events-page__schedule {
+    padding-top: 1.15rem;
+    border-top: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
+  }
+
+  .events-page__schedule-head {
+    margin-bottom: 1rem;
+    max-width: 40rem;
+  }
+
+  .events-page__schedule-head h3 {
+    margin: 0.3rem 0 0.45rem;
+    font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+  }
+
+  .events-page__past-head {
+    max-width: 40rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .events-page__past-head h2 {
+    margin: 0.3rem 0 0.5rem;
+    font-size: clamp(1.7rem, 3vw, 2.25rem);
+  }
+
+  .events-page__past-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .events-page__past-card {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.55rem;
-    margin-top: 1rem;
-  }
-
-  .events-row__thumb {
-    border: 0;
-    padding: 0;
+    gap: 0.95rem;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--white) 70%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
+    text-align: left;
+    color: inherit;
+    font: inherit;
     cursor: pointer;
-    width: 5.75rem;
-    height: 5.75rem;
-    border-radius: 0.75rem;
-    overflow: hidden;
-    background: color-mix(in srgb, var(--green-light) 30%, white);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .events-row__thumb:hover,
-  .events-row__thumb:focus-visible {
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 10px 22px color-mix(in srgb, var(--ink) 12%, transparent);
+  .events-page__past-card:hover,
+  .events-page__past-card:focus-visible {
+    border-color: color-mix(in srgb, var(--blue) 35%, transparent);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--ink) 6%, transparent);
     outline: none;
   }
 
-  .events-row__thumb img {
-    width: 100%;
-    height: 100%;
+  .events-page__past-thumb {
+    flex: 0 0 3.75rem;
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 0.65rem;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--green-light) 40%, white);
+  }
+
+  .events-page__past-thumb img {
+    display: block;
+    width: 3.75rem;
+    height: 3.75rem;
     object-fit: cover;
+  }
+
+  .events-page__past-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .events-page__past-date,
+  .events-page__past-title,
+  .events-page__past-summary {
     display: block;
   }
 
-  .photo-dialog {
-    border: 0;
+  .events-page__past-date {
+    color: var(--blue);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .events-page__past-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .events-page__past-summary {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .past-dialog {
+    width: min(30rem, calc(100vw - 1.5rem));
+    max-height: min(88vh, 36rem);
     padding: 0;
-    max-width: min(52rem, calc(100vw - 2rem));
-    width: 100%;
-    background: transparent;
-  }
-
-  .photo-dialog::backdrop {
-    background: color-mix(in srgb, var(--ink) 72%, transparent);
-  }
-
-  .photo-dialog__panel {
-    position: relative;
-    background: var(--cream);
+    border: 0;
     border-radius: var(--radius-lg);
-    padding: 1rem 1rem 1.15rem;
-    display: grid;
-    gap: 0.75rem;
-    animation: photoIn 0.28s ease;
+    background: var(--cream);
+    box-shadow: 0 28px 64px color-mix(in srgb, var(--ink) 26%, transparent);
   }
 
-  @keyframes photoIn {
-    from {
-      opacity: 0;
-      transform: translateY(0.75rem) scale(0.98);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+  .past-dialog::backdrop {
+    background: color-mix(in srgb, var(--ink) 48%, transparent);
   }
 
-  .photo-dialog__close {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    z-index: 2;
+  .past-dialog__panel {
+    display: flex;
+    flex-direction: column;
+    max-height: min(88vh, 36rem);
+  }
+
+  .past-dialog__header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.35rem 1.35rem 1.1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+    background: color-mix(in srgb, var(--white) 72%, var(--cream));
+  }
+
+  .past-dialog__kicker {
+    margin: 0 0 0.3rem;
+    color: var(--blue);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .past-dialog__header h2 {
+    margin: 0;
+    font-size: clamp(1.35rem, 3vw, 1.7rem);
+    line-height: 1.2;
+  }
+
+  .past-dialog__meta {
+    margin: 0.4rem 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  .past-dialog__close {
+    flex-shrink: 0;
+    width: 2.35rem;
+    height: 2.35rem;
     border: 0;
     border-radius: 999px;
-    padding: 0.4rem 0.75rem;
-    font: inherit;
-    font-weight: 600;
-    cursor: pointer;
-    background: color-mix(in srgb, var(--cream) 88%, white);
+    background: color-mix(in srgb, var(--ink) 6%, white);
     color: var(--ink);
+    font-size: 1.45rem;
+    line-height: 1;
+    cursor: pointer;
   }
 
-  .photo-dialog__img {
-    width: 100%;
-    max-height: min(70vh, 34rem);
-    object-fit: cover;
-    border-radius: 1rem;
-    background: color-mix(in srgb, var(--purple) 15%, white);
+  .past-dialog__body {
+    padding: 1.2rem 1.35rem 1.45rem;
+    overflow: auto;
   }
 
-  .photo-dialog__meta {
-    padding-inline: 0.25rem;
-  }
-
-  .photo-dialog__caption {
-    margin: 0;
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-  }
-
-  .photo-dialog__subtitle {
-    margin: 0.25rem 0 0;
+  .past-dialog__summary {
+    margin: 0 0 1.15rem;
     color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .past-dialog__program h3 {
+    margin: 0 0 0.65rem;
     font-size: 0.95rem;
   }
 
-  .photo-dialog__nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding-inline: 0.25rem;
-  }
-
-  .photo-dialog__nav button {
-    border: 0;
-    background: color-mix(in srgb, var(--green-light) 40%, white);
-    color: var(--ink);
-    font: inherit;
-    font-weight: 700;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 0.65rem;
-    cursor: pointer;
-  }
-
-  .photo-dialog__nav button:hover {
-    background: var(--green);
-    color: var(--white);
-  }
-
-  .photo-dialog__nav span {
-    color: var(--muted);
-    font-weight: 600;
-  }
-
-  .events-row__actions {
-    margin-top: 0.55rem;
-  }
-
-  .events-program {
-    margin-top: 0.85rem;
-    border-top: 1px solid color-mix(in srgb, var(--purple) 12%, transparent);
-    padding-top: 0.55rem;
-  }
-
-  .events-program summary {
-    cursor: pointer;
-    font-weight: 600;
-    color: var(--green);
-    list-style: none;
-  }
-
-  .events-program summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .events-program summary::after {
-    content: " +";
-  }
-
-  .events-program[open] summary::after {
-    content: " –";
-  }
-
-  .events-program ol {
-    margin: 0.65rem 0 0;
+  .past-dialog__program ol {
+    margin: 0;
     padding-left: 1.15rem;
     display: grid;
-    gap: 0.35rem;
+    gap: 0.4rem;
     color: var(--muted);
     font-size: 0.92rem;
   }
 
-  @media (max-width: 860px) {
-    .events-featured,
-    .events-row,
-    .events-row--alt {
+  .past-dialog__actions {
+    margin-top: 1.25rem;
+  }
+
+  @media (max-width: 900px) {
+    .events-page__featured-head {
       grid-template-columns: 1fr;
     }
 
-    .events-row--alt .events-row__media {
-      order: 0;
+    .events-page__featured-photo {
+      order: -1;
+      max-width: 22rem;
+    }
+
+    .events-page__featured-photo img {
+      max-height: 12rem;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .events-page__past-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .events-page__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .events-page__actions :global(.btn) {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>

@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Button from "../../components/ui/Button.astro";
 import ScheduleTimeline from "../../components/events/ScheduleTimeline.astro";
+import EventCarousel from "../../components/events/EventCarousel";
 import ContactCta from "../../components/layout/ContactCta.astro";
 import { events, getEvent, getProgramLines } from "../../content/events";
 import { site } from "../../content/site";
@@ -21,28 +22,44 @@ if (!event) {
 
 const programLines = getProgramLines(event);
 const hasSchedule = Boolean(event.sessions?.length);
+const gallerySlides = event.images.map((img) => ({
+  src: img.src,
+  alt: img.alt,
+  caption: img.caption ?? event.title,
+  subtitle: img.subtitle ?? event.dateLabel,
+}));
 ---
 
 <BaseLayout title={event.title} description={event.summary}>
   <section class="section event-hero">
-    <div class="container event-hero__inner">
-      <p class="eyebrow">{event.category}</p>
-      <h1>{event.title}</h1>
-      <p class="event-hero__meta">
-        <span>{event.dateLabel}</span>
-        {event.location && <span>· {event.location}</span>}
-      </p>
-      <p class="event-hero__summary muted">{event.summary}</p>
-      <div class="event-hero__actions">
-        {
-          event.registerUrl && (
-            <Button href={event.registerUrl} external>
-              Register for Nov 13
-            </Button>
-          )
-        }
-        <Button href="/events" variant="secondary">All events</Button>
+    <div class="container event-hero__grid">
+      <div class="event-hero__copy">
+        <p class="eyebrow">{event.category}</p>
+        <h1>{event.title}</h1>
+        <p class="event-hero__meta">
+          <span>{event.dateLabel}</span>
+          {event.location && <span>· {event.location}</span>}
+        </p>
+        <p class="event-hero__summary muted">{event.summary}</p>
+        <div class="event-hero__actions">
+          {
+            event.registerUrl && (
+              <Button href={event.registerUrl} external>
+                Register for Nov 13
+              </Button>
+            )
+          }
+          <Button href="/events" variant="secondary">All events</Button>
+        </div>
       </div>
+      {
+        event.images[0] && (
+          <figure class="event-hero__photo">
+            <img src={event.images[0].src} alt={event.images[0].alt} width="560" height="420" />
+            <figcaption>{event.images[0].caption ?? event.title}</figcaption>
+          </figure>
+        )
+      }
     </div>
   </section>
 
@@ -77,8 +94,39 @@ const hasSchedule = Boolean(event.sessions?.length);
           </ol>
         )
       }
+
+      {
+        hasSchedule && event.images.length > 1 && (
+          <div class="event-program__stills">
+            <p class="event-program__stills-label">Related frames</p>
+            <div class="event-program__stills-rail">
+              {event.images.map((img) => (
+                <figure>
+                  <img src={img.src} alt={img.alt} width="220" height="140" />
+                  <figcaption>{img.caption ?? event.title}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        )
+      }
     </div>
   </section>
+
+  {
+    !hasSchedule && gallerySlides.length > 0 && (
+      <section class="section section--tight">
+        <div class="container">
+          <EventCarousel
+            client:load
+            slides={gallerySlides}
+            heading={`${event.title} photos`}
+            body="Archive placeholders for this gathering—replace with final images when available."
+          />
+        </div>
+      </section>
+    )
+  }
 
   {
     event.status === "upcoming" && (
@@ -104,14 +152,17 @@ const hasSchedule = Boolean(event.sessions?.length);
 </BaseLayout>
 
 <style>
-  .event-hero__inner {
-    max-width: 46rem;
+  .event-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.9fr);
+    gap: clamp(1.25rem, 4vw, 2.5rem);
+    align-items: center;
   }
 
   .event-hero h1 {
     font-size: clamp(2.2rem, 5vw, 3.4rem);
     margin: 0.4rem 0 0.75rem;
-    max-width: 18ch;
+    max-width: 16ch;
     line-height: 1.12;
   }
 
@@ -122,7 +173,7 @@ const hasSchedule = Boolean(event.sessions?.length);
   }
 
   .event-hero__summary {
-    max-width: 40rem;
+    max-width: 38rem;
     margin-bottom: 1.5rem;
   }
 
@@ -130,6 +181,29 @@ const hasSchedule = Boolean(event.sessions?.length);
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+  }
+
+  .event-hero__photo {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
+    background: color-mix(in srgb, var(--green-light) 35%, white);
+  }
+
+  .event-hero__photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    max-height: 18rem;
+    object-fit: cover;
+  }
+
+  .event-hero__photo figcaption {
+    padding: 0.6rem 0.85rem 0.75rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    background: color-mix(in srgb, var(--cream) 80%, white);
   }
 
   .event-program {
@@ -146,15 +220,55 @@ const hasSchedule = Boolean(event.sessions?.length);
     margin: 0.3rem 0 0.5rem;
   }
 
-  .event-program__timeline {
-    margin-inline: calc(-1 * min(var(--page-gutter), 0.5rem));
-  }
-
   .event-program__list {
     padding-left: 1.25rem;
     display: grid;
     gap: 0.65rem;
     max-width: 42rem;
+    color: var(--muted);
+  }
+
+  .event-program__stills {
+    margin-top: 1.75rem;
+  }
+
+  .event-program__stills-label {
+    margin: 0 0 0.65rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .event-program__stills-rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(10rem, 14rem);
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    scrollbar-width: thin;
+  }
+
+  .event-program__stills-rail figure {
+    margin: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--white) 80%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
+  }
+
+  .event-program__stills-rail img {
+    display: block;
+    width: 100%;
+    height: 8rem;
+    object-fit: cover;
+  }
+
+  .event-program__stills-rail figcaption {
+    padding: 0.45rem 0.6rem 0.55rem;
+    font-size: 0.75rem;
     color: var(--muted);
   }
 
@@ -172,6 +286,20 @@ const hasSchedule = Boolean(event.sessions?.length);
   .event-register h2 {
     font-size: clamp(1.6rem, 3vw, 2rem);
     margin: 0.35rem 0 0.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .event-hero__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .event-hero__photo {
+      max-width: 24rem;
+    }
+
+    .event-hero__photo img {
+      max-height: 14rem;
+    }
   }
 
   @media (max-width: 640px) {

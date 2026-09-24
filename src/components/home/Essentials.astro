@@ -12,7 +12,7 @@ const practicePreview = schoolPractices.slice(0, 3);
     <article class="unify-card">
       <button
         type="button"
-        class="unify-card__media"
+        class="unify-card__media unify-card__media--issues"
         data-open-modal="issues"
         data-index="0"
         aria-label="Open Top 10 Issues"
@@ -54,7 +54,7 @@ const practicePreview = schoolPractices.slice(0, 3);
     <article class="unify-card">
       <button
         type="button"
-        class="unify-card__media"
+        class="unify-card__media unify-card__media--schools"
         data-open-modal="schools"
         data-index="0"
         aria-label="Open what schools are doing"
@@ -381,14 +381,29 @@ const practicePreview = schoolPractices.slice(0, 3);
     display: block;
     width: 100%;
     transition: transform 0.25s ease, filter 0.25s ease;
-    background:
-      radial-gradient(circle at 20% 85%, color-mix(in srgb, var(--green-light) 55%, transparent), transparent 45%),
-      radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--ink) 18%, transparent), transparent 35%),
+    background-color: color-mix(in srgb, var(--ink) 35%, var(--green));
+    background-image:
       linear-gradient(
-        155deg,
-        color-mix(in srgb, var(--green) 78%, var(--cream)),
-        color-mix(in srgb, var(--purple) 72%, var(--cream))
-      );
+        160deg,
+        color-mix(in srgb, var(--ink) 42%, transparent),
+        color-mix(in srgb, var(--ink) 18%, transparent) 55%,
+        color-mix(in srgb, var(--cream) 12%, transparent)
+      ),
+      url("/images/wnc-mountains/ridge-mist.webp");
+    background-size: cover;
+    background-position: center 40%;
+  }
+
+  .unify-card__media--schools {
+    background-image:
+      linear-gradient(
+        160deg,
+        color-mix(in srgb, var(--ink) 40%, transparent),
+        color-mix(in srgb, var(--ink) 16%, transparent) 55%,
+        color-mix(in srgb, var(--cream) 10%, transparent)
+      ),
+      url("/images/wnc-mountains/blue-ridge.webp");
+    background-position: center 35%;
   }
 
   .unify-card__media:hover,
@@ -402,25 +417,14 @@ const practicePreview = schoolPractices.slice(0, 3);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--purple) 45%, transparent);
   }
 
-  .unify--alt .unify-card__media {
-    background:
-      radial-gradient(circle at 18% 80%, color-mix(in srgb, var(--green-light) 45%, transparent), transparent 42%),
-      radial-gradient(circle at 88% 18%, color-mix(in srgb, var(--ink) 12%, transparent), transparent 35%),
-      linear-gradient(
-        155deg,
-        color-mix(in srgb, var(--blue) 75%, var(--cream)),
-        color-mix(in srgb, var(--green) 60%, var(--cream))
-      );
-  }
-
   .unify-card__media::after {
     content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(
       90deg,
-      transparent 55%,
-      color-mix(in srgb, var(--cream) 35%, transparent)
+      transparent 45%,
+      color-mix(in srgb, var(--cream) 28%, transparent)
     );
     pointer-events: none;
   }
@@ -428,8 +432,8 @@ const practicePreview = schoolPractices.slice(0, 3);
   .unify--alt .unify-card__media::after {
     background: linear-gradient(
       90deg,
-      transparent 55%,
-      color-mix(in srgb, var(--green-light) 22%, var(--cream) 40%, transparent)
+      transparent 45%,
+      color-mix(in srgb, var(--green-light) 18%, var(--cream) 30%, transparent)
     );
   }
 
@@ -599,21 +603,12 @@ const practicePreview = schoolPractices.slice(0, 3);
   .info-dialog {
     --dialog-accent: var(--green);
     --dialog-accent-soft: var(--purple);
+    --dialog-banner-image: url("/images/wnc-mountains/ridge-mist.webp");
     border: 0;
     padding: 0;
     background: transparent;
     max-width: min(100vw - 1.5rem, 64rem);
     width: 100%;
-  }
-
-  .info-dialog--issues {
-    --dialog-accent: var(--green);
-    --dialog-accent-soft: var(--purple);
-  }
-
-  .info-dialog--schools {
-    --dialog-accent: var(--blue);
-    --dialog-accent-soft: var(--green);
   }
 
   .info-dialog::backdrop {
@@ -655,14 +650,32 @@ const practicePreview = schoolPractices.slice(0, 3);
     align-items: start;
     padding: 1.35rem 1.4rem 1.25rem;
     color: var(--white);
-    background:
-      radial-gradient(circle at 12% 80%, color-mix(in srgb, var(--green-light) 40%, transparent), transparent 42%),
-      radial-gradient(circle at 88% 18%, color-mix(in srgb, var(--ink) 18%, transparent), transparent 36%),
+    isolation: isolate;
+    overflow: hidden;
+    background-color: color-mix(in srgb, var(--ink) 55%, var(--dialog-accent));
+    background-image:
       linear-gradient(
         145deg,
-        color-mix(in srgb, var(--dialog-accent) 82%, var(--cream)),
-        color-mix(in srgb, var(--dialog-accent-soft) 78%, var(--cream))
-      );
+        color-mix(in srgb, var(--ink) 68%, transparent),
+        color-mix(in srgb, var(--ink) 42%, transparent) 42%,
+        color-mix(in srgb, var(--dialog-accent) 28%, transparent) 72%,
+        color-mix(in srgb, var(--ink) 38%, transparent)
+      ),
+      var(--dialog-banner-image);
+    background-size: cover;
+    background-position: center 38%;
+  }
+
+  .info-dialog--issues {
+    --dialog-accent: var(--green);
+    --dialog-accent-soft: var(--purple);
+    --dialog-banner-image: url("/images/wnc-mountains/ridge-mist.webp");
+  }
+
+  .info-dialog--schools {
+    --dialog-accent: var(--blue);
+    --dialog-accent-soft: var(--green);
+    --dialog-banner-image: url("/images/wnc-mountains/blue-ridge.webp");
   }
 
   .info-dialog__banner-copy {
