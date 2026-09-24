@@ -1,18 +1,20 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/home/Hero.astro";
+import AboutTeaser from "../components/home/AboutTeaser.astro";
 import EventsPreview from "../components/home/EventsPreview.astro";
+import ContestTeaser from "../components/home/ContestTeaser.astro";
 import Essentials from "../components/home/Essentials.astro";
 import AwardsTeaser from "../components/home/AwardsTeaser.astro";
-import AboutTeaser from "../components/home/AboutTeaser.astro";
 import ContactCta from "../components/layout/ContactCta.astro";
 ---
 
 <BaseLayout>
   <Hero />
+  <AboutTeaser />
   <EventsPreview />
+  <ContestTeaser />
   <Essentials />
   <AwardsTeaser />
-  <AboutTeaser />
   <ContactCta />
 </BaseLayout>

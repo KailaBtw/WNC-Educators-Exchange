@@ -4,17 +4,19 @@ import { site } from "../../content/site";
 ---
 
 <section class="hero">
-  <div class="hero__media" aria-hidden="true"></div>
+  <div class="hero__media" aria-hidden="true">
+    <span class="hero__place">UNCA campus</span>
+  </div>
   <div class="container hero__content" data-reveal data-reveal-y="24">
     <p class="hero__brand">{site.name}</p>
     <h1>AI for educators, grounded in Western North Carolina.</h1>
     <p class="hero__support">
       AI is already in WNC classrooms. This site collects what regional educators reported, what
-      campuses are trying, and how to register for the November 17 summit.
+      campuses are trying, and how to join the November 13 Educators Exchange at Mars Hill University.
     </p>
     <div class="hero__actions">
-      <Button href={site.registerUrl} variant="light" external>Register for Nov 17</Button>
-      <Button href="/events" variant="secondary">Explore events</Button>
+      <Button href={site.registerUrl} variant="light" external>Register for Nov 13</Button>
+      <Button href="/events/november-2026" variant="secondary">Event details</Button>
     </div>
   </div>
 </section>
@@ -40,6 +42,21 @@ import { site } from "../../content/site";
         color-mix(in srgb, var(--ink) 68%, transparent) 100%
       ),
       url("/images/hero/unca.jpg") center / cover no-repeat;
+  }
+
+  .hero__place {
+    position: absolute;
+    left: var(--page-gutter);
+    bottom: 1rem;
+    z-index: 1;
+    padding: 0.28rem 0.65rem;
+    border-radius: 0.45rem;
+    background: color-mix(in srgb, var(--ink) 55%, transparent);
+    color: color-mix(in srgb, var(--white) 92%, transparent);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .hero__content {

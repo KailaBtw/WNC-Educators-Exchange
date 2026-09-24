@@ -14,19 +14,19 @@ export type EventItem = {
 export const events: EventItem[] = [
   {
     slug: "november-2026",
-    title: "Upcoming November Event",
+    title: "WNC AI Educator’s Exchange",
     category: "Summit",
-    dateLabel: "November 17, 2026",
+    dateLabel: "Friday, November 13, 2026",
     status: "upcoming",
     summary:
-      "Educators from across WNC meet to compare practice, pressure-test policy, and keep the regional conversation moving. Register on the external site.",
-    location: "Western North Carolina (venue TBA)",
+      "Educators from across Western North Carolina gather at Mars Hill University to share practice, discuss regional AI issues, and plan next steps together.",
+    location: "Mars Hill University (capacity ~120)",
     registerUrl: "https://example.com/register-november-2026",
     images: [
       {
         src: "/images/events/nov-1.svg",
         alt: "Placeholder: educators at a regional summit",
-        caption: "November summit",
+        caption: "November Exchange",
         subtitle: "Replace with event photos when available",
       },
       {

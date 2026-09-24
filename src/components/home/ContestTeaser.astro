@@ -1,0 +1,49 @@
+---
+import SectionHeader from "../ui/SectionHeader.astro";
+import Button from "../ui/Button.astro";
+---
+
+<section class="section contest-teaser" id="contest">
+  <div class="container contest-teaser__inner" data-reveal data-reveal-y="28">
+    <SectionHeader
+      eyebrow="November 13"
+      title="Faculty & Student Innovation Contest"
+      align="center"
+    >
+      <p>
+        During the Mars Hill Exchange, Steven Young will introduce the upcoming faculty and student
+        contest—a chance to recognize classroom innovation across Western North Carolina. Official
+        name and guidelines will be posted here as they are finalized.
+      </p>
+    </SectionHeader>
+    <div class="contest-teaser__actions">
+      <Button href="/events/november-2026">See the Nov 13 program</Button>
+      <Button href="/awards" variant="ghost">Award-winning faculty →</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contest-teaser {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--green-light) 22%, var(--cream)),
+        var(--cream)
+      );
+  }
+
+  .contest-teaser__inner {
+    max-width: 42rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .contest-teaser__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
+    margin-top: 1.25rem;
+  }
+</style>
