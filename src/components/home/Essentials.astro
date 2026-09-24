@@ -389,21 +389,21 @@ const practicePreview = schoolPractices.slice(0, 3);
         color-mix(in srgb, var(--ink) 18%, transparent) 55%,
         color-mix(in srgb, var(--cream) 12%, transparent)
       ),
-      url("/images/wnc-mountains/ridge-mist.webp");
+      url("/images/events/archive/brain-10.jpg");
     background-size: cover;
-    background-position: center 40%;
+    background-position: center 45%;
   }
 
   .unify-card__media--schools {
     background-image:
       linear-gradient(
         160deg,
-        color-mix(in srgb, var(--ink) 40%, transparent),
-        color-mix(in srgb, var(--ink) 16%, transparent) 55%,
-        color-mix(in srgb, var(--cream) 10%, transparent)
+        color-mix(in srgb, var(--ink) 48%, transparent),
+        color-mix(in srgb, var(--ink) 22%, transparent) 55%,
+        color-mix(in srgb, var(--cream) 8%, transparent)
       ),
-      url("/images/wnc-mountains/blue-ridge.webp");
-    background-position: center 35%;
+      url("/images/events/archive/brain-03.jpg");
+    background-position: center 40%;
   }
 
   .unify-card__media:hover,
@@ -603,7 +603,7 @@ const practicePreview = schoolPractices.slice(0, 3);
   .info-dialog {
     --dialog-accent: var(--green);
     --dialog-accent-soft: var(--purple);
-    --dialog-banner-image: url("/images/wnc-mountains/ridge-mist.webp");
+    --dialog-banner-image: url("/images/events/archive/brain-10.jpg");
     border: 0;
     padding: 0;
     background: transparent;
@@ -669,13 +669,21 @@ const practicePreview = schoolPractices.slice(0, 3);
   .info-dialog--issues {
     --dialog-accent: var(--green);
     --dialog-accent-soft: var(--purple);
-    --dialog-banner-image: url("/images/wnc-mountains/ridge-mist.webp");
+    --dialog-banner-image: url("/images/events/archive/brain-10.jpg");
+  }
+
+  .info-dialog--issues .info-dialog__banner {
+    background-position: center 48%;
   }
 
   .info-dialog--schools {
     --dialog-accent: var(--blue);
     --dialog-accent-soft: var(--green);
-    --dialog-banner-image: url("/images/wnc-mountains/blue-ridge.webp");
+    --dialog-banner-image: url("/images/events/archive/brain-03.jpg");
+  }
+
+  .info-dialog--schools .info-dialog__banner {
+    background-position: center 42%;
   }
 
   .info-dialog__banner-copy {
