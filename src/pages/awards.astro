@@ -35,6 +35,7 @@ const rest = awardees.slice(1);
               <h2>{featured.name}</h2>
               <p class="awards-spotlight__institution">{featured.institution}</p>
               <p class="awards-spotlight__recognition">{featured.recognition}</p>
+              <p class="awards-spotlight__category">{featured.category}</p>
               <p class="awards-spotlight__summary">{featured.summary}</p>
               <ul class="awards-spotlight__focus">
                 {featured.focus.map((item) => (
@@ -73,6 +74,7 @@ const rest = awardees.slice(1);
                 <h3>{person.name}</h3>
                 <p class="award-card__institution">{person.institution}</p>
                 <p class="award-card__recognition">{person.recognition}</p>
+                <p class="award-card__category">{person.category}</p>
                 <p class="award-card__summary">{person.summary}</p>
                 <div class="award-card__focus">
                   {person.focus.map((item) => (
@@ -188,6 +190,20 @@ const rest = awardees.slice(1);
     font-weight: 600;
   }
 
+  .awards-spotlight__category {
+    margin: 0.35rem 0 0;
+    display: inline-flex;
+    width: fit-content;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--blue) 14%, white);
+    color: var(--blue);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
   .awards-spotlight__summary {
     margin: 0.85rem 0 0;
     color: var(--muted);
@@ -297,6 +313,20 @@ const rest = awardees.slice(1);
     color: var(--green);
     font-size: 0.86rem;
     font-weight: 600;
+  }
+
+  .award-card__category {
+    margin: 0.25rem 0 0;
+    display: inline-flex;
+    width: fit-content;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--blue) 12%, white);
+    color: var(--blue);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
   .award-card__summary {
