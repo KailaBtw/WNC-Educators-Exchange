@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Button from "../../components/ui/Button.astro";
-import EventCarousel from "../../components/events/EventCarousel";
+import ScheduleTimeline from "../../components/events/ScheduleTimeline.astro";
 import ContactCta from "../../components/layout/ContactCta.astro";
-import { events, getEvent } from "../../content/events";
+import { events, getEvent, getProgramLines } from "../../content/events";
 import { site } from "../../content/site";
 
 export function getStaticPaths() {
@@ -18,67 +18,78 @@ const event = getEvent(slug!);
 if (!event) {
   return Astro.redirect("/events");
 }
+
+const programLines = getProgramLines(event);
+const hasSchedule = Boolean(event.sessions?.length);
 ---
 
 <BaseLayout title={event.title} description={event.summary}>
-  <section class="section">
-    <div class="container event-detail">
+  <section class="section event-hero">
+    <div class="container event-hero__inner">
       <p class="eyebrow">{event.category}</p>
       <h1>{event.title}</h1>
-      <p class="event-detail__meta">
+      <p class="event-hero__meta">
         <span>{event.dateLabel}</span>
         {event.location && <span>· {event.location}</span>}
       </p>
-      <p class="event-detail__summary muted">{event.summary}</p>
-      <div class="event-detail__actions">
+      <p class="event-hero__summary muted">{event.summary}</p>
+      <div class="event-hero__actions">
         {
           event.registerUrl && (
             <Button href={event.registerUrl} external>
-              Register here
+              Register for Nov 13
             </Button>
           )
         }
         <Button href="/events" variant="secondary">All events</Button>
       </div>
+    </div>
+  </section>
 
-      <div class="event-detail__program">
-        <h2>Program</h2>
-        <ol>
-          {event.program.map((item) => <li>{item}</li>)}
-        </ol>
+  <section class="section section--tight event-program" id="program">
+    <div class="container">
+      <div class="event-program__head">
+        <p class="eyebrow">Program</p>
+        <h2>{hasSchedule ? "Day schedule" : "Session outline"}</h2>
         {
-          event.status === "upcoming" && (
-            <p class="muted event-detail__note">
-              Full program details may live on the external registration site. Placeholder bullets
-              mark structure until the final agenda is published.
+          hasSchedule && (
+            <p class="muted">
+              Follow the day left to right. Select any session for speakers, notes, and table topics.
             </p>
           )
         }
       </div>
-    </div>
-  </section>
 
-  <section class="section section--tight">
-    <div class="container">
-      <EventCarousel
-        client:load
-        slides={event.images}
-        heading={event.title}
-        body={`Photo placeholders for ${event.title}. Swap these assets with Brain Hub / January / November archives when ready.`}
-      />
+      {
+        hasSchedule ? (
+          <div class="event-program__timeline">
+            <ScheduleTimeline
+              sessions={event.sessions!}
+              idPrefix={`page-${event.slug}`}
+              size="full"
+            />
+          </div>
+        ) : (
+          <ol class="event-program__list">
+            {programLines.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ol>
+        )
+      }
     </div>
   </section>
 
   {
     event.status === "upcoming" && (
-      <section class="section section--tight">
-        <div class="container event-detail__register-band">
+      <section class="section section--tight" id="register">
+        <div class="container event-register">
           <div>
-            <p class="eyebrow">Upcoming</p>
-            <h2>Ready to register?</h2>
+            <p class="eyebrow">Registration</p>
+            <h2>Join us November 13</h2>
             <p class="muted">
-              Registration is hosted on a separate site. Use the button below when you are ready to
-              sign up for November 13 at Mars Hill University.
+              Registration is hosted on a separate site. Capacity at Mars Hill University is about
+              120 educators.
             </p>
           </div>
           <Button href={event.registerUrl ?? site.registerUrl} external>
@@ -93,36 +104,53 @@ if (!event) {
 </BaseLayout>
 
 <style>
-  .event-detail h1 {
-    font-size: clamp(2.4rem, 5vw, 3.4rem);
-    margin: 0.4rem 0 0.75rem;
-    max-width: 16ch;
+  .event-hero__inner {
+    max-width: 46rem;
   }
 
-  .event-detail__meta {
+  .event-hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    margin: 0.4rem 0 0.75rem;
+    max-width: 18ch;
+    line-height: 1.12;
+  }
+
+  .event-hero__meta {
     color: var(--blue);
     font-weight: 600;
     margin-bottom: 1rem;
   }
 
-  .event-detail__summary {
-    max-width: 42rem;
+  .event-hero__summary {
+    max-width: 40rem;
     margin-bottom: 1.5rem;
   }
 
-  .event-detail__actions {
+  .event-hero__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-bottom: 2.5rem;
   }
 
-  .event-detail__program h2 {
-    font-size: 1.75rem;
-    margin-bottom: 1rem;
+  .event-program {
+    background: color-mix(in srgb, var(--cream) 70%, white);
   }
 
-  .event-detail__program ol {
+  .event-program__head {
+    margin-bottom: 1.35rem;
+    max-width: 40rem;
+  }
+
+  .event-program__head h2 {
+    font-size: clamp(1.75rem, 3.5vw, 2.35rem);
+    margin: 0.3rem 0 0.5rem;
+  }
+
+  .event-program__timeline {
+    margin-inline: calc(-1 * min(var(--page-gutter), 0.5rem));
+  }
+
+  .event-program__list {
     padding-left: 1.25rem;
     display: grid;
     gap: 0.65rem;
@@ -130,12 +158,7 @@ if (!event) {
     color: var(--muted);
   }
 
-  .event-detail__note {
-    margin-top: 1rem;
-    max-width: 40rem;
-  }
-
-  .event-detail__register-band {
+  .event-register {
     display: flex;
     justify-content: space-between;
     gap: 1.5rem;
@@ -146,8 +169,30 @@ if (!event) {
     background: color-mix(in srgb, var(--green-light) 35%, white);
   }
 
-  .event-detail__register-band h2 {
-    font-size: 2rem;
+  .event-register h2 {
+    font-size: clamp(1.6rem, 3vw, 2rem);
     margin: 0.35rem 0 0.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .event-hero__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .event-hero__actions :global(.btn) {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .event-register {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .event-register :global(.btn) {
+      width: 100%;
+      justify-content: center;
+    }
   }
 </style>

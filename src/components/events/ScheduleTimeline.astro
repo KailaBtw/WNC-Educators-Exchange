@@ -1,0 +1,382 @@
+---
+import type { ProgramSession } from "../../content/events";
+
+interface Props {
+  sessions: ProgramSession[];
+  /** Unique id prefix so multiple timelines on one page don't clash. */
+  idPrefix?: string;
+  /** compact = home teaser; full = event page hero schedule */
+  size?: "compact" | "full";
+  /** Hide deep detail (topics/long notes) — useful on home. */
+  brief?: boolean;
+  /** When false, only the track shows (home teaser). */
+  showDetail?: boolean;
+}
+
+const {
+  sessions,
+  idPrefix = "sched",
+  size = "full",
+  brief = false,
+  showDetail = true,
+} = Astro.props;
+const firstId = sessions[0]?.id ?? "";
+---
+
+{
+  sessions.length > 0 && (
+    <div
+      class:list={["schedule", `schedule--${size}`, { "schedule--track-only": !showDetail }]}
+      data-schedule
+      data-schedule-id={idPrefix}
+    >
+      <p class="schedule__hint">
+        {showDetail
+          ? "Scroll sideways to browse · Select a session for details"
+          : "Scroll sideways for a day-at-a-glance preview"}
+      </p>
+      <div class="schedule__track-wrap">
+        <div class="schedule__track" role="list">
+          <div class="schedule__line" aria-hidden="true" />
+          {sessions.map((session, index) => (
+            <button
+              type="button"
+              class:list={["schedule__stop", { "is-active": index === 0 }]}
+              role="listitem"
+              data-schedule-stop
+              data-session-id={session.id}
+              aria-pressed={index === 0 ? "true" : "false"}
+              aria-controls={showDetail ? `${idPrefix}-detail` : undefined}
+            >
+              <span class="schedule__dot" aria-hidden="true" />
+              <span class="schedule__time">{session.time}</span>
+              <span class="schedule__title">{session.title}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {showDetail && (
+        <div
+          class="schedule__detail"
+          id={`${idPrefix}-detail`}
+          data-schedule-detail
+          aria-live="polite"
+        >
+          {sessions.map((session) => (
+            <article
+              class="schedule__panel"
+              data-session-panel={session.id}
+              hidden={session.id !== firstId}
+            >
+              <p class="schedule__panel-time">{session.time}</p>
+              <h3 class="schedule__panel-title">{session.title}</h3>
+              {session.leads && <p class="schedule__panel-leads">{session.leads}</p>}
+              {!brief && session.detail && <p class="schedule__panel-detail">{session.detail}</p>}
+              {!brief && session.topics && session.topics.length > 0 && (
+                <div class="schedule__topics">
+                  <p class="schedule__topics-label">Proposed table topics</p>
+                  <ul>
+                    {session.topics.map((topic) => (
+                      <li>{topic}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+<script>
+  function setupSchedule(root: HTMLElement) {
+    const stops = root.querySelectorAll<HTMLButtonElement>("[data-schedule-stop]");
+    const panels = root.querySelectorAll<HTMLElement>("[data-session-panel]");
+
+    function activate(id: string) {
+      stops.forEach((stop) => {
+        const on = stop.dataset.sessionId === id;
+        stop.classList.toggle("is-active", on);
+        stop.setAttribute("aria-pressed", on ? "true" : "false");
+        if (on) {
+          stop.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        }
+      });
+      if (!panels.length) return;
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.sessionPanel !== id;
+      });
+    }
+
+    stops.forEach((stop) => {
+      stop.addEventListener("click", () => {
+        const id = stop.dataset.sessionId;
+        if (id) activate(id);
+      });
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-schedule]").forEach(setupSchedule);
+</script>
+
+<style>
+  .schedule {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .schedule__hint {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .schedule__track-wrap {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+    scrollbar-width: thin;
+  }
+
+  .schedule__track {
+    position: relative;
+    display: flex;
+    gap: 0.75rem;
+    min-width: max-content;
+    padding: 1.25rem 0.25rem 0.5rem;
+  }
+
+  .schedule__line {
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    top: 1.55rem;
+    height: 2px;
+    background: color-mix(in srgb, var(--green) 35%, var(--cream));
+    pointer-events: none;
+  }
+
+  .schedule__stop {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 0.45rem;
+    justify-items: start;
+    width: 11.5rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+  }
+
+  .schedule__dot {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    margin-left: 0.15rem;
+    background: var(--cream);
+    box-shadow: inset 0 0 0 2px var(--green);
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .schedule__stop.is-active .schedule__dot {
+    background: var(--green);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 22%, transparent);
+    transform: scale(1.08);
+  }
+
+  .schedule__time {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .schedule__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    padding: 0.65rem 0.75rem;
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--white) 80%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--green) 14%, transparent);
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.3;
+    min-height: 4.6rem;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  }
+
+  .schedule__stop:hover .schedule__title,
+  .schedule__stop.is-active .schedule__title {
+    border-color: color-mix(in srgb, var(--green) 45%, transparent);
+    background: var(--white);
+    transform: translateY(-2px);
+  }
+
+  .schedule__detail {
+    padding: 1.15rem 1.25rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--green-light) 22%, white);
+    border: 1px solid color-mix(in srgb, var(--green) 12%, transparent);
+  }
+
+  .schedule__panel-time {
+    margin: 0 0 0.35rem;
+    color: var(--blue);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .schedule__panel-title {
+    margin: 0 0 0.45rem;
+    font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+    line-height: 1.25;
+  }
+
+  .schedule__panel-leads {
+    margin: 0 0 0.65rem;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .schedule__panel-detail {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 48rem;
+  }
+
+  .schedule__topics {
+    margin-top: 0.9rem;
+  }
+
+  .schedule__topics-label {
+    margin: 0 0 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .schedule__topics ul {
+    margin: 0;
+    padding-left: 1.15rem;
+    display: grid;
+    gap: 0.3rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  /* —— Compact (home) —— */
+  .schedule--compact {
+    gap: 0.75rem;
+  }
+
+  .schedule--compact .schedule__stop {
+    width: 9.25rem;
+  }
+
+  .schedule--compact .schedule__title {
+    font-size: 0.8rem;
+    min-height: 3.6rem;
+    -webkit-line-clamp: 2;
+    padding: 0.5rem 0.6rem;
+  }
+
+  .schedule--compact .schedule__detail {
+    padding: 0.9rem 1rem;
+  }
+
+  .schedule--compact .schedule__panel-title {
+    font-size: 1.05rem;
+  }
+
+  /* —— Full (event page) —— */
+  .schedule--full {
+    gap: 1.5rem;
+  }
+
+  .schedule--full .schedule__hint {
+    font-size: 0.85rem;
+  }
+
+  .schedule--full .schedule__track {
+    gap: 1rem;
+    padding-top: 1.5rem;
+  }
+
+  .schedule--full .schedule__line {
+    top: 1.75rem;
+    height: 3px;
+  }
+
+  .schedule--full .schedule__stop {
+    width: min(14rem, 42vw);
+    min-width: 12rem;
+  }
+
+  .schedule--full .schedule__dot {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .schedule--full .schedule__time {
+    font-size: 0.8rem;
+  }
+
+  .schedule--full .schedule__title {
+    font-size: 1rem;
+    min-height: 5.5rem;
+    padding: 0.85rem 0.95rem;
+  }
+
+  .schedule--full .schedule__detail {
+    padding: 1.5rem 1.65rem;
+  }
+
+  .schedule--full .schedule__panel-title {
+    font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+  }
+
+  .schedule--full .schedule__panel-leads {
+    font-size: 1.05rem;
+  }
+
+  .schedule--full .schedule__panel-detail {
+    font-size: 1.02rem;
+  }
+
+  .schedule--track-only .schedule__track {
+    padding-bottom: 0.15rem;
+  }
+
+  @media (max-width: 640px) {
+    .schedule--full .schedule__stop {
+      width: 11rem;
+      min-width: 10.5rem;
+    }
+
+    .schedule--compact .schedule__stop {
+      width: 8.5rem;
+    }
+  }
+</style>

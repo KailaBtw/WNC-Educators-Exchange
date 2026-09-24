@@ -1,51 +1,446 @@
 ---
 import SectionHeader from "../ui/SectionHeader.astro";
-import EventCard from "../events/EventCard.astro";
+import ScheduleTimeline from "../events/ScheduleTimeline.astro";
 import Button from "../ui/Button.astro";
-import { events } from "../../content/events";
+import { events, getProgramLines } from "../../content/events";
+
+const upcoming = events.find((e) => e.status === "upcoming");
+const past = events.filter((e) => e.status === "past");
 ---
 
-<section class="section" id="events">
+<section class="section events-home" id="events">
   <div class="container">
     <div data-reveal>
       <SectionHeader eyebrow="Events" title="Event information">
         <p>
           Regional summits shaped the Top 10 Issues report. Next up: the Educators Exchange on
-          Friday, November 13 at Mars Hill University—register from the upcoming event card.
+          Friday, November 13 at Mars Hill University.
         </p>
       </SectionHeader>
     </div>
-    <div class="events-grid">
-      {
-        events.map((event, index) => (
-          <div data-reveal data-reveal-delay={String(0.06 * index)} data-reveal-y="40">
-            <EventCard event={event} />
+
+    {
+      upcoming && (
+        <article class="events-home__featured" data-reveal data-reveal-y="28">
+          <header class="events-home__featured-head">
+            <div>
+              <p class="events-home__status">Upcoming · {upcoming.category}</p>
+              <h3>{upcoming.title}</h3>
+              <p class="events-home__meta">
+                <span>{upcoming.dateLabel}</span>
+                {upcoming.location && <span>· {upcoming.location}</span>}
+              </p>
+              <p class="events-home__summary">{upcoming.summary}</p>
+            </div>
+          </header>
+
+          {
+            upcoming.sessions?.length ? (
+              <div class="events-home__schedule">
+                <p class="events-home__schedule-label">Day at a glance</p>
+                <ScheduleTimeline
+                  sessions={upcoming.sessions}
+                  idPrefix="home-nov"
+                  size="compact"
+                  brief
+                  showDetail={false}
+                />
+              </div>
+            ) : null
+          }
+
+          <footer class="events-home__actions">
+            <Button href={`/events/${upcoming.slug}`}>Full schedule & details</Button>
+            {
+              upcoming.registerUrl && (
+                <Button href={upcoming.registerUrl} variant="secondary" external>
+                  Register for Nov 13
+                </Button>
+              )
+            }
+          </footer>
+        </article>
+      )
+    }
+
+    {
+      past.length > 0 && (
+        <div class="events-home__past" data-reveal data-reveal-delay="0.08" data-reveal-y="24">
+          <p class="eyebrow">Previous gatherings</p>
+          <div class="events-home__past-grid">
+            {past.map((event) => (
+              <button
+                type="button"
+                class="events-home__past-card"
+                data-open-past-event={event.slug}
+                aria-haspopup="dialog"
+              >
+                <span class="events-home__past-thumb" aria-hidden="true">
+                  <img src={event.images[0]?.src} alt="" width="64" height="64" />
+                </span>
+                <span class="events-home__past-copy">
+                  <span class="events-home__past-date">{event.dateLabel}</span>
+                  <span class="events-home__past-title">{event.title}</span>
+                  <span class="events-home__past-summary">{event.summary}</span>
+                </span>
+              </button>
+            ))}
           </div>
-        ))
-      }
-    </div>
-    <div class="events-grid__cta" data-reveal data-reveal-delay="0.14" data-reveal-y="28">
-      <Button href="/events">Explore All Events</Button>
+        </div>
+      )
+    }
+
+    <div class="events-home__cta" data-reveal data-reveal-delay="0.12" data-reveal-y="20">
+      <Button href="/events" variant="ghost">Explore all events →</Button>
     </div>
   </div>
 </section>
 
+{
+  past.map((event) => (
+    <dialog
+      class="past-dialog"
+      id={`past-dialog-${event.slug}`}
+      aria-labelledby={`past-dialog-title-${event.slug}`}
+    >
+      <div class="past-dialog__panel">
+        <header class="past-dialog__header">
+          <div>
+            <p class="past-dialog__kicker">Previous gathering</p>
+            <h2 id={`past-dialog-title-${event.slug}`}>{event.title}</h2>
+            <p class="past-dialog__meta">{event.dateLabel}</p>
+          </div>
+          <button type="button" class="past-dialog__close" data-close-past-dialog aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </header>
+        <div class="past-dialog__body">
+          <p class="past-dialog__summary">{event.summary}</p>
+          <div class="past-dialog__program">
+            <h3>Session outline</h3>
+            <ol>
+              {getProgramLines(event).map((item) => (
+                <li>{item}</li>
+              ))}
+            </ol>
+          </div>
+          <div class="past-dialog__actions">
+            <Button href={`/events/${event.slug}`} variant="quiet">
+              Open event page
+            </Button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+  ))
+}
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-open-past-event]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const slug = el.dataset.openPastEvent;
+      if (!slug) return;
+      const dialog = document.getElementById(`past-dialog-${slug}`) as HTMLDialogElement | null;
+      dialog?.showModal();
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>("[data-close-past-dialog]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const dialog = btn.closest("dialog") as HTMLDialogElement | null;
+      dialog?.close();
+    });
+  });
+
+  document.querySelectorAll<HTMLDialogElement>(".past-dialog").forEach((dialog) => {
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  });
+</script>
+
 <style>
-  .events-grid {
+  .events-home__featured {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.5rem;
+    gap: 1.25rem;
+    margin-top: 0.5rem;
+    padding: clamp(1.15rem, 3vw, 1.75rem);
+    border-radius: var(--radius-lg);
+    background:
+      linear-gradient(
+        160deg,
+        color-mix(in srgb, var(--green-light) 28%, white),
+        color-mix(in srgb, var(--cream) 88%, white)
+      );
+    border: 1px solid color-mix(in srgb, var(--green) 14%, transparent);
   }
 
-  .events-grid__cta {
+  .events-home__status {
+    margin: 0 0 0.35rem;
+    color: var(--green);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .events-home__featured-head h3 {
+    margin: 0 0 0.45rem;
+    font-size: clamp(1.55rem, 3.2vw, 2.15rem);
+    line-height: 1.2;
+    max-width: 22ch;
+  }
+
+  .events-home__meta {
+    margin: 0 0 0.75rem;
+    color: var(--blue);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .events-home__summary {
+    margin: 0;
+    color: var(--muted);
+    max-width: 42rem;
+  }
+
+  .events-home__schedule {
+    padding: 1rem 0 0.15rem;
+    border-top: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
+  }
+
+  .events-home__schedule-label {
+    margin: 0 0 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .events-home__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    padding-top: 0.15rem;
+    border-top: 1px solid color-mix(in srgb, var(--green) 12%, transparent);
+  }
+
+  .events-home__past {
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .events-home__past .eyebrow {
+    margin-bottom: 0.85rem;
+  }
+
+  .events-home__past-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .events-home__past-card {
+    display: flex;
+    gap: 0.95rem;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--white) 70%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
+    text-align: left;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .events-home__past-card:hover,
+  .events-home__past-card:focus-visible {
+    border-color: color-mix(in srgb, var(--blue) 35%, transparent);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--ink) 6%, transparent);
+    outline: none;
+  }
+
+  .events-home__past-thumb {
+    flex: 0 0 3.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 0.65rem;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--green-light) 40%, white);
+  }
+
+  .events-home__past-thumb img {
+    display: block;
+    width: 3.5rem;
+    height: 3.5rem;
+    max-width: 3.5rem;
+    max-height: 3.5rem;
+    object-fit: cover;
+  }
+
+  .events-home__past-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .events-home__past-date,
+  .events-home__past-title,
+  .events-home__past-summary {
+    display: block;
+  }
+
+  .events-home__past-date {
+    color: var(--blue);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .events-home__past-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .events-home__past-summary {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .events-home__cta {
     display: flex;
     justify-content: center;
-    margin-top: 2.25rem;
+    margin-top: 1.75rem;
   }
 
-  @media (max-width: 900px) {
-    .events-grid {
+  .past-dialog {
+    width: min(30rem, calc(100vw - 1.5rem));
+    max-height: min(88vh, 36rem);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--cream);
+    box-shadow: 0 28px 64px color-mix(in srgb, var(--ink) 26%, transparent);
+  }
+
+  .past-dialog::backdrop {
+    background: color-mix(in srgb, var(--ink) 48%, transparent);
+  }
+
+  .past-dialog__panel {
+    display: flex;
+    flex-direction: column;
+    max-height: min(88vh, 36rem);
+  }
+
+  .past-dialog__header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.35rem 1.35rem 1.1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+    background: color-mix(in srgb, var(--white) 72%, var(--cream));
+  }
+
+  .past-dialog__kicker {
+    margin: 0 0 0.3rem;
+    color: var(--blue);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .past-dialog__header h2 {
+    margin: 0;
+    font-size: clamp(1.35rem, 3vw, 1.7rem);
+    line-height: 1.2;
+  }
+
+  .past-dialog__meta {
+    margin: 0.4rem 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  .past-dialog__close {
+    flex-shrink: 0;
+    width: 2.35rem;
+    height: 2.35rem;
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ink) 6%, white);
+    color: var(--ink);
+    font-size: 1.45rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .past-dialog__close:hover {
+    background: color-mix(in srgb, var(--ink) 12%, white);
+  }
+
+  .past-dialog__body {
+    padding: 1.2rem 1.35rem 1.45rem;
+    overflow: auto;
+  }
+
+  .past-dialog__summary {
+    margin: 0 0 1.15rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .past-dialog__program h3 {
+    margin: 0 0 0.65rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+  }
+
+  .past-dialog__program ol {
+    margin: 0;
+    padding-left: 1.15rem;
+    display: grid;
+    gap: 0.4rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  .past-dialog__actions {
+    margin-top: 1.25rem;
+  }
+
+  @media (max-width: 720px) {
+    .events-home__past-grid {
       grid-template-columns: 1fr;
+    }
+
+    .events-home__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .events-home__actions :global(.btn) {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>

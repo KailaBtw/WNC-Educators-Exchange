@@ -1,3 +1,12 @@
+export type ProgramSession = {
+  id: string;
+  time: string;
+  title: string;
+  leads?: string;
+  detail?: string;
+  topics?: string[];
+};
+
 export type EventItem = {
   slug: string;
   title: string;
@@ -8,8 +17,21 @@ export type EventItem = {
   location?: string;
   registerUrl?: string;
   images: { src: string; alt: string; caption?: string; subtitle?: string }[];
-  program: string[];
+  /** Simple bullet program (past events / fallback). */
+  program?: string[];
+  /** Structured schedule for interactive timeline. */
+  sessions?: ProgramSession[];
 };
+
+const novemberTableTopics = [
+  "Differentiating Instruction for Different Student Ethical Stances",
+  "No Tech, Low Tech “solutions”",
+  "AI Equity and Free vs. Paid Tools",
+  "Governance, Guidance, Autonomy, Clarity",
+  "AI and Employment",
+  "Human Concerns in a world of AI",
+  "How does AI change thinking and learning?",
+];
 
 export const events: EventItem[] = [
   {
@@ -42,13 +64,81 @@ export const events: EventItem[] = [
         subtitle: "What is working on neighboring campuses",
       },
     ],
-    program: [
-      "Welcome and regional framing — Land of Sky Workforce Development Board",
-      "Top 10 Issues briefing and discussion",
-      "Campus roundtables: policy, assessment, and faculty training",
-      "Student community service project preview (June 4–5, 2026 pathway)",
-      "Next steps for cross-institutional collaboration",
-      "Closing remarks and registration follow-up (agenda details TBA)",
+    sessions: [
+      {
+        id: "registration",
+        time: "9:00 am",
+        title: "Registration and Networking",
+      },
+      {
+        id: "welcome",
+        time: "9:30 – 10:00 am",
+        title: "Welcome",
+        leads: "Chris Cain and Mars Hill Leadership · Bill Sederberg",
+      },
+      {
+        id: "issues-context",
+        time: "10:00 – 10:20 am",
+        title: "Issues in AI and Education in Context in Western NC",
+        leads: "Jonathan Wade",
+        detail:
+          "Pre-survey summary of issues; challenges; demonstration of avatars; discussion of agentic course completion. Introduction of table topics and resources from hosts, sponsors, and speakers.",
+      },
+      {
+        id: "campus-intros",
+        time: "10:20 – 10:40 am",
+        title: "Campus Introductions",
+        leads: "Chris Cain",
+        detail:
+          "Facilitated campus share-outs. Invited institutions and lead representatives introduce current AI work (streamlined when campus leads complete the infrastructure survey).",
+      },
+      {
+        id: "sherlock",
+        time: "10:40 – 11:30 am",
+        title: "More than a Human in the Loop: Equipping Learners for Cognitive Sovereignty in a World of AI",
+        leads: "Dr. John Sherlock, Western Carolina University",
+        detail:
+          "Pedagogy, human development, and international AI-and-learning work (including EDUCAUSE / Dell faculty cohorts).",
+      },
+      {
+        id: "lunch-open",
+        time: "11:30 am – 12:00 pm",
+        title: "Initial Lunch Period with Table Topics",
+        leads: "Ian Selig",
+        topics: novemberTableTopics,
+      },
+      {
+        id: "lunch-share",
+        time: "12:30 – 1:00 pm",
+        title: "Table Topic Facilitation and Share Out",
+        leads: "Ian Selig",
+        detail: "Working lunch—table facilitators share out key threads.",
+      },
+      {
+        id: "scapin",
+        time: "1:00 – 1:50 pm",
+        title: "Adjusting Assessment for the World of AI",
+        leads: "Tim Scapin",
+      },
+      {
+        id: "bring-together",
+        time: "1:50 – 2:20 pm",
+        title: "Bringing together the Day",
+        leads: "Jonathan Wade",
+      },
+      {
+        id: "contest",
+        time: "2:20 – 2:40 pm",
+        title: "Faculty & Student Innovation Contest",
+        leads: "Steven Young",
+        detail: "Working title—official contest name forthcoming.",
+      },
+      {
+        id: "wrap",
+        time: "2:40 – 3:00 pm",
+        title: "Wrap Up and Next Steps",
+        leads: "Bill Sederberg",
+      },
     ],
   },
   {
@@ -129,4 +219,12 @@ export function getEvent(slug: string) {
 
 export function getUpcomingEvents() {
   return events.filter((e) => e.status === "upcoming");
+}
+
+/** Flat program lines for simple lists / previews. */
+export function getProgramLines(event: EventItem): string[] {
+  if (event.sessions?.length) {
+    return event.sessions.map((s) => `${s.time} — ${s.title}`);
+  }
+  return event.program ?? [];
 }

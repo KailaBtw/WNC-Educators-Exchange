@@ -1,0 +1,49 @@
+---
+description: WNC Educators Exchange UI/UX design rules from alpha→beta plan and build chat
+alwaysApply: true
+---
+
+# WNC Exchange — design rules
+
+## Layout & hierarchy
+
+- One job per section: one headline, one short supporting sentence, one primary action.
+- Home event block: **full-width upcoming** first (with compact schedule), **past events below** in a 2-up grid (1-up on mobile)—do not use equal 3-card grids for mixed upcoming/past.
+- Steer users to dedicated pages for deep content. Prefer `/events/[slug]` for full schedule over stuffing interactive timelines into dialogs.
+
+## Schedules
+
+- Interactive horizontal timeline is the program UI for Nov 13.
+- **Home:** `size="compact"` + `brief` + `showDetail={false}` — day-at-a-glance track only; CTAs below steer to the event page.
+- **Event page:** `size="full"` — primary content, not an afterthought under placeholders.
+- Always show a short hint that the track scrolls sideways and sessions are selectable.
+- Design for touch: horizontal scroll with `overscroll-behavior-x: contain`; stack CTAs full-width under ~640px.
+
+## Modals
+
+- Keep modals for **issues** and **schools** practice browsing (established pattern).
+- Do **not** put the interactive day schedule in home event modals—too easy to miss.
+- If a surface needs a modal, keep it light: summary + short list + link to the full page.
+
+## Mobile
+
+- Check every new section at ~390px and ~768px before calling work done.
+- Prefer single-column stacks; avoid side-by-side text+actions that squeeze on small screens.
+- Past-event cards: image + copy grid that collapses cleanly; clamp long summaries.
+
+## Content & dates
+
+- Canonical upcoming event: **Friday, November 13, 2026 · Mars Hill University**.
+- Do not invent a 6th award winner or contest name—use working titles until sponsors confirm.
+- Single registration URL via `site.registerUrl` (no scattered `example.com` when a real link exists).
+
+## Visual language
+
+- Preserve existing tokens (`--purple`, `--blue`, `--green`, `--cream`, Source Serif / Source Sans).
+- Avoid purple-on-white AI clichés, heavy multi-shadow cards, and floating promo badges on hero faces.
+- Hero location chips (e.g. “UNCA campus”) stay on the media layer corner—not overlay stickers on people.
+
+## Process
+
+- Work one workstream at a time; pause for human verify + commit between streams.
+- Prefer small, testable UI increments; run `npm run build` after structural page changes.

@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Button from "../../components/ui/Button.astro";
 import EventCarousel from "../../components/events/EventCarousel";
 import ContactCta from "../../components/layout/ContactCta.astro";
-import { events } from "../../content/events";
+import { events, getProgramLines } from "../../content/events";
 
 const upcoming = events.filter((e) => e.status === "upcoming");
 const past = events.filter((e) => e.status === "past");
@@ -80,7 +80,7 @@ const filters = [
                 <details class="events-program">
                   <summary>Program preview</summary>
                   <ol>
-                    {event.program.map((item) => (
+                    {getProgramLines(event).map((item) => (
                       <li>{item}</li>
                     ))}
                   </ol>
@@ -149,7 +149,7 @@ const filters = [
                 <details class="events-program">
                   <summary>Session outline</summary>
                   <ol>
-                    {event.program.map((item) => (
+                    {getProgramLines(event).map((item) => (
                       <li>{item}</li>
                     ))}
                   </ol>
