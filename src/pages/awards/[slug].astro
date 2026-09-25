@@ -155,47 +155,37 @@ const gallery = person.gallery?.length
     }
 
     {
-      person.certificateUrl && (
+      (person.certificateImage || person.certificateUrl) && (
         <div class="container award-profile__cert" data-reveal data-reveal-y="24">
           <p class="eyebrow">Recognition</p>
           <h2>Award certificate</h2>
           <p class="muted award-profile__cert-lede">
             Official 2026 AI Innovator in Education Award certificate for {person.name}.
           </p>
-          <div class="award-profile__cert-frame">
-            {
-              person.certificateUrl.match(/\.(png|jpe?g|webp)$/i) ? (
+          {
+            person.certificateImage && (
+              <div class="award-profile__cert-frame">
                 <figure class="award-profile__cert-figure">
                   <img
-                    src={person.certificateUrl}
+                    src={person.certificateImage}
                     alt={`Award certificate for ${person.name}`}
-                    width="960"
-                    height="720"
+                    width="1584"
+                    height="1224"
+                    loading="lazy"
                   />
                 </figure>
-              ) : (
-                <object
-                  class="award-profile__cert-embed"
-                  data={person.certificateUrl}
-                  type="application/pdf"
-                  aria-label={`Award certificate PDF for ${person.name}`}
-                >
-                  <p class="muted">
-                    Certificate preview unavailable in this browser.{" "}
-                    <a href={person.certificateUrl} target="_blank" rel="noopener noreferrer">
-                      Open the PDF
-                    </a>
-                    .
-                  </p>
-                </object>
-              )
-            }
-          </div>
-          <div class="award-profile__section-actions">
-            <Button href={person.certificateUrl} external>
-              Download certificate
-            </Button>
-          </div>
+              </div>
+            )
+          }
+          {
+            person.certificateUrl && (
+              <div class="award-profile__section-actions">
+                <Button href={person.certificateUrl} external>
+                  Download certificate
+                </Button>
+              </div>
+            )
+          }
         </div>
       )
     }
@@ -349,18 +339,6 @@ const gallery = person.gallery?.length
     display: block;
     width: 100%;
     height: auto;
-  }
-
-  .award-profile__cert-embed {
-    display: block;
-    width: 100%;
-    min-height: min(70vh, 36rem);
-    border: 0;
-  }
-
-  .award-profile__cert-embed p {
-    margin: 0;
-    padding: 1.25rem;
   }
 
   .award-profile__section-actions {

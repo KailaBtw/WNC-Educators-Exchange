@@ -51,7 +51,7 @@ export const surveyAttribution = {
   when: "January 2026",
   respondents: "54 educators across Western North Carolina",
   blurb:
-    "The Top 10 Issues report draws on the 2026 WNC Educator Survey—54 educators across the region—together with findings from regional educator summits organized with the Land of Sky Workforce Development Board. Respondents described how AI is already showing up in classrooms, where policy and support lag, and what faculty need next.",
+    "In January 2026, 54 educators told us how AI is already in their classrooms, where policy hasn’t caught up, and what they need next. Those answers, and the summits with the Land of Sky Workforce Development Board, are the Top 10 Issues.",
 };
 
 export type SiteConfig = typeof site;

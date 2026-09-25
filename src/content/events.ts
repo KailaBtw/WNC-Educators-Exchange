@@ -48,7 +48,7 @@ const eventsRaw: EventItem[] = [
     dateLabel: "Friday, November 13, 2026",
     status: "upcoming",
     summary:
-      "Educators from across Western North Carolina gather at Mars Hill University to share practice, discuss regional AI issues, and plan next steps together. Capacity about 120.",
+      "Educators from across Western North Carolina will meet at Mars Hill to compare what they’re doing with AI and decide what comes next.",
     location: "Mars Hill University (capacity ~120)",
     registerUrl: site.registerUrl,
     beforeEvent: [
@@ -166,7 +166,7 @@ const eventsRaw: EventItem[] = [
     dateLabel: "June 2026",
     status: "past",
     summary:
-      "A large regional gathering linking AI literacy, workforce pathways, and educator collaboration across Western North Carolina.",
+      "A large June gathering in Asheville: AI in the classroom, workforce pathways, and educators working across campuses.",
     location: "Asheville",
     images: [
       {
@@ -220,7 +220,7 @@ const eventsRaw: EventItem[] = [
     dateLabel: "January 2026",
     status: "past",
     summary:
-      "Survey-informed summit conversations that fed directly into the Top 10 Issues report and regional priorities.",
+      "The January summit. What people said there, along with the survey, became the Top 10 Issues.",
     images: [
       {
         src: "/images/events/archive/jan-01.jpg",

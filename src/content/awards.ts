@@ -21,8 +21,10 @@ export type Awardee = {
   proposalPdf?: string;
   /** Summit award slide PDF under /public */
   slidesPdf?: string;
-  /** Award certificate (PDF or image) under /public/files/certs */
+  /** Award certificate download (PDF preferred) under /public/files/certs */
   certificateUrl?: string;
+  /** Raster preview for on-page display (PDF embeds are unreliable) */
+  certificateImage?: string;
   gallery?: AwardGalleryImage[];
   /** True when portrait/PDF assets are still pending from Bill. */
   pendingMedia?: boolean;
@@ -59,6 +61,7 @@ const awardeesRaw: Awardee[] = [
     imageAlt: "Portrait of Elizabeth Dellinger, Mayland Community College",
     slidesPdf: "/files/awards/slides/elizabeth-dellinger.pdf",
     certificateUrl: "/files/certs/elizabeth-dellinger.pdf",
+    certificateImage: "/images/awards/certs/elizabeth-dellinger.png",
   },
   {
     id: "anne-oxenreider",
@@ -79,6 +82,7 @@ const awardeesRaw: Awardee[] = [
     imageAlt: "Portrait of Anne Oxenreider, Western Carolina University",
     slidesPdf: "/files/awards/slides/anne-oxenreider.pdf",
     certificateUrl: "/files/certs/anne-oxenreider.pdf",
+    certificateImage: "/images/awards/certs/anne-oxenreider.png",
   },
   {
     id: "jason-kelley",
@@ -99,6 +103,7 @@ const awardeesRaw: Awardee[] = [
     imageAlt: "Portrait of Jason Kelley, Appalachian State University",
     slidesPdf: "/files/awards/slides/jason-kelley.pdf",
     certificateUrl: "/files/certs/jason-kelley.pdf",
+    certificateImage: "/images/awards/certs/jason-kelley.png",
   },
   {
     id: "crystal-rhynes",
@@ -119,6 +124,7 @@ const awardeesRaw: Awardee[] = [
     imageAlt: "Crystal Rhynes facilitating a workshop at Southwestern Community College",
     slidesPdf: "/files/awards/slides/crystal-rhynes.pdf",
     certificateUrl: "/files/certs/crystal-rhynes.pdf",
+    certificateImage: "/images/awards/certs/crystal-rhynes.png",
   },
   {
     id: "renuka-gusain",
@@ -138,12 +144,7 @@ const awardeesRaw: Awardee[] = [
     image: "/images/awards/renuka-gusain.png",
     imageAlt: "Portrait of Dr. Renuka Gusain, UNC Asheville",
     certificateUrl: "/files/certs/renuka-gusain.pdf",
-    gallery: [
-      {
-        src: "/images/awards/slides/renuka-gusain.png",
-        alt: "Award certificate for Dr. Renuka Gusain",
-      },
-    ],
+    certificateImage: "/images/awards/certs/renuka-gusain.png",
   },
   {
     id: "brandy-hadley",
@@ -159,6 +160,7 @@ const awardeesRaw: Awardee[] = [
     image: "/images/awards/regional-faculty.svg",
     imageAlt: "Portrait placeholder for Brandy Hadley",
     certificateUrl: "/files/certs/brandy-hadley.png",
+    certificateImage: "/images/awards/certs/brandy-hadley.png",
     pendingMedia: true,
   },
 ];
@@ -169,6 +171,7 @@ export const awardees: Awardee[] = awardeesRaw.map((person) => ({
   proposalPdf: person.proposalPdf ? withBase(person.proposalPdf) : undefined,
   slidesPdf: person.slidesPdf ? withBase(person.slidesPdf) : undefined,
   certificateUrl: person.certificateUrl ? withBase(person.certificateUrl) : undefined,
+  certificateImage: person.certificateImage ? withBase(person.certificateImage) : undefined,
   gallery: person.gallery?.map((img) => ({ ...img, src: withBase(img.src) })),
 }));
 
