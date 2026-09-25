@@ -52,11 +52,20 @@ import { withBase } from "../lib/paths";
                   <Button href={awardProfilePath(person.id)} variant="quiet">
                     View profile →
                   </Button>
-                  {person.proposalPdf && (
-                    <Button href={person.proposalPdf} variant="ghost" external>
-                      Download proposal
-                    </Button>
-                  )}
+                  {
+                    person.slidesPdf && (
+                      <Button href={person.slidesPdf} variant="ghost" external>
+                        Download slides
+                      </Button>
+                    )
+                  }
+                  {
+                    person.proposalPdf && (
+                      <Button href={person.proposalPdf} variant="ghost" external>
+                        Download proposal
+                      </Button>
+                    )
+                  }
                 </div>
               </div>
             </article>

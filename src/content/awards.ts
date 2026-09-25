@@ -17,8 +17,10 @@ export type Awardee = {
   focus: string[];
   image: string;
   imageAlt: string;
-  /** Root path under /public, e.g. /files/awards/name.pdf */
+  /** Full proposal / nomination packet under /public */
   proposalPdf?: string;
+  /** Summit award slide PDF under /public */
+  slidesPdf?: string;
   gallery?: AwardGalleryImage[];
 };
 
@@ -30,11 +32,87 @@ export const awardsIntro = {
 };
 
 /**
- * Profiles drawn from nomination / submission packets in /content.
- * Note: adam-petit.pdf was sourced from a packet file named for Greg Thomas—
- * confirm with Bill that this is Adam Petit’s proposal before beta announce.
+ * Profiles from nomination packets (/content) and summit award slides
+ * (public/files/award_slides). Note: adam-petit.pdf was sourced from a packet
+ * file named for Greg Thomas—confirm with Bill before beta announce.
  */
 const awardeesRaw: Awardee[] = [
+  {
+    id: "crystal-rhynes",
+    name: "Crystal Rhynes",
+    institution: "Southwestern Community College",
+    recognition: "2026 AI Innovator in Education Award",
+    year: "2026",
+    stance: "Practice before the room",
+    category: "Workforce Readiness",
+    summary:
+      "Ethical Simulation-Based Workforce Training Model—using AI for virtual human simulations that prepare students for real-world client interactions, with guided reflection and instructor feedback across Western North Carolina and the Qualla Boundary.",
+    focus: [
+      "Virtual human simulations for client work",
+      "Guided reflection and instructor feedback",
+      "Workforce-ready training including Qualla Boundary",
+    ],
+    image: "/images/awards/crystal-rhynes.jpg",
+    imageAlt: "Crystal Rhynes facilitating a workshop at Southwestern Community College",
+    slidesPdf: "/files/awards/slides/crystal-rhynes.pdf",
+  },
+  {
+    id: "elizabeth-dellinger",
+    name: "Elizabeth Dellinger",
+    institution: "Mayland Community College · Business Administration",
+    recognition: "2026 AI Innovator in Education Award",
+    year: "2026",
+    stance: "Think first, AI second",
+    category: "Student Achievement",
+    summary:
+      "A cross-disciplinary business simulation model that uses AI-powered scenarios to strengthen leadership, communication, and decision-making—while teaching students to evaluate, verify, and challenge AI-generated information.",
+    focus: [
+      "AI-powered leadership and decision simulations",
+      "AI literacy woven through the curriculum",
+      "Critical evaluation of AI-generated information",
+    ],
+    image: "/images/awards/elizabeth-dellinger.jpg",
+    imageAlt: "Portrait of Elizabeth Dellinger, Mayland Community College",
+    slidesPdf: "/files/awards/slides/elizabeth-dellinger.pdf",
+  },
+  {
+    id: "jason-kelley",
+    name: "Jason Kelley",
+    institution: "Appalachian State University · Next Carolina Ventures",
+    recognition: "2026 AI Innovator in Education Award",
+    year: "2026",
+    stance: "Prototype with purpose",
+    category: "Student Achievement",
+    summary:
+      "AI-Enabled Venture Creation: a scaffolded approach that turns management students into AI prototype builders at zero cost—teaching why and how to use AI strategically, with built-in ethical friction so students reason about AI, not only with it.",
+    focus: [
+      "Zero-cost AI prototyping for management students",
+      "Six-stage arc for strategic AI use",
+      "Ethical friction built into the workflow",
+    ],
+    image: "/images/awards/jason-kelley.jpg",
+    imageAlt: "Portrait of Jason Kelley, Appalachian State University",
+    slidesPdf: "/files/awards/slides/jason-kelley.pdf",
+  },
+  {
+    id: "anne-oxenreider",
+    name: "Anne Oxenreider",
+    institution: "Western Carolina University · OIPE",
+    recognition: "2026 AI Innovator in Education Award",
+    year: "2026",
+    stance: "Governance before data",
+    category: "Institutional Improvement",
+    summary:
+      "Integrated Enrollment Intelligence: an AI-powered weekly admissions analysis workflow—WCU’s first recurring enrollment intelligence function, with six deliverables per cycle and formal IT Security and Legal review before any data was processed.",
+    focus: [
+      "Weekly segment-level admissions analysis",
+      "Six deliverables per cycle including dashboard and briefing",
+      "IT Security and Legal review before processing",
+    ],
+    image: "/images/awards/anne-oxenreider.jpg",
+    imageAlt: "Portrait of Anne Oxenreider, Western Carolina University",
+    slidesPdf: "/files/awards/slides/anne-oxenreider.pdf",
+  },
   {
     id: "julie-johnson-busbin",
     name: "Dr. Julie Johnson-Busbin",
@@ -136,6 +214,7 @@ export const awardees: Awardee[] = awardeesRaw.map((person) => ({
   ...person,
   image: withBase(person.image),
   proposalPdf: person.proposalPdf ? withBase(person.proposalPdf) : undefined,
+  slidesPdf: person.slidesPdf ? withBase(person.slidesPdf) : undefined,
   gallery: person.gallery?.map((img) => ({ ...img, src: withBase(img.src) })),
 }));
 

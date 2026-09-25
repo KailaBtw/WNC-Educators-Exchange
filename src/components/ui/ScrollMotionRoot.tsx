@@ -19,7 +19,7 @@ export default function ScrollMotionRoot() {
     if (!elements.length) return;
 
     elements.forEach((el) => {
-      const y = Number(el.dataset.revealY ?? 36);
+      const y = Number(el.dataset.revealY ?? 22);
       el.style.opacity = "0";
       el.style.transform = `translate3d(0, ${y}px, 0)`;
       el.style.transition = "none";
@@ -32,12 +32,12 @@ export default function ScrollMotionRoot() {
       const delay = Number(el.dataset.revealDelay ?? 0);
       window.setTimeout(() => {
         el.style.transition =
-          "opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)";
+          "opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)";
         el.style.opacity = "1";
         el.style.transform = "translate3d(0, 0, 0)";
         window.setTimeout(() => {
           el.style.willChange = "auto";
-        }, 800);
+        }, 550);
       }, delay * 1000);
     };
 
@@ -49,7 +49,8 @@ export default function ScrollMotionRoot() {
           observer.unobserve(entry.target);
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+      // Start just before content enters the fold — less empty space, still intentional.
+      { threshold: 0.05, rootMargin: "0px 0px 10% 0px" },
     );
 
     elements.forEach((el) => observer.observe(el));
@@ -59,7 +60,7 @@ export default function ScrollMotionRoot() {
       elements.forEach((el) => {
         if (el.dataset.revealed !== "true") revealNow(el);
       });
-    }, 2200);
+    }, 1600);
 
     return () => {
       observer.disconnect();
