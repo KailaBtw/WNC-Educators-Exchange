@@ -1,4 +1,5 @@
 import { withBase } from "../lib/paths";
+import { site } from "./site";
 
 export type ProgramSession = {
   id: string;
@@ -47,7 +48,7 @@ const eventsRaw: EventItem[] = [
     summary:
       "Educators from across Western North Carolina gather at Mars Hill University to share practice, discuss regional AI issues, and plan next steps together.",
     location: "Mars Hill University (capacity ~120)",
-    registerUrl: "https://example.com/register-november-2026",
+    registerUrl: site.registerUrl,
     images: [
       {
         src: "/images/events/archive/brain-01.jpg",

@@ -10,7 +10,7 @@ export const site = {
   description:
     "Findings from the 2026 WNC Educator Survey and regional summits: ten issues facing educators, campus practices in motion, and the November 13 Educators Exchange at Mars Hill University.",
   contactEmail: "contact@wncexchange.com",
-  registerUrl: "https://example.com/register-november-2026",
+  registerUrl: "https://novera.events/events/wnc-educators-exchange26",
   fullReportUrl: "https://example.com/full-report-top-10-issues",
   campusesDoingUrl: "https://example.com/what-campuses-are-doing",
   educatorProjectsUrl: "https://example.com/educator-projects-in-ai",
