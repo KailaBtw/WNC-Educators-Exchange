@@ -1,33 +1,42 @@
 ---
 import { site } from "../../content/site";
+import { routes } from "../../config/site";
+import { withBase } from "../../lib/paths";
 
 const pathname = Astro.url.pathname;
+const baseRoot = withBase("/").replace(/\/$/, "") || "";
+const localPath =
+  baseRoot && pathname.startsWith(baseRoot) ? pathname.slice(baseRoot.length) || "/" : pathname;
+
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/events", label: "Events" },
-  { href: "/issues", label: "Issues" },
-  { href: "/schools", label: "Schools" },
-  { href: "/awards", label: "Awards" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: routes.home, label: "Home" },
+  { href: routes.events, label: "Events" },
+  { href: routes.issues, label: "Issues" },
+  { href: routes.schools, label: "Schools" },
+  { href: routes.awards, label: "Awards" },
+  { href: routes.about, label: "About" },
+  { href: routes.contact, label: "Contact" },
 ];
 
 function isActive(href: string) {
-  if (href === "/") return pathname === "/";
-  return pathname.startsWith(href);
+  if (href === "/") return localPath === "/" || localPath === "";
+  return localPath.startsWith(href);
 }
 ---
 
 <header class="site-header">
   <div class="site-header__inner">
-    <a class="brand" href="/">
+    <a class="brand" href={withBase(routes.home)}>
       <span class="brand__mark" aria-hidden="true"></span>
       <span class="brand__text">{site.shortName}</span>
     </a>
     <nav class="nav" aria-label="Primary">
       {
         links.map((link) => (
-          <a href={link.href} class:list={["nav__link", { "is-active": isActive(link.href) }]}>
+          <a
+            href={withBase(link.href)}
+            class:list={["nav__link", { "is-active": isActive(link.href) }]}
+          >
             {link.label}
           </a>
         ))

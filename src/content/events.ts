@@ -1,3 +1,5 @@
+import { withBase } from "../lib/paths";
+
 export type ProgramSession = {
   id: string;
   time: string;
@@ -33,7 +35,9 @@ const novemberTableTopics = [
   "How does AI change thinking and learning?",
 ];
 
-export const events: EventItem[] = [
+
+/** Store root paths here; base prefix applied once on export. */
+const eventsRaw: EventItem[] = [
   {
     slug: "november-2026",
     title: "WNC AI Educator’s Exchange",
@@ -249,6 +253,11 @@ export const events: EventItem[] = [
     ],
   },
 ];
+
+export const events: EventItem[] = eventsRaw.map((event) => ({
+  ...event,
+  images: event.images.map((img) => ({ ...img, src: withBase(img.src) })),
+}));
 
 export function getEvent(slug: string) {
   return events.find((e) => e.slug === slug);

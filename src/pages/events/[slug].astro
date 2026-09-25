@@ -6,6 +6,8 @@ import EventCarousel from "../../components/events/EventCarousel";
 import ContactCta from "../../components/layout/ContactCta.astro";
 import { events, getEvent, getProgramLines } from "../../content/events";
 import { site } from "../../content/site";
+import { routes } from "../../config/site";
+import { withBase } from "../../lib/paths";
 
 export function getStaticPaths() {
   return events.map((event) => ({
@@ -17,7 +19,7 @@ const { slug } = Astro.params;
 const event = getEvent(slug!);
 
 if (!event) {
-  return Astro.redirect("/events");
+  return Astro.redirect(withBase(routes.events));
 }
 
 const programLines = getProgramLines(event);
@@ -49,7 +51,7 @@ const gallerySlides = event.images.map((img) => ({
               </Button>
             )
           }
-          <Button href="/events" variant="secondary">All events</Button>
+          <Button href={routes.events} variant="secondary">All events</Button>
         </div>
       </div>
       {

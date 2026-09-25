@@ -1,3 +1,5 @@
+import { withBase } from "../lib/paths";
+
 export type Awardee = {
   id: string;
   name: string;
@@ -19,8 +21,9 @@ export const awardsIntro = {
     "2026 AI Innovator in Education Award submissions from the BrAIn Hub Educator Award—WNC educators using AI to strengthen student achievement, workforce readiness, and institutional practice.",
 };
 
+
 /** Profiles drawn from nomination / submission packets in /content. */
-export const awardees: Awardee[] = [
+const awardeesRaw: Awardee[] = [
   {
     id: "julie-johnson-busbin",
     name: "Dr. Julie Johnson-Busbin",
@@ -112,3 +115,8 @@ export const awardees: Awardee[] = [
     imageAlt: "Portrait placeholder for Adam Petit",
   },
 ];
+
+export const awardees: Awardee[] = awardeesRaw.map((person) => ({
+  ...person,
+  image: withBase(person.image),
+}));

@@ -7,6 +7,7 @@ import ContactCta from "../../components/layout/ContactCta.astro";
 import { site } from "../../content/site";
 import { stats } from "../../content/stats";
 import { issueFilters, issues } from "../../content/issues";
+import { routes } from "../../config/site";
 
 const reportStats = [
   { value: stats.respondents.value, label: stats.respondents.label, color: "green-light" as const },
@@ -42,7 +43,7 @@ const reportStats = [
       <StatRow stats={reportStats} />
       <div class="issues-report__actions">
         <Button href={site.fullReportUrl} external>Full written analysis</Button>
-        <Button href="/schools" variant="secondary">What schools are doing</Button>
+        <Button href={routes.schools} variant="secondary">What schools are doing</Button>
       </div>
     </div>
   </section>

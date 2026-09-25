@@ -2,6 +2,8 @@
 import SectionHeader from "../ui/SectionHeader.astro";
 import Button from "../ui/Button.astro";
 import { awardsIntro, awardees } from "../../content/awards";
+import { routes } from "../../config/site";
+import { withBase } from "../../lib/paths";
 
 const featured = awardees.slice(0, 3);
 ---
@@ -27,7 +29,7 @@ const featured = awardees.slice(0, 3);
             data-reveal-y="28"
             style={`--accent: ${index === 0 ? "var(--purple)" : index === 1 ? "var(--blue)" : "var(--green)"}`}
           >
-            <a class="awards-teaser__media" href="/awards">
+            <a class="awards-teaser__media" href={withBase(routes.awards)}>
               <img src={person.image} alt={person.imageAlt} />
               <span class="awards-teaser__year">{person.year}</span>
             </a>
@@ -49,7 +51,7 @@ const featured = awardees.slice(0, 3);
     </div>
 
     <div class="awards-teaser__cta" data-reveal data-reveal-delay="0.14" data-reveal-y="24">
-      <Button href="/awards">See all recognized faculty →</Button>
+      <Button href={routes.awards}>See all recognized faculty →</Button>
     </div>
   </div>
 </section>

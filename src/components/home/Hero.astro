@@ -1,10 +1,12 @@
 ---
 import Button from "../ui/Button.astro";
 import { site } from "../../content/site";
+import { routes } from "../../config/site";
+import { cssUrl } from "../../lib/paths";
 ---
 
 <section class="hero">
-  <div class="hero__media" aria-hidden="true">
+  <div class="hero__media" aria-hidden="true" style={`--hero-image: ${cssUrl("heroUnca")}`}>
     <span class="hero__place">UNCA campus</span>
   </div>
   <div class="container hero__content" data-reveal data-reveal-y="24">
@@ -16,7 +18,7 @@ import { site } from "../../content/site";
     </p>
     <div class="hero__actions">
       <Button href={site.registerUrl} variant="light" external>Register for Nov 13</Button>
-      <Button href="/events/november-2026" variant="secondary">Event details</Button>
+      <Button href={routes.november} variant="secondary">Event details</Button>
     </div>
   </div>
 </section>
@@ -41,7 +43,7 @@ import { site } from "../../content/site";
         color-mix(in srgb, var(--ink) 48%, transparent) 48%,
         color-mix(in srgb, var(--ink) 68%, transparent) 100%
       ),
-      url("/images/hero/unca.jpg") center / cover no-repeat;
+      var(--hero-image) center / cover no-repeat;
   }
 
   .hero__place {

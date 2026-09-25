@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../../lib/paths";
+
 interface Props {
   href: string;
   variant?: "primary" | "secondary" | "ghost" | "light" | "quiet";
@@ -7,10 +9,11 @@ interface Props {
 }
 
 const { href, variant = "primary", external = false, class: className = "" } = Astro.props;
+const resolvedHref = external || !href.startsWith("/") ? href : withBase(href);
 ---
 
 <a
-  href={href}
+  href={resolvedHref}
   class:list={["btn", `btn--${variant}`, className]}
   target={external ? "_blank" : undefined}
   rel={external ? "noopener noreferrer" : undefined}

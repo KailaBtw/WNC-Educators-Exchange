@@ -1,6 +1,7 @@
 ---
 import SectionHeader from "../ui/SectionHeader.astro";
 import Button from "../ui/Button.astro";
+import { routes } from "../../config/site";
 ---
 
 <section class="section contest-teaser" id="contest">
@@ -17,8 +18,8 @@ import Button from "../ui/Button.astro";
       </p>
     </SectionHeader>
     <div class="contest-teaser__actions">
-      <Button href="/events/november-2026">See the Nov 13 program</Button>
-      <Button href="/awards" variant="ghost">Award-winning faculty →</Button>
+      <Button href={routes.november}>See the Nov 13 program</Button>
+      <Button href={routes.awards} variant="ghost">Award-winning faculty →</Button>
     </div>
   </div>
 </section>

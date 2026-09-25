@@ -1,6 +1,7 @@
 ---
 import type { Issue } from "../../content/issues";
 import { issueCategoryLabel } from "../../content/issues";
+import { withBase } from "../../lib/paths";
 
 interface Props {
   issue: Issue;
@@ -32,7 +33,7 @@ const { issue } = Astro.props;
     {issue.body.map((paragraph) => (
       <p>{paragraph}</p>
     ))}
-    <a class="issue-card__link" href={`/issues/${issue.slug}`}>Open full issue page →</a>
+    <a class="issue-card__link" href={withBase(`/issues/${issue.slug}`)}>Open full issue page →</a>
   </div>
 </article>
 

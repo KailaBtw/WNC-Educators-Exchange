@@ -1,5 +1,24 @@
 ---
 import { site } from "../../content/site";
+import { routes } from "../../config/site";
+import { withBase } from "../../lib/paths";
+
+const footerLinks = {
+  events: [
+    { href: routes.november, label: "November 13" },
+    { href: routes.brainHub, label: "Brain Hub" },
+    { href: routes.january, label: "January Event" },
+    { href: routes.events, label: "All events" },
+  ],
+  explore: [
+    { href: routes.issues, label: "Top 10 Issues" },
+    { href: routes.schools, label: "Schools" },
+    { href: routes.awards, label: "Faculty awards" },
+    { href: routes.about, label: "About" },
+    { href: routes.resources, label: "Resources" },
+  ],
+  connect: [{ href: routes.contact, label: "Contact" }],
+};
 ---
 
 <footer class="site-footer">
@@ -18,26 +37,37 @@ import { site } from "../../content/site";
       <div>
         <h3>Events</h3>
         <ul>
-          <li><a href="/events/november-2026">November 13</a></li>
-          <li><a href="/events/brain-hub">Brain Hub</a></li>
-          <li><a href="/events/january-event">January Event</a></li>
-          <li><a href="/events">All events</a></li>
+          {
+            footerLinks.events.map((link) => (
+              <li>
+                <a href={withBase(link.href)}>{link.label}</a>
+              </li>
+            ))
+          }
         </ul>
       </div>
       <div>
         <h3>Explore</h3>
         <ul>
-          <li><a href="/issues">Top 10 Issues</a></li>
-          <li><a href="/schools">Schools</a></li>
-          <li><a href="/awards">Faculty awards</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/resources">Resources</a></li>
+          {
+            footerLinks.explore.map((link) => (
+              <li>
+                <a href={withBase(link.href)}>{link.label}</a>
+              </li>
+            ))
+          }
         </ul>
       </div>
       <div>
         <h3>Connect</h3>
         <ul>
-          <li><a href="/contact">Contact</a></li>
+          {
+            footerLinks.connect.map((link) => (
+              <li>
+                <a href={withBase(link.href)}>{link.label}</a>
+              </li>
+            ))
+          }
           <li>
             <a href={site.registerUrl} target="_blank" rel="noopener noreferrer">Register</a>
           </li>
@@ -48,9 +78,9 @@ import { site } from "../../content/site";
   <div class="container site-footer__bar">
     <p>© {new Date().getFullYear()} {site.name}. {site.org}.</p>
     <p class="site-footer__legal">
-      <a href="/resources">Resources</a>
+      <a href={withBase(routes.resources)}>Resources</a>
       <span aria-hidden="true">·</span>
-      <a href="/contact">Questions</a>
+      <a href={withBase(routes.contact)}>Questions</a>
     </p>
   </div>
 </footer>

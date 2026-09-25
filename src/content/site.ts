@@ -1,3 +1,6 @@
+import { assets } from "../config/site";
+import { asset } from "../lib/paths";
+
 export const site = {
   name: "WNC Educators Exchange",
   shortName: "WNC Exchange",
@@ -19,14 +22,14 @@ export const site = {
     {
       name: "Leigha Travis",
       role: "Report co-author",
-      image: "/images/team/leigha-travis.svg",
+      image: asset(assets.teamLeigha),
     },
     {
       name: "Ellie LaGrave",
       role: "Report co-author",
-      image: "/images/team/ellie-lagrave.svg",
+      image: asset(assets.teamEllie),
     },
   ],
-} as const;
+};
 
 export type SiteConfig = typeof site;

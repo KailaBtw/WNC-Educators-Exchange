@@ -5,6 +5,7 @@ import Button from "../components/ui/Button.astro";
 import ContactCta from "../components/layout/ContactCta.astro";
 import { site } from "../content/site";
 import { stats } from "../content/stats";
+import { routes } from "../config/site";
 ---
 
 <BaseLayout
@@ -39,8 +40,8 @@ import { stats } from "../content/stats";
         </div>
         <StatRow stats={stats.aboutTeaser} />
         <div class="about-page__actions">
-          <Button href="/events/november-2026">November 13 event</Button>
-          <Button href="/issues" variant="ghost">Read the Top 10 →</Button>
+          <Button href={routes.november}>November 13 event</Button>
+          <Button href={routes.issues} variant="ghost">Read the Top 10 →</Button>
         </div>
       </div>
     </div>
@@ -93,11 +94,11 @@ import { stats } from "../content/stats";
   }
 
   .about-page__img--a {
-    background-image: url("/images/about/story-1.svg");
+    background-image: var(--asset-about-story-1);
   }
 
   .about-page__img--b {
-    background-image: url("/images/about/story-2.svg");
+    background-image: var(--asset-about-story-2);
   }
 
   .about-page h1 {

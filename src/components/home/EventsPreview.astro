@@ -3,6 +3,7 @@ import SectionHeader from "../ui/SectionHeader.astro";
 import ScheduleTimeline from "../events/ScheduleTimeline.astro";
 import Button from "../ui/Button.astro";
 import { events, getProgramLines } from "../../content/events";
+import { routes } from "../../config/site";
 
 const upcoming = events.find((e) => e.status === "upcoming");
 const past = events.filter((e) => e.status === "past");
@@ -91,7 +92,7 @@ const past = events.filter((e) => e.status === "past");
     }
 
     <div class="events-home__cta" data-reveal data-reveal-delay="0.12" data-reveal-y="20">
-      <Button href="/events" variant="ghost">Explore all events →</Button>
+      <Button href={routes.events} variant="ghost">Explore all events →</Button>
     </div>
   </div>
 </section>

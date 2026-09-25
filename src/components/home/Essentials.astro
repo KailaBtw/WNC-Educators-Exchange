@@ -2,6 +2,8 @@
 import { issues, issueCategoryLabel } from "../../content/issues";
 import { schoolPractices } from "../../content/schools";
 import { site } from "../../content/site";
+import { routes } from "../../config/site";
+import { withBase } from "../../lib/paths";
 
 const issuePreview = issues.slice(0, 3);
 const practicePreview = schoolPractices.slice(0, 3);
@@ -42,7 +44,7 @@ const practicePreview = schoolPractices.slice(0, 3);
           <button type="button" class="unify-card__cta" data-open-modal="issues" data-index="0">
             See more
           </button>
-          <a class="unify-card__readmore" href="/issues">Read more →</a>
+          <a class="unify-card__readmore" href={withBase(routes.issues)}>Read more →</a>
         </div>
       </div>
     </article>
@@ -84,7 +86,7 @@ const practicePreview = schoolPractices.slice(0, 3);
           <button type="button" class="unify-card__cta" data-open-modal="schools" data-index="0">
             See more
           </button>
-          <a class="unify-card__readmore" href="/schools">Read more →</a>
+          <a class="unify-card__readmore" href={withBase(routes.schools)}>Read more →</a>
         </div>
       </div>
     </article>
@@ -98,7 +100,7 @@ const practicePreview = schoolPractices.slice(0, 3);
         <p class="info-dialog__kicker">Survey report</p>
         <h2 id="issues-dialog-title">Top 10 Issues</h2>
         <p class="info-dialog__banner-lead">Facing WNC educators · Brain first, then AI.</p>
-        <a class="info-dialog__readmore" href="/issues">Read more →</a>
+        <a class="info-dialog__readmore" href={withBase(routes.issues)}>Read more →</a>
       </div>
       <button type="button" class="info-dialog__close" data-close-dialog aria-label="Close">
         <span aria-hidden="true">×</span>
@@ -163,7 +165,7 @@ const practicePreview = schoolPractices.slice(0, 3);
                     Next →
                   </button>
                 </div>
-                <a class="info-dialog__more" href={`/issues/${issue.slug}`}>Full issue page →</a>
+                <a class="info-dialog__more" href={withBase(`/issues/${issue.slug}`)}>Full issue page →</a>
               </div>
             </article>
           ))
@@ -180,7 +182,7 @@ const practicePreview = schoolPractices.slice(0, 3);
         <p class="info-dialog__kicker">Campus practice</p>
         <h2 id="schools-dialog-title">What schools are doing</h2>
         <p class="info-dialog__banner-lead">Approaches already in use across WNC campuses.</p>
-        <a class="info-dialog__readmore" href="/schools">Read more →</a>
+        <a class="info-dialog__readmore" href={withBase(routes.schools)}>Read more →</a>
       </div>
       <button type="button" class="info-dialog__close" data-close-dialog aria-label="Close">
         <span aria-hidden="true">×</span>
@@ -259,7 +261,7 @@ const practicePreview = schoolPractices.slice(0, 3);
                     {practice.link.label} →
                   </a>
                 ) : (
-                  <a class="info-dialog__more" href="/schools">
+                  <a class="info-dialog__more" href={withBase(routes.schools)}>
                     All campus practices →
                   </a>
                 )}
@@ -389,7 +391,7 @@ const practicePreview = schoolPractices.slice(0, 3);
         color-mix(in srgb, var(--ink) 18%, transparent) 55%,
         color-mix(in srgb, var(--cream) 12%, transparent)
       ),
-      url("/images/events/archive/brain-10.jpg");
+      var(--asset-issues-banner);
     background-size: cover;
     background-position: center 45%;
   }
@@ -402,7 +404,7 @@ const practicePreview = schoolPractices.slice(0, 3);
         color-mix(in srgb, var(--ink) 22%, transparent) 55%,
         color-mix(in srgb, var(--cream) 8%, transparent)
       ),
-      url("/images/events/archive/brain-03.jpg");
+      var(--asset-schools-banner);
     background-position: center 40%;
   }
 
@@ -603,7 +605,7 @@ const practicePreview = schoolPractices.slice(0, 3);
   .info-dialog {
     --dialog-accent: var(--green);
     --dialog-accent-soft: var(--purple);
-    --dialog-banner-image: url("/images/events/archive/brain-10.jpg");
+    --dialog-banner-image: var(--asset-issues-banner);
     border: 0;
     padding: 0;
     background: transparent;
@@ -669,7 +671,7 @@ const practicePreview = schoolPractices.slice(0, 3);
   .info-dialog--issues {
     --dialog-accent: var(--green);
     --dialog-accent-soft: var(--purple);
-    --dialog-banner-image: url("/images/events/archive/brain-10.jpg");
+    --dialog-banner-image: var(--asset-issues-banner);
   }
 
   .info-dialog--issues .info-dialog__banner {
@@ -679,7 +681,7 @@ const practicePreview = schoolPractices.slice(0, 3);
   .info-dialog--schools {
     --dialog-accent: var(--blue);
     --dialog-accent-soft: var(--green);
-    --dialog-banner-image: url("/images/events/archive/brain-03.jpg");
+    --dialog-banner-image: var(--asset-schools-banner);
   }
 
   .info-dialog--schools .info-dialog__banner {

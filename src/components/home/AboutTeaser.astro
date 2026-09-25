@@ -2,11 +2,19 @@
 import StatRow from "../ui/StatRow.astro";
 import Button from "../ui/Button.astro";
 import { stats } from "../../content/stats";
+import { routes } from "../../config/site";
+import { cssUrl } from "../../lib/paths";
 ---
 
 <section class="section about-teaser">
   <div class="container about-teaser__grid">
-    <div class="about-teaser__image" aria-hidden="true" data-reveal data-reveal-y="40"></div>
+    <div
+      class="about-teaser__image"
+      aria-hidden="true"
+      data-reveal
+      data-reveal-y="40"
+      style={`--about-image: ${cssUrl("aboutTeaser")}`}
+    ></div>
     <div class="about-teaser__copy" data-reveal data-reveal-delay="0.1" data-reveal-y="32">
       <p class="eyebrow">About</p>
       <h2>Why this exchange exists</h2>
@@ -22,7 +30,7 @@ import { stats } from "../../content/stats";
       </div>
       <StatRow stats={stats.aboutTeaser} />
       <div class="about-teaser__actions">
-        <Button href="/about" variant="quiet">About the Exchange</Button>
+        <Button href={routes.about} variant="quiet">About the Exchange</Button>
       </div>
     </div>
   </div>
@@ -49,7 +57,7 @@ import { stats } from "../../content/stats";
         color-mix(in srgb, var(--ink) 45%, transparent),
         color-mix(in srgb, var(--ink) 20%, transparent)
       ),
-      url("/images/events/archive/brain-03.jpg") center 35% / cover no-repeat;
+      var(--about-image) center 35% / cover no-repeat;
   }
 
   .about-teaser__copy h2 {

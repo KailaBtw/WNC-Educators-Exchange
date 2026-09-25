@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/ui/Button.astro";
+import { routes } from "../config/site";
 ---
 
 <BaseLayout
@@ -16,8 +17,8 @@ import Button from "../components/ui/Button.astro";
         educator projects, and related tools will land here in a later pass.
       </p>
       <div class="resources-page__actions">
-        <Button href="/issues">Top 10 Issues</Button>
-        <Button href="/schools" variant="secondary">Campus practices</Button>
+        <Button href={routes.issues}>Top 10 Issues</Button>
+        <Button href={routes.schools} variant="secondary">Campus practices</Button>
       </div>
     </div>
   </section>

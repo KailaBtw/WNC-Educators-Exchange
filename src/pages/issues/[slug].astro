@@ -4,6 +4,8 @@ import Button from "../../components/ui/Button.astro";
 import ContactCta from "../../components/layout/ContactCta.astro";
 import { getIssue, issues } from "../../content/issues";
 import { site } from "../../content/site";
+import { routes } from "../../config/site";
+import { withBase } from "../../lib/paths";
 
 export function getStaticPaths() {
   return issues.map((issue) => ({
@@ -15,7 +17,7 @@ const { slug } = Astro.params;
 const issue = getIssue(slug!);
 
 if (!issue) {
-  return Astro.redirect("/issues");
+  return Astro.redirect(withBase(routes.issues));
 }
 
 const idx = issues.findIndex((i) => i.slug === issue.slug);
@@ -34,19 +36,19 @@ const next = issues[idx + 1];
       </div>
       <div class="issue-page__actions">
         <Button href={site.fullReportUrl} external>Read full analysis</Button>
-        <Button href="/issues" variant="secondary">All issues</Button>
+        <Button href={routes.issues} variant="secondary">All issues</Button>
       </div>
       <nav class="issue-page__nav" aria-label="Issue pagination">
         {
           prev ? (
-            <a href={`/issues/${prev.slug}`}>← {prev.number}. {prev.title}</a>
+            <a href={withBase(`/issues/${prev.slug}`)}>← {prev.number}. {prev.title}</a>
           ) : (
             <span />
           )
         }
         {
           next ? (
-            <a href={`/issues/${next.slug}`}>{next.number}. {next.title} →</a>
+            <a href={withBase(`/issues/${next.slug}`)}>{next.number}. {next.title} →</a>
           ) : (
             <span />
           )
