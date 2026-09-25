@@ -35,8 +35,16 @@ const next = issues[idx + 1];
         {issue.body.map((paragraph) => <p>{paragraph}</p>)}
       </div>
       <div class="issue-page__actions">
-        <Button href={site.fullReportUrl} external>Read full analysis</Button>
-        <Button href={routes.issues} variant="secondary">All issues</Button>
+        {
+          site.fullReportUrl ? (
+            <Button href={site.fullReportUrl} external>
+              Read full analysis (PDF)
+            </Button>
+          ) : null
+        }
+        <Button href={routes.issues} variant={site.fullReportUrl ? "secondary" : "primary"}>
+          All issues
+        </Button>
       </div>
       <nav class="issue-page__nav" aria-label="Issue pagination">
         {

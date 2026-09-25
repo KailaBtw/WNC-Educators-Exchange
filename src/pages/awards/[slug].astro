@@ -58,15 +58,26 @@ const gallery = person.gallery?.length
         </ul>
         <div class="award-profile__actions">
           {
+            person.certificateUrl && (
+              <Button href={person.certificateUrl} external>
+                View certificate
+              </Button>
+            )
+          }
+          {
             person.slidesPdf && (
-              <Button href={person.slidesPdf} external>
+              <Button
+                href={person.slidesPdf}
+                external
+                variant={person.certificateUrl ? "secondary" : "primary"}
+              >
                 Download slides
               </Button>
             )
           }
           {
             person.proposalPdf && (
-              <Button href={person.proposalPdf} external variant={person.slidesPdf ? "secondary" : "primary"}>
+              <Button href={person.proposalPdf} external variant="secondary">
                 Download proposal
               </Button>
             )
@@ -74,8 +85,7 @@ const gallery = person.gallery?.length
           {
             person.pendingMedia && (
               <p class="award-profile__pending">
-                Portrait and award materials are forthcoming—Bill is forwarding facial photos from
-                the award images.
+                Portrait and full project writeup are forthcoming.
               </p>
             )
           }
@@ -112,6 +122,41 @@ const gallery = person.gallery?.length
         )
       }
     </nav>
+
+    {
+      person.certificateUrl && (
+        <div class="container award-profile__cert" data-reveal data-reveal-y="24">
+          <p class="eyebrow">Recognition</p>
+          <h2>Award certificate</h2>
+          <p class="muted award-profile__cert-lede">
+            Official 2026 AI Innovator in Education Award certificate for {person.name}.
+          </p>
+          {
+            person.certificateUrl.match(/\.(png|jpe?g|webp)$/i) ? (
+              <figure class="award-profile__cert-figure">
+                <a
+                  href={person.certificateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Open certificate for ${person.name}`}
+                >
+                  <img
+                    src={person.certificateUrl}
+                    alt={`Award certificate for ${person.name}`}
+                    width="960"
+                    height="720"
+                  />
+                </a>
+              </figure>
+            ) : (
+              <Button href={person.certificateUrl} external>
+                Open certificate PDF
+              </Button>
+            )
+          }
+        </div>
+      )
+    }
 
     {
       gallery.length > 0 && (
@@ -252,6 +297,35 @@ const gallery = person.gallery?.length
     color: var(--muted);
     font-size: 0.92rem;
     font-style: italic;
+  }
+
+  .award-profile__cert {
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .award-profile__cert h2 {
+    margin: 0.35rem 0 0.5rem;
+    font-size: clamp(1.45rem, 2.8vw, 1.85rem);
+  }
+
+  .award-profile__cert-lede {
+    margin: 0 0 1rem;
+    max-width: 36rem;
+  }
+
+  .award-profile__cert-figure {
+    margin: 0;
+    max-width: 42rem;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+    background: color-mix(in srgb, var(--white) 80%, var(--cream));
+  }
+
+  .award-profile__cert-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   .award-profile__gallery {

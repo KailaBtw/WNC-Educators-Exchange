@@ -21,6 +21,8 @@ export type Awardee = {
   proposalPdf?: string;
   /** Summit award slide PDF under /public */
   slidesPdf?: string;
+  /** Award certificate (PDF or image) under /public/files/certs */
+  certificateUrl?: string;
   gallery?: AwardGalleryImage[];
   /** True when portrait/PDF assets are still pending from Bill. */
   pendingMedia?: boolean;
@@ -34,8 +36,8 @@ export const awardsIntro = {
 };
 
 /**
- * Canonical six awardees (Bill, Sep 2025): Dellinger, Oxenreider, Kelley,
- * Rhynes, Gusain, Hadley. Portraits/slides for Gusain & Hadley pending.
+ * Canonical six awardees (Bill): Dellinger, Oxenreider, Kelley, Rhynes,
+ * Renuka Gusain, Brandy Hadley. Certificates in public/files/certs/.
  */
 const awardeesRaw: Awardee[] = [
   {
@@ -56,6 +58,7 @@ const awardeesRaw: Awardee[] = [
     image: "/images/awards/elizabeth-dellinger.jpg",
     imageAlt: "Portrait of Elizabeth Dellinger, Mayland Community College",
     slidesPdf: "/files/awards/slides/elizabeth-dellinger.pdf",
+    certificateUrl: "/files/certs/elizabeth-dellinger.pdf",
   },
   {
     id: "anne-oxenreider",
@@ -75,6 +78,7 @@ const awardeesRaw: Awardee[] = [
     image: "/images/awards/anne-oxenreider.jpg",
     imageAlt: "Portrait of Anne Oxenreider, Western Carolina University",
     slidesPdf: "/files/awards/slides/anne-oxenreider.pdf",
+    certificateUrl: "/files/certs/anne-oxenreider.pdf",
   },
   {
     id: "jason-kelley",
@@ -94,6 +98,7 @@ const awardeesRaw: Awardee[] = [
     image: "/images/awards/jason-kelley.jpg",
     imageAlt: "Portrait of Jason Kelley, Appalachian State University",
     slidesPdf: "/files/awards/slides/jason-kelley.pdf",
+    certificateUrl: "/files/certs/jason-kelley.pdf",
   },
   {
     id: "crystal-rhynes",
@@ -113,35 +118,38 @@ const awardeesRaw: Awardee[] = [
     image: "/images/awards/crystal-rhynes.jpg",
     imageAlt: "Crystal Rhynes facilitating a workshop at Southwestern Community College",
     slidesPdf: "/files/awards/slides/crystal-rhynes.pdf",
+    certificateUrl: "/files/certs/crystal-rhynes.pdf",
   },
   {
-    id: "gusain",
-    name: "Gusain",
+    id: "renuka-gusain",
+    name: "Dr. Renuka Gusain",
     institution: "Western North Carolina",
     recognition: "2026 AI Innovator in Education Award",
     year: "2026",
     stance: "Profile forthcoming",
     category: "Faculty excellence",
     summary:
-      "2026 BrAIn Hub Educator Award winner. Full profile, institution details, and portrait will be added when award materials arrive.",
-    focus: ["Award materials pending"],
+      "2026 BrAIn Hub Educator Award winner. Institution details, project summary, and portrait will be added when award materials arrive.",
+    focus: ["Award certificate available", "Full profile materials pending"],
     image: "/images/awards/regional-faculty.svg",
-    imageAlt: "Portrait placeholder for award winner Gusain",
+    imageAlt: "Portrait placeholder for Dr. Renuka Gusain",
+    certificateUrl: "/files/certs/renuka-gusain.pdf",
     pendingMedia: true,
   },
   {
-    id: "hadley",
-    name: "Hadley",
+    id: "brandy-hadley",
+    name: "Brandy Hadley",
     institution: "Western North Carolina",
     recognition: "2026 AI Innovator in Education Award",
     year: "2026",
     stance: "Profile forthcoming",
     category: "Faculty excellence",
     summary:
-      "2026 BrAIn Hub Educator Award winner. Portrait appears on the award image; full profile and named headshot will be added when materials arrive.",
-    focus: ["Award materials pending"],
+      "2026 BrAIn Hub Educator Award winner. Project summary and a dedicated headshot will be added when materials arrive; award certificate is available below.",
+    focus: ["Award certificate available", "Full profile materials pending"],
     image: "/images/awards/regional-faculty.svg",
-    imageAlt: "Portrait placeholder for award winner Hadley",
+    imageAlt: "Portrait placeholder for Brandy Hadley",
+    certificateUrl: "/files/certs/brandy-hadley.png",
     pendingMedia: true,
   },
 ];
@@ -151,6 +159,7 @@ export const awardees: Awardee[] = awardeesRaw.map((person) => ({
   image: withBase(person.image),
   proposalPdf: person.proposalPdf ? withBase(person.proposalPdf) : undefined,
   slidesPdf: person.slidesPdf ? withBase(person.slidesPdf) : undefined,
+  certificateUrl: person.certificateUrl ? withBase(person.certificateUrl) : undefined,
   gallery: person.gallery?.map((img) => ({ ...img, src: withBase(img.src) })),
 }));
 

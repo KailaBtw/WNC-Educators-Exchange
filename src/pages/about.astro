@@ -69,7 +69,8 @@ import { asset, withBase } from "../lib/paths";
       <h2>Brain Hub &amp; Land of Sky</h2>
       <p class="muted about-partners__lede">
         The Educators Exchange sits inside the 2026 Brain Hub initiatives and is organized with
-        support from the {site.org}. Official logos will replace these wordmarks when files arrive.
+        support from the {site.org}. Official logos will replace these wordmarks when brand files
+        arrive.
       </p>
       <div class="about-partners__logos">
         <a class="about-partners__logo" href={withBase(routes.brainHub)}>
@@ -95,6 +96,20 @@ import { asset, withBase } from "../lib/paths";
         Host, presenters, sponsoring campuses, interns, and Land of Sky partners for the Educators
         Exchange at Mars Hill University.
       </p>
+
+      <figure class="about-host">
+        <img
+          src={asset(assets.teamChrisCain)}
+          alt="Chris Cain, Mars Hill University"
+          width="320"
+          height="400"
+        />
+        <figcaption>
+          <strong>Chris Cain</strong>
+          <span>Host · Mars Hill University</span>
+          <a href="mailto:ccain@mhu.edu">ccain@mhu.edu</a>
+        </figcaption>
+      </figure>
 
       <div class="about-committee__groups">
         {
@@ -252,6 +267,40 @@ import { asset, withBase } from "../lib/paths";
   .about-committee__lede {
     max-width: 40rem;
     margin: 0 0 1.5rem;
+  }
+
+  .about-host {
+    display: grid;
+    grid-template-columns: minmax(0, 9.5rem) 1fr;
+    gap: 1rem;
+    align-items: end;
+    max-width: 28rem;
+    margin: 0 0 1.75rem;
+  }
+
+  .about-host img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--green-light) 30%, white);
+  }
+
+  .about-host figcaption {
+    display: grid;
+    gap: 0.15rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .about-host span {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .about-host a {
+    color: var(--blue);
+    font-size: 0.9rem;
+    word-break: break-word;
   }
 
   .about-committee__groups {

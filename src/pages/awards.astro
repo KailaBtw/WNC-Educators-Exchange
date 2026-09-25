@@ -53,6 +53,13 @@ import { withBase } from "../lib/paths";
                     View profile →
                   </Button>
                   {
+                    person.certificateUrl && (
+                      <Button href={person.certificateUrl} variant="ghost" external>
+                        Certificate
+                      </Button>
+                    )
+                  }
+                  {
                     person.slidesPdf && (
                       <Button href={person.slidesPdf} variant="ghost" external>
                         Download slides
@@ -67,7 +74,7 @@ import { withBase } from "../lib/paths";
                     )
                   }
                   {
-                    person.pendingMedia && (
+                    person.pendingMedia && !person.certificateUrl && (
                       <span class="award-card__pending">Portrait &amp; materials forthcoming</span>
                     )
                   }

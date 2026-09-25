@@ -1,24 +1,130 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/ui/Button.astro";
+import { site, surveyAttribution } from "../content/site";
 import { routes } from "../config/site";
+import { withBase } from "../lib/paths";
+
+const resourceGroups = [
+  {
+    title: "Start here",
+    items: [
+      {
+        label: "Top 10 Issues in AI Facing Educators",
+        href: routes.issues,
+        blurb: `Findings from the ${surveyAttribution.name} and regional summits.`,
+        external: false,
+      },
+      {
+        label: "What schools are doing with AI",
+        href: routes.schools,
+        blurb: "Campus practice cards from the 2026 survey writeups.",
+        external: false,
+      },
+      {
+        label: "Faculty we recognize",
+        href: routes.awards,
+        blurb: "2026 BrAIn Hub Educator Award winners and profiles.",
+        external: false,
+      },
+    ],
+  },
+  {
+    title: "November 13 Exchange",
+    items: [
+      {
+        label: "Event schedule & details",
+        href: routes.november,
+        blurb: "Mars Hill University · full day program.",
+        external: false,
+      },
+      {
+        label: "Register for Nov 13",
+        href: site.registerUrl,
+        blurb: "Novera registration for the Educators Exchange.",
+        external: true,
+      },
+      {
+        label: "All events",
+        href: routes.events,
+        blurb: "Upcoming and previous gatherings.",
+        external: false,
+      },
+    ],
+  },
+  {
+    title: "Connect",
+    items: [
+      {
+        label: "About the Exchange",
+        href: routes.about,
+        blurb: "Brain Hub, Land of Sky, survey source, and summit committee.",
+        external: false,
+      },
+      {
+        label: "Contact",
+        href: routes.contact,
+        blurb: `Reach the team at ${site.contactEmail}.`,
+        external: false,
+      },
+    ],
+  },
+];
 ---
 
 <BaseLayout
   title="Resources"
-  description="Resource library for the WNC Educators Exchange — coming soon."
+  description="Links for WNC educators—Top 10 Issues, campus practices, awards, and November 13 registration."
 >
   <section class="section">
     <div class="container resources-page">
-      <p class="eyebrow">Hold</p>
+      <p class="eyebrow">Library</p>
       <h1>Resources</h1>
-      <p class="muted">
-        This section is intentionally on hold. Links to the full report, campus practice collections,
-        educator projects, and related tools will land here in a later pass.
+      <p class="muted resources-page__lede">
+        A short shelf of what the Exchange publishes now. When the full Top 10 analysis PDF and partner
+        toolkits are cleared for public share, they will appear in this library.
       </p>
+
+      <div class="resources-page__groups">
+        {
+          resourceGroups.map((group) => (
+            <section class="resources-group">
+              <h2>{group.title}</h2>
+              <ul>
+                {group.items.map((item) => (
+                  <li>
+                    {item.external ? (
+                      <a
+                        class="resources-group__link"
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <strong>
+                          {item.label}
+                          <span aria-hidden="true"> ↗</span>
+                        </strong>
+                        <span>{item.blurb}</span>
+                      </a>
+                    ) : (
+                      <a class="resources-group__link" href={withBase(item.href)}>
+                        <strong>{item.label}</strong>
+                        <span>{item.blurb}</span>
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+
       <div class="resources-page__actions">
-        <Button href={routes.issues}>Top 10 Issues</Button>
-        <Button href={routes.schools} variant="secondary">Campus practices</Button>
+        <Button href={routes.issues}>Open Top 10 Issues</Button>
+        <Button href={site.registerUrl} variant="secondary" external>
+          Register for Nov 13
+        </Button>
       </div>
     </div>
   </section>
@@ -26,7 +132,7 @@ import { routes } from "../config/site";
 
 <style>
   .resources-page {
-    max-width: 40rem;
+    max-width: 44rem;
   }
 
   .resources-page h1 {
@@ -34,10 +140,69 @@ import { routes } from "../config/site";
     margin: 0.4rem 0 1rem;
   }
 
+  .resources-page__lede {
+    margin: 0 0 2rem;
+    max-width: 40rem;
+  }
+
+  .resources-page__groups {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .resources-group h2 {
+    margin: 0 0 0.85rem;
+    font-size: 1.15rem;
+    color: var(--green);
+  }
+
+  .resources-group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .resources-group li {
+    margin: 0;
+  }
+
+  .resources-group__link {
+    display: grid;
+    gap: 0.25rem;
+    padding: 1rem 1.1rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--white) 70%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .resources-group__link:hover {
+    border-color: color-mix(in srgb, var(--blue) 35%, transparent);
+    transform: translateY(-1px);
+  }
+
+  .resources-group__link strong {
+    color: var(--ink);
+    font-size: 1.05rem;
+  }
+
+  .resources-group__link:hover strong {
+    color: var(--purple);
+  }
+
+  .resources-group__link span {
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
   .resources-page__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
   }
 </style>

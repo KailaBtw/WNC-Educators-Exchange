@@ -46,6 +46,7 @@ export const assets = {
   aboutStory2: "/images/about/story-2.svg",
   teamLeigha: "/images/team/leigha-travis.svg",
   teamEllie: "/images/team/ellie-lagrave.svg",
+  teamChrisCain: "/images/team/chris-cain.jpg",
   logoBrainHub: "/images/partners/brain-hub.svg",
   logoLandOfSky: "/images/partners/land-of-sky.svg",
 } as const;

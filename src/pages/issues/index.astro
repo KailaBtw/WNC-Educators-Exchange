@@ -44,13 +44,21 @@ const reportStats = [
       </div>
       <StatRow stats={reportStats} />
       <div class="issues-report__actions">
-        <Button href={site.fullReportUrl} external>Full written analysis</Button>
+        {
+          site.fullReportUrl ? (
+            <Button href={site.fullReportUrl} external>
+              Full written analysis (PDF)
+            </Button>
+          ) : (
+            <Button href="#the-ten-issues">Browse the ten issues</Button>
+          )
+        }
         <Button href={routes.schools} variant="secondary">What schools are doing with AI</Button>
       </div>
     </div>
   </section>
 
-  <section class="section section--tight issues-report__list">
+  <section class="section section--tight issues-report__list" id="the-ten-issues">
     <div class="container">
       <p class="eyebrow issues-report__list-eyebrow">The ten issues</p>
 
@@ -110,7 +118,13 @@ const reportStats = [
             ))
           }
         </div>
-        <Button href={site.voteUrl} external>Vote on priorities</Button>
+        {
+          site.voteUrl ? (
+            <Button href={site.voteUrl} external>
+              Vote on priorities
+            </Button>
+          ) : null
+        }
       </div>
     </div>
   </section>
