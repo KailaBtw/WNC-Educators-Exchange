@@ -1,5 +1,10 @@
 import { withBase } from "../lib/paths";
 
+export type AwardGalleryImage = {
+  src: string;
+  alt: string;
+};
+
 export type Awardee = {
   id: string;
   name: string;
@@ -12,17 +17,23 @@ export type Awardee = {
   focus: string[];
   image: string;
   imageAlt: string;
+  /** Root path under /public, e.g. /files/awards/name.pdf */
+  proposalPdf?: string;
+  gallery?: AwardGalleryImage[];
 };
 
 export const awardsIntro = {
   eyebrow: "Recognition",
-  title: "Faculty we recognize",
+  title: "Award-winning faculty",
   description:
-    "2026 AI Innovator in Education Award submissions from the BrAIn Hub Educator Award—WNC educators using AI to strengthen student achievement, workforce readiness, and institutional practice.",
+    "2026 AI Innovator in Education Award winners from the BrAIn Hub Educator Award—WNC educators using AI to strengthen student achievement, workforce readiness, and institutional practice.",
 };
 
-
-/** Profiles drawn from nomination / submission packets in /content. */
+/**
+ * Profiles drawn from nomination / submission packets in /content.
+ * Note: adam-petit.pdf was sourced from a packet file named for Greg Thomas—
+ * confirm with Bill that this is Adam Petit’s proposal before beta announce.
+ */
 const awardeesRaw: Awardee[] = [
   {
     id: "julie-johnson-busbin",
@@ -41,6 +52,7 @@ const awardeesRaw: Awardee[] = [
     ],
     image: "/images/awards/julie-johnson-busbin.svg",
     imageAlt: "Portrait placeholder for Dr. Julie Johnson-Busbin",
+    proposalPdf: "/files/awards/julie-johnson-busbin.pdf",
   },
   {
     id: "john-andrews",
@@ -59,6 +71,7 @@ const awardeesRaw: Awardee[] = [
     ],
     image: "/images/awards/john-andrews.svg",
     imageAlt: "Portrait placeholder for John Andrews",
+    proposalPdf: "/files/awards/john-andrews.pdf",
   },
   {
     id: "meredith-carpenter",
@@ -77,6 +90,7 @@ const awardeesRaw: Awardee[] = [
     ],
     image: "/images/awards/meredith-carpenter.svg",
     imageAlt: "Portrait placeholder for Meredith Carpenter",
+    proposalPdf: "/files/awards/meredith-carpenter.pdf",
   },
   {
     id: "amber-thompson",
@@ -95,6 +109,7 @@ const awardeesRaw: Awardee[] = [
     ],
     image: "/images/awards/amber-thompson.svg",
     imageAlt: "Portrait placeholder for Amber C. Thompson",
+    proposalPdf: "/files/awards/amber-thompson.pdf",
   },
   {
     id: "adam-petit",
@@ -113,10 +128,21 @@ const awardeesRaw: Awardee[] = [
     ],
     image: "/images/awards/adam-petit.svg",
     imageAlt: "Portrait placeholder for Adam Petit",
+    proposalPdf: "/files/awards/adam-petit.pdf",
   },
 ];
 
 export const awardees: Awardee[] = awardeesRaw.map((person) => ({
   ...person,
   image: withBase(person.image),
+  proposalPdf: person.proposalPdf ? withBase(person.proposalPdf) : undefined,
+  gallery: person.gallery?.map((img) => ({ ...img, src: withBase(img.src) })),
 }));
+
+export function getAwardee(slug: string) {
+  return awardees.find((person) => person.id === slug);
+}
+
+export function awardProfilePath(id: string) {
+  return `/awards/${id}`;
+}

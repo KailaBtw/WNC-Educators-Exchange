@@ -1,0 +1,270 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Button from "../../components/ui/Button.astro";
+import ContactCta from "../../components/layout/ContactCta.astro";
+import { awardees, getAwardee, awardProfilePath } from "../../content/awards";
+import { routes } from "../../config/site";
+import { withBase } from "../../lib/paths";
+
+export function getStaticPaths() {
+  return awardees.map((person) => ({
+    params: { slug: person.id },
+  }));
+}
+
+const { slug } = Astro.params;
+const person = getAwardee(slug!);
+
+if (!person) {
+  return Astro.redirect(withBase(routes.awards));
+}
+
+const idx = awardees.findIndex((p) => p.id === person.id);
+const prev = awardees[idx - 1];
+const next = awardees[idx + 1];
+const gallery = person.gallery?.length
+  ? person.gallery
+  : [{ src: person.image, alt: person.imageAlt }];
+---
+
+<BaseLayout title={person.name} description={person.summary}>
+  <article class="section award-profile">
+    <div class="container award-profile__grid">
+      <div class="award-profile__media" data-reveal data-reveal-y="28">
+        <img src={person.image} alt={person.imageAlt} width="480" height="600" />
+        <span class="award-profile__year">{person.year}</span>
+      </div>
+
+      <div class="award-profile__copy" data-reveal data-reveal-delay="0.08" data-reveal-y="24">
+        <p class="eyebrow">{person.recognition}</p>
+        <p class="award-profile__stance">{person.stance}</p>
+        <h1>{person.name}</h1>
+        <p class="award-profile__institution">{person.institution}</p>
+        <p class="award-profile__category">{person.category}</p>
+        <p class="award-profile__summary">{person.summary}</p>
+        <ul class="award-profile__focus">
+          {person.focus.map((item) => <li>{item}</li>)}
+        </ul>
+        <div class="award-profile__actions">
+          {
+            person.proposalPdf && (
+              <Button href={person.proposalPdf} external>
+                Download proposal
+              </Button>
+            )
+          }
+          <Button href={routes.awards} variant="secondary">All award winners</Button>
+        </div>
+      </div>
+    </div>
+
+    {
+      gallery.length > 0 && (
+        <div class="container award-profile__gallery" data-reveal data-reveal-y="24">
+          <p class="eyebrow">From the work</p>
+          <h2>Profile images</h2>
+          <div class="award-profile__gallery-grid">
+            {gallery.map((img) => (
+              <figure>
+                <img src={img.src} alt={img.alt} width="360" height="270" />
+              </figure>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    <nav class="container award-profile__nav" aria-label="Award winner pagination">
+      {
+        prev ? (
+          <a href={withBase(awardProfilePath(prev.id))}>← {prev.name}</a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next ? (
+          <a href={withBase(awardProfilePath(next.id))}>{next.name} →</a>
+        ) : (
+          <span />
+        )
+      }
+    </nav>
+  </article>
+
+  <ContactCta
+    title="Questions about this recognition?"
+    description="Write if you need clarification on a proposal, want to nominate a colleague, or are confirming faculty details for publication."
+  />
+</BaseLayout>
+
+<style>
+  .award-profile__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(1.5rem, 4vw, 2.75rem);
+    align-items: start;
+  }
+
+  .award-profile__media {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    max-width: 22rem;
+    background: color-mix(in srgb, var(--green-light) 35%, white);
+  }
+
+  .award-profile__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .award-profile__year {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 0.7rem;
+    background: color-mix(in srgb, var(--cream) 92%, white);
+    color: var(--purple);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .award-profile__stance {
+    margin: 0.35rem 0 0;
+    color: var(--purple);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .award-profile h1 {
+    margin: 0.35rem 0 0.4rem;
+    font-size: clamp(2rem, 4.5vw, 2.85rem);
+  }
+
+  .award-profile__institution {
+    margin: 0;
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  .award-profile__category {
+    margin: 0.55rem 0 0;
+    display: inline-flex;
+    width: fit-content;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--blue) 14%, white);
+    color: var(--blue);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .award-profile__summary {
+    margin: 1rem 0 0;
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 38rem;
+  }
+
+  .award-profile__focus {
+    list-style: none;
+    margin: 1.1rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .award-profile__focus li {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--purple) 12%, white);
+    color: var(--ink);
+  }
+
+  .award-profile__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .award-profile__gallery {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  .award-profile__gallery h2 {
+    margin: 0.35rem 0 1rem;
+    font-size: clamp(1.45rem, 2.5vw, 1.85rem);
+  }
+
+  .award-profile__gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1rem;
+  }
+
+  .award-profile__gallery-grid figure {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: color-mix(in srgb, var(--green-light) 30%, white);
+  }
+
+  .award-profile__gallery-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .award-profile__nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--purple) 16%, transparent);
+  }
+
+  .award-profile__nav a {
+    color: var(--green);
+    text-decoration: none;
+    font-weight: 600;
+    max-width: 45%;
+  }
+
+  .award-profile__nav a:hover {
+    color: var(--purple);
+  }
+
+  @media (max-width: 800px) {
+    .award-profile__grid {
+      grid-template-columns: 1fr;
+      justify-items: center;
+    }
+
+    .award-profile__copy {
+      justify-self: stretch;
+    }
+
+    .award-profile__media {
+      max-width: 16rem;
+      width: 100%;
+    }
+  }
+</style>

@@ -1,7 +1,7 @@
 ---
 import SectionHeader from "../ui/SectionHeader.astro";
 import Button from "../ui/Button.astro";
-import { awardsIntro, awardees } from "../../content/awards";
+import { awardsIntro, awardees, awardProfilePath } from "../../content/awards";
 import { routes } from "../../config/site";
 import { withBase } from "../../lib/paths";
 
@@ -29,13 +29,15 @@ const featured = awardees.slice(0, 3);
             data-reveal-y="28"
             style={`--accent: ${index === 0 ? "var(--purple)" : index === 1 ? "var(--blue)" : "var(--green)"}`}
           >
-            <a class="awards-teaser__media" href={withBase(routes.awards)}>
+            <a class="awards-teaser__media" href={withBase(awardProfilePath(person.id))}>
               <img src={person.image} alt={person.imageAlt} />
               <span class="awards-teaser__year">{person.year}</span>
             </a>
             <div class="awards-teaser__body">
               <p class="awards-teaser__stance">{person.stance}</p>
-              <h3>{person.name}</h3>
+              <h3>
+                <a href={withBase(awardProfilePath(person.id))}>{person.name}</a>
+              </h3>
               <p class="awards-teaser__institution">{person.institution}</p>
               <p class="awards-teaser__recognition">{person.recognition}</p>
               <p class="awards-teaser__category">{person.category}</p>
@@ -51,7 +53,7 @@ const featured = awardees.slice(0, 3);
     </div>
 
     <div class="awards-teaser__cta" data-reveal data-reveal-delay="0.14" data-reveal-y="24">
-      <Button href={routes.awards}>See all recognized faculty →</Button>
+      <Button href={routes.awards}>See all award-winning faculty →</Button>
     </div>
   </div>
 </section>
@@ -140,6 +142,15 @@ const featured = awardees.slice(0, 3);
     margin: 0;
     font-size: 1.3rem;
     line-height: 1.2;
+  }
+
+  .awards-teaser__card h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .awards-teaser__card h3 a:hover {
+    color: var(--purple);
   }
 
   .awards-teaser__institution {
