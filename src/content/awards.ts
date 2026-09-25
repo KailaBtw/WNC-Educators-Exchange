@@ -25,8 +25,8 @@ export type Awardee = {
 };
 
 export const awardsIntro = {
-  eyebrow: "Recognition",
-  title: "Award-winning faculty",
+  eyebrow: "2026 faculty excellence awards",
+  title: "Faculty we recognize",
   description:
     "2026 AI Innovator in Education Award winners from the BrAIn Hub Educator Award—WNC educators using AI to strengthen student achievement, workforce readiness, and institutional practice.",
 };

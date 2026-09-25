@@ -2,6 +2,11 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ContactCta from "../components/layout/ContactCta.astro";
 import { site } from "../content/site";
+import { institutions } from "../content/institutions";
+import { routes } from "../config/site";
+import { withBase } from "../lib/paths";
+
+const campuses = [...institutions].sort((a, b) => a.name.localeCompare(b.name));
 ---
 
 <BaseLayout
@@ -19,6 +24,49 @@ import { site } from "../content/site";
       </p>
     </div>
   </section>
+
+  <section class="section section--tight contact-people">
+    <div class="container">
+      <p class="eyebrow">Team</p>
+      <h2>Facilitators</h2>
+      <p class="muted contact-people__lede">
+        The Exchange is organized with support from report authors and regional partners. Titles below
+        are working labels—confirm with Leigha before beta announce.
+      </p>
+      <ul class="contact-people__list">
+        {
+          site.facilitators.map((person) => (
+            <li>
+              <strong>{person.name}</strong>
+              <span>{person.role}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section contact-schools">
+    <div class="container">
+      <p class="eyebrow">Campuses</p>
+      <h2>Schools in this effort</h2>
+      <p class="muted contact-schools__lede">
+        Draft roster from the 2026 campus survey summaries (Leigha Travis). Confirm the public
+        Contact-page list before announcing beta.
+      </p>
+      <ul class="contact-schools__list">
+        {
+          campuses.map((campus) => (
+            <li>
+              <a href={withBase(routes.schools)}>{campus.name}</a>
+              <span>{campus.shortName}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
   <ContactCta
     eyebrow="Contact"
     title="Send a question"
@@ -34,5 +82,81 @@ import { site } from "../content/site";
   .contact-page h1 {
     font-size: clamp(2.4rem, 5vw, 3.4rem);
     margin: 0.4rem 0 1rem;
+  }
+
+  .contact-people__lede,
+  .contact-schools__lede {
+    max-width: 40rem;
+    margin: 0.5rem 0 1.25rem;
+  }
+
+  .contact-people h2,
+  .contact-schools h2 {
+    margin: 0.35rem 0 0;
+    font-size: clamp(1.6rem, 3vw, 2rem);
+  }
+
+  .contact-people__list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 0.85rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .contact-people__list li {
+    display: grid;
+    gap: 0.2rem;
+    padding: 0.95rem 1.05rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--white) 70%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--purple) 12%, transparent);
+  }
+
+  .contact-people__list strong {
+    font-size: 1.05rem;
+  }
+
+  .contact-people__list span {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .contact-schools {
+    background: color-mix(in srgb, var(--green-light) 16%, var(--cream));
+  }
+
+  .contact-schools__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+    max-width: 44rem;
+  }
+
+  .contact-schools__list li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.35rem 1rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--green) 18%, transparent);
+  }
+
+  .contact-schools__list a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .contact-schools__list a:hover {
+    color: var(--purple);
+  }
+
+  .contact-schools__list span {
+    color: var(--muted);
+    font-size: 0.88rem;
   }
 </style>

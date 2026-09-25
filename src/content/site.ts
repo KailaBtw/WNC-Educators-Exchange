@@ -18,6 +18,9 @@ export const site = {
   voteUrl: "https://example.com/vote-top-issues",
   acawebCourseUrl: "https://acaweb.org/AI-PD",
   org: "Land of Sky Workforce Development Board",
+  brainHubName: "Brain Hub",
+  brainHubBlurb:
+    "The Educators Exchange is part of the 2026 Brain Hub initiatives—regional convenings that connect AI literacy, workforce pathways, and educator collaboration across Western North Carolina.",
   authors: [
     {
       name: "Leigha Travis",
@@ -29,6 +32,14 @@ export const site = {
       role: "Report co-author",
       image: asset(assets.teamEllie),
     },
+  ],
+  /** Contact page facilitators — expand roles/last names when Leigha confirms. */
+  facilitators: [
+    { name: "Bill", role: "Exchange lead" },
+    { name: "Nana", role: "Registration & operations" },
+    { name: "Megan", role: "Facilitator" },
+    { name: "Ellie LaGrave", role: "Report co-author" },
+    { name: "Leigha Travis", role: "Report co-author · campus survey" },
   ],
 };
 

@@ -41,7 +41,7 @@ alwaysApply: true
 
 - Preserve existing tokens (`--purple`, `--blue`, `--green`, `--cream`, Source Serif / Source Sans).
 - Avoid purple-on-white AI clichés, heavy multi-shadow cards, and floating promo badges on hero faces.
-- Hero location chips (e.g. “UNCA campus”) stay on the media layer corner—not overlay stickers on people.
+- Hero location chips (e.g. “UNCA campus”, Brain Hub org) stay on the media layer corners—not overlay stickers on people.
 
 ## Process
 

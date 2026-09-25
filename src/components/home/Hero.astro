@@ -8,6 +8,7 @@ import { cssUrl } from "../../lib/paths";
 <section class="hero">
   <div class="hero__media" aria-hidden="true" style={`--hero-image: ${cssUrl("heroUnca")}`}>
     <span class="hero__place">UNCA campus</span>
+    <span class="hero__org">Part of the “Brain Hub” org</span>
   </div>
   <div class="container hero__content" data-reveal data-reveal-y="24">
     <p class="hero__brand">{site.name}</p>
@@ -59,6 +60,22 @@ import { cssUrl } from "../../lib/paths";
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+  }
+
+  .hero__org {
+    position: absolute;
+    right: var(--page-gutter);
+    bottom: 1rem;
+    z-index: 1;
+    padding: 0.28rem 0.65rem;
+    border-radius: 0.45rem;
+    background: color-mix(in srgb, var(--ink) 55%, transparent);
+    color: color-mix(in srgb, var(--white) 92%, transparent);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    max-width: min(16rem, 46vw);
+    text-align: right;
   }
 
   .hero__content {

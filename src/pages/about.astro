@@ -5,12 +5,13 @@ import Button from "../components/ui/Button.astro";
 import ContactCta from "../components/layout/ContactCta.astro";
 import { site } from "../content/site";
 import { stats } from "../content/stats";
-import { routes } from "../config/site";
+import { assets, routes } from "../config/site";
+import { asset, withBase } from "../lib/paths";
 ---
 
 <BaseLayout
   title="About"
-  description="About the WNC Educators Exchange: regional summits, the educator survey, and the Top 10 Issues report."
+  description="About the WNC Educators Exchange: Brain Hub initiatives, Land of Sky support, and the Top 10 Issues report."
 >
   <section class="section">
     <div class="container about-page">
@@ -28,9 +29,10 @@ import { routes } from "../config/site";
             that shift alone.
           </p>
           <p>
-            With support from the {site.org}, we convene regional summits, publish findings from the
-            educator survey, and keep a shared record of what is working—and what still needs
-            institutional commitment. The November 13 Exchange at Mars Hill University continues that work.
+            {site.brainHubBlurb} With support from the {site.org}, we convene regional summits,
+            publish findings from the educator survey, and keep a shared record of what is working—and
+            what still needs institutional commitment. The November 13 Exchange at Mars Hill University
+            continues that work.
           </p>
           <p>
             Physical colleges still provide community and place. Online tools extend access. Neither
@@ -42,6 +44,30 @@ import { routes } from "../config/site";
         <div class="about-page__actions">
           <Button href={routes.november}>November 13 event</Button>
           <Button href={routes.issues} variant="ghost">Read the Top 10 →</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight about-partners">
+    <div class="container">
+      <p class="eyebrow">Partners</p>
+      <h2>Brain Hub &amp; Land of Sky</h2>
+      <p class="muted about-partners__lede">
+        The Educators Exchange sits inside the 2026 Brain Hub initiatives and is organized with
+        support from the {site.org}. Official logos will replace these wordmarks when files arrive.
+      </p>
+      <div class="about-partners__logos">
+        <a class="about-partners__logo" href={withBase(routes.brainHub)}>
+          <img src={asset(assets.logoBrainHub)} alt={`${site.brainHubName} wordmark`} width="320" height="80" />
+        </a>
+        <div class="about-partners__logo">
+          <img
+            src={asset(assets.logoLandOfSky)}
+            alt={`${site.org} wordmark`}
+            width="420"
+            height="80"
+          />
         </div>
       </div>
     </div>
@@ -109,45 +135,92 @@ import { routes } from "../config/site";
   .about-page__actions {
     display: flex;
     flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .about-partners {
+    background: color-mix(in srgb, var(--purple) 6%, var(--cream));
+  }
+
+  .about-partners h2 {
+    margin: 0.35rem 0 0.65rem;
+    font-size: clamp(1.6rem, 3vw, 2rem);
+  }
+
+  .about-partners__lede {
+    max-width: 40rem;
+    margin: 0 0 1.35rem;
+  }
+
+  .about-partners__logos {
+    display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
     align-items: center;
-    margin-top: 1.35rem;
+  }
+
+  .about-partners__logo {
+    display: block;
+    max-width: min(100%, 22rem);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .about-partners__logo img {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
   .about-authors h2 {
-    font-size: 2rem;
-    margin: 0.4rem 0 1.25rem;
+    margin: 0.35rem 0 1.15rem;
+    font-size: clamp(1.6rem, 3vw, 2rem);
   }
 
   .about-authors__grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 12rem));
+    grid-template-columns: repeat(2, minmax(0, 14rem));
     gap: 1.25rem;
   }
 
-  .about-authors img {
+  .about-authors__grid figure {
+    margin: 0;
+  }
+
+  .about-authors__grid img {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--green-light) 30%, white);
   }
 
-  .about-authors figcaption {
+  .about-authors__grid figcaption {
     display: grid;
-    margin-top: 0.55rem;
+    gap: 0.15rem;
+    margin-top: 0.65rem;
   }
 
-  .about-authors figcaption span {
+  .about-authors__grid span {
     color: var(--muted);
+    font-size: 0.9rem;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 800px) {
     .about-page {
       grid-template-columns: 1fr;
     }
 
-    .about-page__img {
-      aspect-ratio: 4 / 5;
+    .about-page__images {
+      max-width: 22rem;
+      margin-inline: auto;
+    }
+
+    .about-authors__grid {
+      grid-template-columns: 1fr 1fr;
+      max-width: 28rem;
     }
   }
 </style>

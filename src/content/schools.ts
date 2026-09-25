@@ -10,7 +10,7 @@ export type SchoolPractice = {
 
 export const schoolsIntro = {
   eyebrow: "Campus practice",
-  title: "What schools are doing",
+  title: "What schools are doing with AI",
   description:
     "Change is here. These are approaches WNC educators reported at summits: clearer policy language, redesigned assessment, faculty training, and tools that keep a human in the loop.",
 };
