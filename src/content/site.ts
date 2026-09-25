@@ -40,7 +40,7 @@ export const site = {
     { name: "Chris Cain", role: "Host · Mars Hill University" },
     { name: "Nana Harrison", role: "UNC Asheville · registration" },
     { name: "Leigha Travis", role: "UNCA Marketing · report co-author" },
-    { name: "Ellie Miller", role: "UNCA Computer Science intern" },
+    { name: "Ellie LaGrave", role: "UNCA Computer Science intern" },
     { name: "Megan Coyle", role: "BRCC Computer Science intern" },
   ],
 };

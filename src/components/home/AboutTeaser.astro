@@ -1,21 +1,32 @@
 ---
 import StatRow from "../ui/StatRow.astro";
 import Button from "../ui/Button.astro";
-import { surveyAttribution } from "../../content/site";
+import { site, surveyAttribution } from "../../content/site";
 import { stats } from "../../content/stats";
-import { routes } from "../../config/site";
-import { cssUrl } from "../../lib/paths";
+import { assets, routes } from "../../config/site";
+import { asset, withBase } from "../../lib/paths";
 ---
 
 <section class="section about-teaser">
   <div class="container about-teaser__grid">
-    <div
-      class="about-teaser__image"
-      aria-hidden="true"
-      data-reveal
-      data-reveal-y="40"
-      style={`--about-image: ${cssUrl("aboutTeaser")}`}
-    ></div>
+    <div class="about-teaser__logos" data-reveal data-reveal-y="28">
+      <a class="about-teaser__logo about-teaser__logo--brain" href={withBase(routes.brainHub)}>
+        <img
+          src={asset(assets.logoBrainHub)}
+          alt={`${site.brainHubName} logo`}
+          width="220"
+          height="220"
+        />
+      </a>
+      <div class="about-teaser__logo about-teaser__logo--sky">
+        <img
+          src={asset(assets.logoLandOfSky)}
+          alt={`${site.org} logo`}
+          width="280"
+          height="110"
+        />
+      </div>
+    </div>
     <div class="about-teaser__copy" data-reveal data-reveal-delay="0.1" data-reveal-y="32">
       <p class="eyebrow">About</p>
       <h2>Educators Exchanging Ideas about A.I.</h2>
@@ -40,25 +51,42 @@ import { cssUrl } from "../../lib/paths";
 <style>
   .about-teaser__grid {
     display: grid;
-    grid-template-columns: minmax(0, 17rem) 1fr;
+    grid-template-columns: minmax(0, 15rem) 1fr;
     gap: clamp(1.5rem, 4vw, 2.75rem);
     align-items: center;
   }
 
-  .about-teaser__image {
-    border-radius: var(--radius-lg);
-    aspect-ratio: 4 / 5;
+  .about-teaser__logos {
+    display: grid;
+    gap: 0.85rem;
+    justify-items: center;
+  }
+
+  .about-teaser__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    max-width: 17rem;
-    min-height: 0;
-    justify-self: center;
-    background:
-      linear-gradient(
-        160deg,
-        color-mix(in srgb, var(--ink) 45%, transparent),
-        color-mix(in srgb, var(--ink) 20%, transparent)
-      ),
-      var(--about-image) center 35% / cover no-repeat;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--white) 82%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+    text-decoration: none;
+  }
+
+  .about-teaser__logo--brain {
+    max-width: 10.5rem;
+  }
+
+  .about-teaser__logo--sky {
+    max-width: 14rem;
+  }
+
+  .about-teaser__logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
   }
 
   .about-teaser__copy h2 {
@@ -80,9 +108,11 @@ import { cssUrl } from "../../lib/paths";
       justify-items: center;
     }
 
-    .about-teaser__image {
-      aspect-ratio: 4 / 5;
-      max-width: 13rem;
+    .about-teaser__logos {
+      grid-template-columns: auto auto;
+      align-items: center;
+      width: 100%;
+      max-width: 28rem;
     }
 
     .about-teaser__copy {

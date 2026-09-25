@@ -80,6 +80,20 @@ const gallerySlides = event.images.map((img) => ({
       </div>
 
       {
+        event.beforeEvent && event.beforeEvent.length > 0 && (
+          <aside class="event-program__prep">
+            <p class="eyebrow">Before the event</p>
+            <h3>Prep underway</h3>
+            <ul>
+              {event.beforeEvent.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </aside>
+        )
+      }
+
+      {
         hasSchedule ? (
           <div class="event-program__timeline">
             <ScheduleTimeline
@@ -220,6 +234,28 @@ const gallerySlides = event.images.map((img) => ({
   .event-program__head h2 {
     font-size: clamp(1.75rem, 3.5vw, 2.35rem);
     margin: 0.3rem 0 0.5rem;
+  }
+
+  .event-program__prep {
+    margin: 0 0 1.5rem;
+    padding: 1.1rem 1.2rem;
+    max-width: 42rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--green-light) 28%, white);
+    border: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
+  }
+
+  .event-program__prep h3 {
+    margin: 0.25rem 0 0.65rem;
+    font-size: 1.15rem;
+  }
+
+  .event-program__prep ul {
+    margin: 0;
+    padding-left: 1.15rem;
+    display: grid;
+    gap: 0.45rem;
+    color: var(--muted);
   }
 
   .event-program__list {

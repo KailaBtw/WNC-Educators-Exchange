@@ -47,8 +47,8 @@ export const assets = {
   teamLeigha: "/images/team/leigha-travis.svg",
   teamEllie: "/images/team/ellie-lagrave.svg",
   teamChrisCain: "/images/team/chris-cain.jpg",
-  logoBrainHub: "/images/partners/brain-hub.svg",
-  logoLandOfSky: "/images/partners/land-of-sky.svg",
+  logoBrainHub: "/files/logos/brain_hub.png",
+  logoLandOfSky: "/files/logos/land_of_sky.png",
 } as const;
 
 export type AssetKey = keyof typeof assets;

@@ -8,6 +8,7 @@ export type ProgramSession = {
   leads?: string;
   detail?: string;
   topics?: string[];
+  link?: { href: string; label: string };
 };
 
 export type EventItem = {
@@ -24,6 +25,8 @@ export type EventItem = {
   program?: string[];
   /** Structured schedule for interactive timeline. */
   sessions?: ProgramSession[];
+  /** Prep notes shown on the upcoming event page. */
+  beforeEvent?: string[];
 };
 
 const novemberTableTopics = [
@@ -36,19 +39,22 @@ const novemberTableTopics = [
   "How does AI change thinking and learning?",
 ];
 
-
 /** Store root paths here; base prefix applied once on export. */
 const eventsRaw: EventItem[] = [
   {
     slug: "november-2026",
-    title: "WNC AI Educator’s Exchange",
+    title: "Western North Carolina AI Educator’s Exchange",
     category: "Summit",
     dateLabel: "Friday, November 13, 2026",
     status: "upcoming",
     summary:
-      "Educators from across Western North Carolina gather at Mars Hill University to share practice, discuss regional AI issues, and plan next steps together.",
+      "Educators from across Western North Carolina gather at Mars Hill University to share practice, discuss regional AI issues, and plan next steps together. Capacity about 120.",
     location: "Mars Hill University (capacity ~120)",
     registerUrl: site.registerUrl,
+    beforeEvent: [
+      "Survey to all participants (based on last year’s instrument).",
+      "New survey to campus leads about infrastructure, institutional policies, and resources—so campus introductions can stay focused.",
+    ],
     images: [
       {
         src: "/images/events/archive/brain-01.jpg",
@@ -79,7 +85,7 @@ const eventsRaw: EventItem[] = [
         id: "welcome",
         time: "9:30 – 10:00 am",
         title: "Welcome",
-        leads: "Chris Cain and Mars Hill Leadership · Bill Sederberg",
+        leads: "Chris Cain and Mars Hill Leadership · Bill Sederburg",
       },
       {
         id: "issues-context",
@@ -87,7 +93,7 @@ const eventsRaw: EventItem[] = [
         title: "Issues in AI and Education in Context in Western NC",
         leads: "Jonathan Wade",
         detail:
-          "Pre-survey summary of issues; challenges; demonstration of avatars; discussion of agentic course completion. Introduction of table topics and resources from hosts, sponsors, and speakers.",
+          "Pre-survey summary of issues; discussion of challenges; demonstration of avatars; discussion of agentic course completion. Introduction of table topics and resources from hosts, sponsors, and speakers.",
       },
       {
         id: "campus-intros",
@@ -95,21 +101,27 @@ const eventsRaw: EventItem[] = [
         title: "Campus Introductions",
         leads: "Chris Cain",
         detail:
-          "Facilitated campus share-outs. Invited institutions and lead representatives introduce current AI work (streamlined when campus leads complete the infrastructure survey).",
+          "Facilitated campus share-outs. Invited institutions and lead representatives introduce current AI work—streamlined when campus leads complete the infrastructure / policy / resources survey.",
       },
       {
         id: "sherlock",
         time: "10:40 – 11:30 am",
-        title: "More than a Human in the Loop: Equipping Learners for Cognitive Sovereignty in a World of AI",
-        leads: "Dr. John Sherlock, Western Carolina University",
+        title:
+          "More than a Human in the Loop: Equipping Learners for Cognitive Sovereignty in a World of AI",
+        leads: "Dr. John Sherlock, Professor, Western Carolina University",
         detail:
-          "Pedagogy, human development, and international AI-and-learning work (including EDUCAUSE / Dell faculty cohorts).",
+          "International work on AI, learning, pedagogy, and human development—including an EDUCAUSE / Dell faculty cohort on teaching and learning with AI.",
+        link: {
+          href: "https://members.educause.edu/john-sherlock",
+          label: "John Sherlock · EDUCAUSE profile",
+        },
       },
       {
         id: "lunch-open",
         time: "11:30 am – 12:00 pm",
         title: "Initial Lunch Period with Table Topics",
         leads: "Ian Selig",
+        detail: "Lunch conversations begin; proposed table topics will be printed for each table.",
         topics: novemberTableTopics,
       },
       {
@@ -117,13 +129,14 @@ const eventsRaw: EventItem[] = [
         time: "12:30 – 1:00 pm",
         title: "Table Topic Facilitation and Share Out",
         leads: "Ian Selig",
-        detail: "Working lunch—table facilitators share out key threads.",
+        detail: "Working lunch—table facilitators share out key threads from the room.",
       },
       {
         id: "scapin",
         time: "1:00 – 1:50 pm",
         title: "Adjusting Assessment for the World of AI",
-        leads: "Tim Scapin",
+        leads: "Tim Scapin, Haywood Community College",
+        detail: "Title may be adjusted by the presenter.",
       },
       {
         id: "bring-together",
@@ -134,7 +147,7 @@ const eventsRaw: EventItem[] = [
       {
         id: "contest",
         time: "2:20 – 2:40 pm",
-        title: "Faculty & Student Innovation Contest",
+        title: "Faculty / Student Contest",
         leads: "Steven Young",
         detail: "Working title—official contest name forthcoming.",
       },
@@ -142,7 +155,7 @@ const eventsRaw: EventItem[] = [
         id: "wrap",
         time: "2:40 – 3:00 pm",
         title: "Wrap Up and Next Steps",
-        leads: "Bill Sederberg",
+        leads: "Bill Sederburg",
       },
     ],
   },

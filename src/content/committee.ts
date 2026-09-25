@@ -66,7 +66,7 @@ export const summitCommittee = {
       id: "interns",
       title: "Interns",
       people: [
-        { org: "UNCA Computer Science", name: "Ellie Miller", email: "emille16@unca.edu" },
+        { org: "UNCA Computer Science", name: "Ellie LaGrave", email: "emille16@unca.edu" },
         { org: "UNCA Marketing", name: "Leigha Travis", email: "ltravis1@unca.edu" },
         {
           org: "BRCC Computer Science",

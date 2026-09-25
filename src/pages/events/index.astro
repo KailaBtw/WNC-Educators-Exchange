@@ -81,6 +81,18 @@ const archiveSlides = past.flatMap((event) =>
                     topics.
                   </p>
                 </div>
+                {
+                  upcoming.beforeEvent && upcoming.beforeEvent.length > 0 && (
+                    <aside class="events-page__prep">
+                      <p class="eyebrow">Before the event</p>
+                      <ul>
+                        {upcoming.beforeEvent.map((item) => (
+                          <li>{item}</li>
+                        ))}
+                      </ul>
+                    </aside>
+                  )
+                }
                 <ScheduleTimeline
                   sessions={upcoming.sessions}
                   idPrefix="events-index-nov"
@@ -248,6 +260,24 @@ const archiveSlides = past.flatMap((event) =>
   .events-page__schedule-head h3 {
     margin: 0.3rem 0 0.45rem;
     font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+  }
+
+  .events-page__prep {
+    margin: 0 0 1.25rem;
+    padding: 1rem 1.15rem;
+    max-width: 42rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--green-light) 28%, white);
+    border: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
+  }
+
+  .events-page__prep ul {
+    margin: 0.45rem 0 0;
+    padding-left: 1.15rem;
+    display: grid;
+    gap: 0.4rem;
+    color: var(--muted);
+    font-size: 0.95rem;
   }
 
   .events-page__past-head {

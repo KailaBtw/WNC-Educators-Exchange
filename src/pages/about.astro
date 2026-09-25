@@ -16,10 +16,6 @@ import { asset, withBase } from "../lib/paths";
 >
   <section class="section">
     <div class="container about-page">
-      <div class="about-page__images" aria-hidden="true">
-        <div class="about-page__img about-page__img--a"></div>
-        <div class="about-page__img about-page__img--b"></div>
-      </div>
       <div class="about-page__copy">
         <p class="eyebrow">About</p>
         <h1>Educators Exchanging Ideas about A.I.</h1>
@@ -56,9 +52,9 @@ import { asset, withBase } from "../lib/paths";
       <p class="eyebrow">Survey source</p>
       <h2>{surveyAttribution.name}</h2>
       <p class="muted">
-        Fielded {surveyAttribution.when} · {surveyAttribution.respondents}. The “54” figures you see
-        across this site are those respondents—not a national dataset. Campus practice cards on the
-        Schools page draw from the same survey writeups (Leigha Travis).
+        In {surveyAttribution.when} we surveyed {surveyAttribution.respondents}. Every “54” on this
+        site is that group. The campus practice cards on the Schools page come from Leigha Travis’s
+        writeups of their answers.
       </p>
     </div>
   </section>
@@ -69,19 +65,18 @@ import { asset, withBase } from "../lib/paths";
       <h2>Brain Hub &amp; Land of Sky</h2>
       <p class="muted about-partners__lede">
         The Educators Exchange sits inside the 2026 Brain Hub initiatives and is organized with
-        support from the {site.org}. Official logos will replace these wordmarks when brand files
-        arrive.
+        support from the {site.org}.
       </p>
       <div class="about-partners__logos">
-        <a class="about-partners__logo" href={withBase(routes.brainHub)}>
-          <img src={asset(assets.logoBrainHub)} alt={`${site.brainHubName} wordmark`} width="320" height="80" />
+        <a class="about-partners__logo about-partners__logo--brain" href={withBase(routes.brainHub)}>
+          <img src={asset(assets.logoBrainHub)} alt={`${site.brainHubName} logo`} width="320" height="320" />
         </a>
-        <div class="about-partners__logo">
+        <div class="about-partners__logo about-partners__logo--sky">
           <img
             src={asset(assets.logoLandOfSky)}
-            alt={`${site.org} wordmark`}
+            alt={`${site.org} logo`}
             width="420"
-            height="80"
+            height="160"
           />
         </div>
       </div>
@@ -97,63 +92,68 @@ import { asset, withBase } from "../lib/paths";
         Exchange at Mars Hill University.
       </p>
 
-      <figure class="about-host">
+      <article class="about-person-card about-person-card--featured">
         <img
+          class="about-person-card__photo"
           src={asset(assets.teamChrisCain)}
           alt="Chris Cain, Mars Hill University"
-          width="320"
-          height="400"
+          width="96"
+          height="96"
         />
-        <figcaption>
-          <strong>Chris Cain</strong>
-          <span>Host · Mars Hill University</span>
-          <a href="mailto:ccain@mhu.edu">ccain@mhu.edu</a>
-        </figcaption>
-      </figure>
+        <div class="about-person-card__body">
+          <p class="about-person-card__role">Host</p>
+          <h3>Chris Cain</h3>
+          <p class="about-person-card__org">Mars Hill University</p>
+          <a class="about-person-card__email" href="mailto:ccain@mhu.edu">ccain@mhu.edu</a>
+        </div>
+      </article>
 
       <div class="about-committee__groups">
         {
-          summitCommittee.groups.map((group) => (
-            <div class="about-committee__group">
-              <h3>{group.title}</h3>
-              <ul>
-                {group.people.map((person) => (
-                  <li>
-                    <strong>{person.name}</strong>
-                    <span class="about-committee__org">{person.org}</span>
-                    <a href={`mailto:${person.email}`}>{person.email}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
+          summitCommittee.groups
+            .filter((group) => group.id !== "host")
+            .map((group) => (
+              <div class="about-committee__group">
+                <h3>{group.title}</h3>
+                <div class="about-person-grid">
+                  {group.people.map((person) => (
+                    <article class="about-person-card">
+                      <div class="about-person-card__body">
+                        <h4>{person.name}</h4>
+                        <p class="about-person-card__org">{person.org}</p>
+                        <a class="about-person-card__email" href={`mailto:${person.email}`}>
+                          {person.email}
+                        </a>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            ))
         }
       </div>
 
-      <p class="about-committee__chair">
-        <strong>Chair:</strong> {summitCommittee.chair.name}
-        {" · "}
-        <a href={`mailto:${summitCommittee.chair.email}`}>{summitCommittee.chair.email}</a>
-      </p>
-    </div>
-  </section>
+      <article class="about-person-card about-person-card--chair">
+        <div class="about-person-card__body">
+          <p class="about-person-card__role">Chair</p>
+          <h3>{summitCommittee.chair.name}</h3>
+          <p class="about-person-card__org">WNC Educators Exchange</p>
+          <a class="about-person-card__email" href={`mailto:${summitCommittee.chair.email}`}>
+            {summitCommittee.chair.email}
+          </a>
+        </div>
+      </article>
 
-  <section class="section section--tight">
-    <div class="container about-authors">
-      <p class="eyebrow">Report authors</p>
-      <h2>Created by</h2>
-      <div class="about-authors__grid">
-        {
-          site.authors.map((author) => (
-            <figure>
-              <img src={author.image} alt={author.name} />
-              <figcaption>
-                <strong>{author.name}</strong>
-                <span>{author.role}</span>
-              </figcaption>
-            </figure>
-          ))
-        }
+      <div class="about-committee__group about-committee__group--site">
+        <h3>Website developer</h3>
+        <div class="about-person-grid">
+          <article class="about-person-card about-person-card--site">
+            <div class="about-person-card__body">
+              <h4>Ellie LaGrave</h4>
+              <p class="about-person-card__org">Site design &amp; development</p>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
   </section>
@@ -163,33 +163,7 @@ import { asset, withBase } from "../lib/paths";
 
 <style>
   .about-page {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(1.75rem, 4vw, 3rem);
-    align-items: center;
-  }
-
-  .about-page__images {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    align-items: stretch;
-  }
-
-  .about-page__img {
-    border-radius: var(--radius-lg);
-    aspect-ratio: 3 / 4;
-    min-height: 0;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .about-page__img--a {
-    background-image: var(--asset-about-story-1);
-  }
-
-  .about-page__img--b {
-    background-image: var(--asset-about-story-2);
+    max-width: 44rem;
   }
 
   .about-page h1 {
@@ -240,22 +214,34 @@ import { asset, withBase } from "../lib/paths";
   .about-partners__logos {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.25rem;
     align-items: center;
   }
 
   .about-partners__logo {
-    display: block;
-    max-width: min(100%, 22rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.25rem;
     border-radius: var(--radius-lg);
-    overflow: hidden;
+    background: color-mix(in srgb, var(--white) 82%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
     text-decoration: none;
+  }
+
+  .about-partners__logo--brain {
+    width: min(100%, 11rem);
+  }
+
+  .about-partners__logo--sky {
+    width: min(100%, 18rem);
   }
 
   .about-partners__logo img {
     width: 100%;
     height: auto;
     display: block;
+    object-fit: contain;
   }
 
   .about-committee h2 {
@@ -269,138 +255,125 @@ import { asset, withBase } from "../lib/paths";
     margin: 0 0 1.5rem;
   }
 
-  .about-host {
-    display: grid;
-    grid-template-columns: minmax(0, 9.5rem) 1fr;
-    gap: 1rem;
-    align-items: end;
-    max-width: 28rem;
-    margin: 0 0 1.75rem;
-  }
-
-  .about-host img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--green-light) 30%, white);
-  }
-
-  .about-host figcaption {
-    display: grid;
-    gap: 0.15rem;
-    padding-bottom: 0.25rem;
-  }
-
-  .about-host span {
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-
-  .about-host a {
-    color: var(--blue);
-    font-size: 0.9rem;
-    word-break: break-word;
-  }
-
   .about-committee__groups {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(1.25rem, 3vw, 1.85rem);
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+    margin-top: 1.75rem;
   }
 
   .about-committee__group h3 {
-    margin: 0 0 0.65rem;
+    margin: 0 0 0.85rem;
     font-size: 0.95rem;
     color: var(--green);
   }
 
-  .about-committee__group ul {
-    list-style: none;
+  .about-person-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 0.85rem;
+  }
+
+  .about-person-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
     margin: 0;
-    padding: 0;
+    padding: 1rem 1.05rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--white) 78%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  }
+
+  .about-person-card--featured {
     display: grid;
-    gap: 0.75rem;
+    grid-template-columns: 4.75rem 1fr;
+    gap: 0.85rem;
+    align-items: center;
+    max-width: 26rem;
+    padding: 0.75rem;
   }
 
-  .about-committee__group li {
-    display: grid;
-    gap: 0.1rem;
+  .about-person-card--chair {
+    margin-top: 1.75rem;
+    max-width: 24rem;
+    border-color: color-mix(in srgb, var(--purple) 22%, transparent);
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--purple) 8%, white),
+        color-mix(in srgb, var(--white) 85%, var(--cream))
+      );
   }
 
-  .about-committee__org {
-    color: var(--muted);
-    font-size: 0.88rem;
+  .about-person-card--site {
+    max-width: 24rem;
   }
 
-  .about-committee__group a {
-    color: var(--blue);
-    font-size: 0.88rem;
-    word-break: break-word;
+  .about-committee__group--site {
+    margin-top: 1.75rem;
   }
 
-  .about-committee__chair {
-    margin: 1.75rem 0 0;
-    padding-top: 1.15rem;
-    border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
-    font-size: 1.02rem;
-  }
-
-  .about-committee__chair a {
-    color: var(--blue);
-  }
-
-  .about-authors h2 {
-    margin: 0.35rem 0 1.15rem;
-    font-size: clamp(1.6rem, 3vw, 2rem);
-  }
-
-  .about-authors__grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 14rem));
-    gap: 1.25rem;
-  }
-
-  .about-authors__grid figure {
-    margin: 0;
-  }
-
-  .about-authors__grid img {
+  .about-person-card__photo {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
-    border-radius: var(--radius-lg);
+    border-radius: calc(var(--radius-lg) - 0.35rem);
     background: color-mix(in srgb, var(--green-light) 30%, white);
   }
 
-  .about-authors__grid figcaption {
-    display: grid;
-    gap: 0.15rem;
-    margin-top: 0.65rem;
+  .about-person-card--featured .about-person-card__photo {
+    aspect-ratio: 1;
+    max-width: 4.75rem;
   }
 
-  .about-authors__grid span {
+  .about-person-card__body {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .about-person-card__role {
+    margin: 0;
+    color: var(--green);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .about-person-card h3,
+  .about-person-card h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.25;
+  }
+
+  .about-person-card--featured h3,
+  .about-person-card--chair h3 {
+    font-size: 1.3rem;
+  }
+
+  .about-person-card__org {
+    margin: 0;
     color: var(--muted);
     font-size: 0.9rem;
   }
 
+  .about-person-card__email {
+    margin-top: 0.35rem;
+    color: var(--blue);
+    font-size: 0.85rem;
+    word-break: break-word;
+    text-decoration: none;
+  }
+
+  .about-person-card__email:hover {
+    text-decoration: underline;
+  }
+
   @media (max-width: 800px) {
-    .about-page {
-      grid-template-columns: 1fr;
-    }
-
-    .about-page__images {
-      max-width: 22rem;
-      margin-inline: auto;
-    }
-
-    .about-committee__groups {
-      grid-template-columns: 1fr;
-    }
-
-    .about-authors__grid {
-      grid-template-columns: 1fr 1fr;
-      max-width: 28rem;
+    .about-person-card--featured {
+      grid-template-columns: 4.25rem 1fr;
     }
   }
 </style>

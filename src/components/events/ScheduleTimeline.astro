@@ -73,6 +73,13 @@ const firstId = sessions[0]?.id ?? "";
               <h3 class="schedule__panel-title">{session.title}</h3>
               {session.leads && <p class="schedule__panel-leads">{session.leads}</p>}
               {!brief && session.detail && <p class="schedule__panel-detail">{session.detail}</p>}
+              {!brief && session.link && (
+                <p class="schedule__panel-link">
+                  <a href={session.link.href} target="_blank" rel="noopener noreferrer">
+                    {session.link.label} ↗
+                  </a>
+                </p>
+              )}
               {!brief && session.topics && session.topics.length > 0 && (
                 <div class="schedule__topics">
                   <p class="schedule__topics-label">Proposed table topics</p>
@@ -262,6 +269,21 @@ const firstId = sessions[0]?.id ?? "";
     color: var(--muted);
     font-size: 0.95rem;
     max-width: 48rem;
+  }
+
+  .schedule__panel-link {
+    margin: 0.55rem 0 0;
+  }
+
+  .schedule__panel-link a {
+    color: var(--blue);
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+  }
+
+  .schedule__panel-link a:hover {
+    text-decoration: underline;
   }
 
   .schedule__topics {

@@ -123,18 +123,27 @@ const awardeesRaw: Awardee[] = [
   {
     id: "renuka-gusain",
     name: "Dr. Renuka Gusain",
-    institution: "Western North Carolina",
+    institution: "UNC Asheville · Assistant Professor",
     recognition: "2026 AI Innovator in Education Award",
     year: "2026",
-    stance: "Profile forthcoming",
+    stance: "Teach with and against AI",
     category: "Faculty excellence",
     summary:
-      "2026 BrAIn Hub Educator Award winner. Institution details, project summary, and portrait will be added when award materials arrive.",
-    focus: ["Award certificate available", "Full profile materials pending"],
-    image: "/images/awards/regional-faculty.svg",
-    imageAlt: "Portrait placeholder for Dr. Renuka Gusain",
+      "Teaching with and against AI: Ethical, Reflective, and Workforce-Aligned AI Pedagogy—helping students use AI tools critically while keeping ethical reflection and workforce readiness at the center of classroom practice.",
+    focus: [
+      "Ethical and reflective AI pedagogy",
+      "Workforce-aligned classroom practice",
+      "Teaching with and against generative AI",
+    ],
+    image: "/images/awards/renuka-gusain.png",
+    imageAlt: "Portrait of Dr. Renuka Gusain, UNC Asheville",
     certificateUrl: "/files/certs/renuka-gusain.pdf",
-    pendingMedia: true,
+    gallery: [
+      {
+        src: "/images/awards/slides/renuka-gusain.png",
+        alt: "Award certificate for Dr. Renuka Gusain",
+      },
+    ],
   },
   {
     id: "brandy-hadley",
