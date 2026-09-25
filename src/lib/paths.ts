@@ -11,6 +11,11 @@ export function withBase(path = "/"): string {
   if (!path || path === "/") return base;
   if (/^https?:\/\//i.test(path)) return path;
 
+  // Idempotent: already prefixed (avoids /base/base/... file 404s on downloads).
+  if (base !== "/" && (path === base.slice(0, -1) || path.startsWith(base))) {
+    return path;
+  }
+
   return `${base}${path.replace(/^\//, "")}`;
 }
 

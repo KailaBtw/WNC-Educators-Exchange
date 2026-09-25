@@ -1,6 +1,7 @@
 ---
 import StatRow from "../ui/StatRow.astro";
 import Button from "../ui/Button.astro";
+import { surveyAttribution } from "../../content/site";
 import { stats } from "../../content/stats";
 import { routes } from "../../config/site";
 import { cssUrl } from "../../lib/paths";
@@ -25,8 +26,7 @@ import { cssUrl } from "../../lib/paths";
           ideas, and learn from one another.
         </p>
         <p>
-          After a strong first Exchange at Warren Wilson, the next gathering is November 13 at Mars
-          Hill University. Brain first, then AI.
+          {surveyAttribution.blurb}
         </p>
       </div>
       <StatRow stats={stats.aboutTeaser} />

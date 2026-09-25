@@ -4,7 +4,7 @@ import StatRow from "../../components/ui/StatRow.astro";
 import IssueList from "../../components/issues/IssueList.astro";
 import Button from "../../components/ui/Button.astro";
 import ContactCta from "../../components/layout/ContactCta.astro";
-import { site } from "../../content/site";
+import { site, surveyAttribution } from "../../content/site";
 import { stats } from "../../content/stats";
 import { issueFilters, issues } from "../../content/issues";
 import { routes } from "../../config/site";
@@ -25,10 +25,12 @@ const reportStats = [
       <p class="eyebrow">Regional report</p>
       <h1>Top 10 Issues in AI Facing Educators</h1>
       <p class="issues-report__dek">
-        Based on the 2026 WNC Educator Survey and regional educator summits. These are not
-        hypothetical future problems—they are showing up in classrooms across the region now.
+        Based on the {surveyAttribution.name} ({surveyAttribution.when},{" "}
+        {surveyAttribution.respondents}) and regional educator summits. These are not hypothetical
+        future problems—they are showing up in classrooms across the region now.
       </p>
       <div class="prose muted issues-report__overview">
+        <p>{surveyAttribution.blurb}</p>
         <p>
           The survey makes the picture clear: {stats.aiActive.value} of AI-active faculty already use
           these tools, {stats.policyBehind.value} say policy is behind or nonexistent, and

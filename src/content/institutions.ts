@@ -16,7 +16,7 @@ export const institutionsIntro = {
   eyebrow: "WNC AI Integration Survey",
   title: "What schools are doing with AI",
   description:
-    "Campus snapshots from the 2026 WNC Education survey—how each institution is experimenting, where support lags, and what faculty are trying in practice.",
+    "Campus snapshots from the 2026 WNC Educator Survey—how each institution is experimenting, where support lags, and what faculty are trying in practice.",
   credit: "Survey summaries by Leigha Travis",
 };
 

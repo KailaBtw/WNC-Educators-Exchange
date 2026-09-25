@@ -22,40 +22,22 @@ export type Awardee = {
   /** Summit award slide PDF under /public */
   slidesPdf?: string;
   gallery?: AwardGalleryImage[];
+  /** True when portrait/PDF assets are still pending from Bill. */
+  pendingMedia?: boolean;
 };
 
 export const awardsIntro = {
   eyebrow: "2026 faculty excellence awards",
   title: "Faculty we recognize",
   description:
-    "2026 AI Innovator in Education Award winners from the BrAIn Hub Educator Award—WNC educators using AI to strengthen student achievement, workforce readiness, and institutional practice.",
+    "The six 2026 AI Innovator in Education Award winners from the BrAIn Hub Educator Award—WNC educators using AI to strengthen student achievement, workforce readiness, and institutional practice.",
 };
 
 /**
- * Profiles from nomination packets (/content) and summit award slides
- * (public/files/award_slides). Note: adam-petit.pdf was sourced from a packet
- * file named for Greg Thomas—confirm with Bill before beta announce.
+ * Canonical six awardees (Bill, Sep 2025): Dellinger, Oxenreider, Kelley,
+ * Rhynes, Gusain, Hadley. Portraits/slides for Gusain & Hadley pending.
  */
 const awardeesRaw: Awardee[] = [
-  {
-    id: "crystal-rhynes",
-    name: "Crystal Rhynes",
-    institution: "Southwestern Community College",
-    recognition: "2026 AI Innovator in Education Award",
-    year: "2026",
-    stance: "Practice before the room",
-    category: "Workforce Readiness",
-    summary:
-      "Ethical Simulation-Based Workforce Training Model—using AI for virtual human simulations that prepare students for real-world client interactions, with guided reflection and instructor feedback across Western North Carolina and the Qualla Boundary.",
-    focus: [
-      "Virtual human simulations for client work",
-      "Guided reflection and instructor feedback",
-      "Workforce-ready training including Qualla Boundary",
-    ],
-    image: "/images/awards/crystal-rhynes.jpg",
-    imageAlt: "Crystal Rhynes facilitating a workshop at Southwestern Community College",
-    slidesPdf: "/files/awards/slides/crystal-rhynes.pdf",
-  },
   {
     id: "elizabeth-dellinger",
     name: "Elizabeth Dellinger",
@@ -74,25 +56,6 @@ const awardeesRaw: Awardee[] = [
     image: "/images/awards/elizabeth-dellinger.jpg",
     imageAlt: "Portrait of Elizabeth Dellinger, Mayland Community College",
     slidesPdf: "/files/awards/slides/elizabeth-dellinger.pdf",
-  },
-  {
-    id: "jason-kelley",
-    name: "Jason Kelley",
-    institution: "Appalachian State University · Next Carolina Ventures",
-    recognition: "2026 AI Innovator in Education Award",
-    year: "2026",
-    stance: "Prototype with purpose",
-    category: "Student Achievement",
-    summary:
-      "AI-Enabled Venture Creation: a scaffolded approach that turns management students into AI prototype builders at zero cost—teaching why and how to use AI strategically, with built-in ethical friction so students reason about AI, not only with it.",
-    focus: [
-      "Zero-cost AI prototyping for management students",
-      "Six-stage arc for strategic AI use",
-      "Ethical friction built into the workflow",
-    ],
-    image: "/images/awards/jason-kelley.jpg",
-    imageAlt: "Portrait of Jason Kelley, Appalachian State University",
-    slidesPdf: "/files/awards/slides/jason-kelley.pdf",
   },
   {
     id: "anne-oxenreider",
@@ -114,99 +77,72 @@ const awardeesRaw: Awardee[] = [
     slidesPdf: "/files/awards/slides/anne-oxenreider.pdf",
   },
   {
-    id: "julie-johnson-busbin",
-    name: "Dr. Julie Johnson-Busbin",
-    institution: "Western Carolina University",
+    id: "jason-kelley",
+    name: "Jason Kelley",
+    institution: "Appalachian State University · Next Carolina Ventures",
     recognition: "2026 AI Innovator in Education Award",
     year: "2026",
-    stance: "AI as coaching partner",
+    stance: "Prototype with purpose",
     category: "Student Achievement",
     summary:
-      "Reimagining skills-based learning with Custom GPTs for MKT 310 Consultative Selling—constrained coaching systems that slow students down, enforce process sequencing, and prepare online learners for live role-play.",
+      "AI-Enabled Venture Creation: a scaffolded approach that turns management students into AI prototype builders at zero cost—teaching why and how to use AI strategically, with built-in ethical friction so students reason about AI, not only with it.",
     focus: [
-      "Six Custom GPTs aligned to the sales process",
-      "Structured decision trees—not answer generators",
-      "Stronger live role-play readiness and engagement",
+      "Zero-cost AI prototyping for management students",
+      "Six-stage arc for strategic AI use",
+      "Ethical friction built into the workflow",
     ],
-    image: "/images/awards/julie-johnson-busbin.svg",
-    imageAlt: "Portrait placeholder for Dr. Julie Johnson-Busbin",
-    proposalPdf: "/files/awards/julie-johnson-busbin.pdf",
+    image: "/images/awards/jason-kelley.jpg",
+    imageAlt: "Portrait of Jason Kelley, Appalachian State University",
+    slidesPdf: "/files/awards/slides/jason-kelley.pdf",
   },
   {
-    id: "john-andrews",
-    name: "John Andrews",
-    institution: "Lenoir-Rhyne University · College of Business & Economics",
+    id: "crystal-rhynes",
+    name: "Crystal Rhynes",
+    institution: "Southwestern Community College",
     recognition: "2026 AI Innovator in Education Award",
     year: "2026",
-    stance: "Make thinking visible",
-    category: "Student Achievement",
+    stance: "Practice before the room",
+    category: "Workforce Readiness",
     summary:
-      "Three Rounds: a structured writing exercise that runs the same assignment through solo draft, AI as thinking partner, and AI draft / student critique—so the reflection, not the polished artifact, becomes the assessment.",
+      "Ethical Simulation-Based Workforce Training Model—using AI for virtual human simulations that prepare students for real-world client interactions, with guided reflection and instructor feedback across Western North Carolina and the Qualla Boundary.",
     focus: [
-      "Round 1 solo · Round 2 thinking partner · Round 3 critique",
-      "Visibility, metacognition, and critical evaluation",
-      "Open-source prompt adaptable across disciplines",
+      "Virtual human simulations for client work",
+      "Guided reflection and instructor feedback",
+      "Workforce-ready training including Qualla Boundary",
     ],
-    image: "/images/awards/john-andrews.svg",
-    imageAlt: "Portrait placeholder for John Andrews",
-    proposalPdf: "/files/awards/john-andrews.pdf",
+    image: "/images/awards/crystal-rhynes.jpg",
+    imageAlt: "Crystal Rhynes facilitating a workshop at Southwestern Community College",
+    slidesPdf: "/files/awards/slides/crystal-rhynes.pdf",
   },
   {
-    id: "meredith-carpenter",
-    name: "Meredith Carpenter",
-    institution: "Haywood Community College",
+    id: "gusain",
+    name: "Gusain",
+    institution: "Western North Carolina",
     recognition: "2026 AI Innovator in Education Award",
     year: "2026",
-    stance: "Ethics before shortcuts",
-    category: "Institutional Improvement",
+    stance: "Profile forthcoming",
+    category: "Faculty excellence",
     summary:
-      "Business Administration instructor nominated by Dr. Tim Scapin for AI literacy instruction, an interactive ethics video with embedded questions, and a flipped business-plan assignment that turns AI-generated work into a semester-long critique tool.",
-    focus: [
-      "Responsible AI literacy from day one",
-      "Flipped AI-generated business plan analysis",
-      "Campus model for ethical classroom AI use",
-    ],
-    image: "/images/awards/meredith-carpenter.svg",
-    imageAlt: "Portrait placeholder for Meredith Carpenter",
-    proposalPdf: "/files/awards/meredith-carpenter.pdf",
+      "2026 BrAIn Hub Educator Award winner. Full profile, institution details, and portrait will be added when award materials arrive.",
+    focus: ["Award materials pending"],
+    image: "/images/awards/regional-faculty.svg",
+    imageAlt: "Portrait placeholder for award winner Gusain",
+    pendingMedia: true,
   },
   {
-    id: "amber-thompson",
-    name: "Amber C. Thompson",
-    institution: "Western Carolina University · School of Engineering and Technology",
+    id: "hadley",
+    name: "Hadley",
+    institution: "Western North Carolina",
     recognition: "2026 AI Innovator in Education Award",
     year: "2026",
-    stance: "Embrace, then evaluate",
-    category: "Institutional Improvement",
+    stance: "Profile forthcoming",
+    category: "Faculty excellence",
     summary:
-      "Associate Professor of Practice embedding AI into distance learning assignments so students explore benefits and shortfalls—building critical awareness, faster information triage, and more informed decisions over a semester.",
-    focus: [
-      "AI in distance-learning assignments",
-      "Teach use and shortfalls together",
-      "Track how student opinions shift",
-    ],
-    image: "/images/awards/amber-thompson.svg",
-    imageAlt: "Portrait placeholder for Amber C. Thompson",
-    proposalPdf: "/files/awards/amber-thompson.pdf",
-  },
-  {
-    id: "adam-petit",
-    name: "Adam Petit",
-    institution: "Isothermal Community College",
-    recognition: "2026 AI Innovator in Education Award",
-    year: "2026",
-    stance: "Extend instruction, don’t replace it",
-    category: "Student Achievement",
-    summary:
-      "Study Fetch AI tutoring in gateway mathematics—instructor-aligned agents that give underprepared students on-demand scaffolding before, during, and after class, expanding access beyond traditional tutoring.",
-    focus: [
-      "AI tutors tied to course learning outcomes",
-      "College readiness in gateway math",
-      "Ethical, transparent, equitable support",
-    ],
-    image: "/images/awards/adam-petit.svg",
-    imageAlt: "Portrait placeholder for Adam Petit",
-    proposalPdf: "/files/awards/adam-petit.pdf",
+      "2026 BrAIn Hub Educator Award winner. Portrait appears on the award image; full profile and named headshot will be added when materials arrive.",
+    focus: ["Award materials pending"],
+    image: "/images/awards/regional-faculty.svg",
+    imageAlt: "Portrait placeholder for award winner Hadley",
+    pendingMedia: true,
   },
 ];
 

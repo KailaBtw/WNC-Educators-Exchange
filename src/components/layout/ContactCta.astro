@@ -54,7 +54,7 @@ const {
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
     const target = form as HTMLFormElement;
-    const to = target.dataset.contactEmail || "contact@wncexchange.com";
+    const to = target.dataset.contactEmail || "wsederburg@gmail.com";
     const data = new FormData(target);
     const email = String(data.get("email") || "").trim();
     const message = String(data.get("message") || "").trim();

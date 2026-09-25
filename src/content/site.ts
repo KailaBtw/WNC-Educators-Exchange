@@ -9,7 +9,7 @@ export const site = {
   tagline: "Brain first, then AI.",
   description:
     "Findings from the 2026 WNC Educator Survey and regional summits: ten issues facing educators, campus practices in motion, and the November 13 Educators Exchange at Mars Hill University.",
-  contactEmail: "contact@wncexchange.com",
+  contactEmail: "wsederburg@gmail.com",
   registerUrl: "https://novera.events/events/wnc-educators-exchange26",
   fullReportUrl: "https://example.com/full-report-top-10-issues",
   campusesDoingUrl: "https://example.com/what-campuses-are-doing",
@@ -33,14 +33,24 @@ export const site = {
       image: asset(assets.teamEllie),
     },
   ],
-  /** Contact page facilitators — expand roles/last names when Leigha confirms. */
+  /** Contact / About facilitators from the Nov 13 summit committee. */
   facilitators: [
-    { name: "Bill", role: "Exchange lead" },
-    { name: "Nana", role: "Registration & operations" },
-    { name: "Megan", role: "Facilitator" },
-    { name: "Ellie LaGrave", role: "Report co-author" },
-    { name: "Leigha Travis", role: "Report co-author · campus survey" },
+    { name: "William Sederburg", role: "Chair · Exchange lead" },
+    { name: "Chris Cain", role: "Host · Mars Hill University" },
+    { name: "Nana Harrison", role: "UNC Asheville · registration" },
+    { name: "Leigha Travis", role: "UNCA Marketing · report co-author" },
+    { name: "Ellie Miller", role: "UNCA Computer Science intern" },
+    { name: "Megan Coyle", role: "BRCC Computer Science intern" },
   ],
+};
+
+/** Short attribution for the 2026 WNC Educator Survey (shown with the “54” callouts). */
+export const surveyAttribution = {
+  name: "2026 WNC Educator Survey",
+  when: "January 2026",
+  respondents: "54 educators across Western North Carolina",
+  blurb:
+    "The Top 10 Issues report draws on the 2026 WNC Educator Survey—54 educators across the region—together with findings from regional educator summits organized with the Land of Sky Workforce Development Board. Respondents described how AI is already showing up in classrooms, where policy and support lag, and what faculty need next.",
 };
 
 export type SiteConfig = typeof site;
