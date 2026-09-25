@@ -1,8 +1,6 @@
 ---
-import StatRow from "../ui/StatRow.astro";
 import Button from "../ui/Button.astro";
 import { site, surveyAttribution } from "../../content/site";
-import { stats } from "../../content/stats";
 import { assets, routes } from "../../config/site";
 import { asset, withBase } from "../../lib/paths";
 ---
@@ -39,7 +37,6 @@ import { asset, withBase } from "../../lib/paths";
           {surveyAttribution.blurb}
         </p>
       </div>
-      <StatRow stats={stats.aboutTeaser} />
       <div class="about-teaser__actions">
         <Button href={routes.about} variant="quiet">About the Exchange</Button>
       </div>

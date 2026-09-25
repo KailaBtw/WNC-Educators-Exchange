@@ -2,13 +2,23 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/ui/Button.astro";
 import ContactCta from "../components/layout/ContactCta.astro";
-import { awardsIntro, awardees, awardProfilePath } from "../content/awards";
+import {
+  awardsIntro,
+  pastAwardsIntro,
+  upcomingAwards,
+  awardees,
+  awardProfilePath,
+} from "../content/awards";
+import { site } from "../content/site";
+import { routes } from "../config/site";
 import { withBase } from "../lib/paths";
+
+const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
 ---
 
 <BaseLayout
   title="Faculty we recognize"
-  description="2026 faculty excellence awards—educators shaping responsible AI practice across Western North Carolina."
+  description="2026 BrAIn Hub Educator Award winners and the upcoming faculty & student community contest."
 >
   <section class="section awards-hero">
     <div class="container awards-hero__inner">
@@ -18,8 +28,57 @@ import { withBase } from "../lib/paths";
     </div>
   </section>
 
-  <section class="section awards-grid-section">
+  <section class="section section--tight awards-upcoming" id="upcoming">
+    <div class="container awards-upcoming__panel" data-reveal data-reveal-y="24">
+      <div class="awards-upcoming__copy">
+        <p class="eyebrow">{upcomingAwards.eyebrow}</p>
+        <h2>{upcomingAwards.title}</h2>
+        <p class="awards-upcoming__when">{upcomingAwards.when}</p>
+        {
+          upcomingAwards.lead && (
+            <p class="awards-upcoming__lead">Led by {upcomingAwards.lead}</p>
+          )
+        }
+        <p class="awards-upcoming__summary">{upcomingAwards.summary}</p>
+        <p class="awards-upcoming__note muted">{upcomingAwards.note}</p>
+        <div class="awards-upcoming__actions">
+          {
+            guideUrl ? (
+              <Button href={guideUrl} external>
+                {upcomingAwards.guideLabel}
+              </Button>
+            ) : (
+              <span class="awards-upcoming__soon">Guidelines download coming soon</span>
+            )
+          }
+          <Button href={routes.november} variant={guideUrl ? "secondary" : "quiet"}>
+            Nov 13 program →
+          </Button>
+          <Button href={routes.contact} variant="ghost">
+            Ask a question
+          </Button>
+        </div>
+      </div>
+      <ul class="awards-upcoming__highlights" aria-label="Contest overview">
+        {
+          upcomingAwards.highlights.map((item) => (
+            <li>
+              <span class="awards-upcoming__hl-label">{item.label}</span>
+              <p>{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section awards-grid-section" id="winners">
     <div class="container">
+      <header class="awards-past__header" data-reveal data-reveal-y="20">
+        <p class="eyebrow">{pastAwardsIntro.eyebrow}</p>
+        <h2>{pastAwardsIntro.title}</h2>
+        <p class="awards-past__dek muted">{pastAwardsIntro.description}</p>
+      </header>
       <div class="awards-grid">
         {
           awardees.map((person, index) => (
@@ -110,6 +169,120 @@ import { withBase } from "../lib/paths";
     font-size: 1.08rem;
   }
 
+  .awards-upcoming {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--green-light) 28%, var(--cream)),
+        var(--cream)
+      );
+  }
+
+  .awards-upcoming__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(1.5rem, 4vw, 2.75rem);
+    align-items: start;
+  }
+
+  .awards-upcoming__copy {
+    max-width: 38rem;
+  }
+
+  .awards-upcoming h2 {
+    margin: 0.35rem 0 0.5rem;
+    font-size: clamp(1.65rem, 3.5vw, 2.15rem);
+    max-width: 18ch;
+  }
+
+  .awards-upcoming__when {
+    margin: 0 0 0.35rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--green);
+  }
+
+  .awards-upcoming__lead {
+    margin: 0 0 0.85rem;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+
+  .awards-upcoming__summary {
+    margin: 0 0 0.75rem;
+    color: var(--ink);
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  .awards-upcoming__note {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .awards-upcoming__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 0.85rem;
+    margin-top: 1.25rem;
+  }
+
+  .awards-upcoming__soon {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .awards-upcoming__highlights {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .awards-upcoming__highlights li {
+    padding: 1rem 1.1rem;
+    border-radius: var(--radius-md, 12px);
+    background: color-mix(in srgb, var(--white) 72%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
+  }
+
+  .awards-upcoming__hl-label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .awards-upcoming__highlights p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+
+  .awards-past__header {
+    max-width: 40rem;
+    margin-bottom: clamp(1.25rem, 3vw, 1.85rem);
+  }
+
+  .awards-past__header h2 {
+    margin: 0.35rem 0 0.65rem;
+    font-size: clamp(1.75rem, 3.5vw, 2.35rem);
+  }
+
+  .awards-past__dek {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.55;
+  }
+
   .awards-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -118,76 +291,70 @@ import { withBase } from "../lib/paths";
 
   .award-card {
     --accent: var(--purple);
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    padding: 0.85rem;
+    display: grid;
+    grid-template-rows: auto 1fr;
     border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--white) 70%, var(--cream));
-    border: 1px solid color-mix(in srgb, var(--purple) 10%, transparent);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--white) 88%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
   .award-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 14px 30px color-mix(in srgb, var(--ink) 8%, transparent);
+    box-shadow: 0 14px 36px color-mix(in srgb, var(--ink) 8%, transparent);
   }
 
   .award-card__media {
     position: relative;
     display: block;
-    border-radius: calc(var(--radius-lg) - 0.35rem);
+    aspect-ratio: 4 / 3;
     overflow: hidden;
-    aspect-ratio: 4 / 5;
-    max-height: 18rem;
-    background: color-mix(in srgb, var(--green-light) 35%, white);
+    background: color-mix(in srgb, var(--green-light) 40%, white);
   }
 
   .award-card__media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform 0.45s ease;
+    transition: transform 0.35s ease;
   }
 
   .award-card:hover .award-card__media img {
-    transform: scale(1.04);
+    transform: scale(1.03);
   }
 
   .award-card__year {
     position: absolute;
+    top: 0.75rem;
     left: 0.75rem;
-    bottom: 0.75rem;
-    padding: 0.3rem 0.55rem;
-    border-radius: 0.55rem;
-    background: color-mix(in srgb, var(--cream) 92%, white);
-    color: var(--accent);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ink) 72%, transparent);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
   }
 
   .award-card__body {
-    display: grid;
-    gap: 0.3rem;
-    padding: 0.95rem 0.25rem 0.35rem;
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.15rem 1.2rem 1.3rem;
   }
 
   .award-card__stance {
     margin: 0;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
     color: var(--accent);
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 700;
   }
 
   .award-card h2 {
     margin: 0;
-    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+    font-size: 1.35rem;
     line-height: 1.2;
   }
 
@@ -197,82 +364,88 @@ import { withBase } from "../lib/paths";
   }
 
   .award-card h2 a:hover {
-    color: var(--purple);
+    color: var(--accent);
   }
 
   .award-card__institution {
     margin: 0;
-    color: var(--blue);
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--muted);
   }
 
   .award-card__recognition {
-    margin: 0.1rem 0 0;
-    color: var(--green);
-    font-size: 0.86rem;
+    margin: 0.15rem 0 0;
+    font-size: 0.88rem;
     font-weight: 600;
   }
 
   .award-card__category {
-    margin: 0.25rem 0 0;
-    display: inline-flex;
-    width: fit-content;
-    padding: 0.2rem 0.5rem;
+    margin: 0;
+    display: inline-block;
+    align-self: start;
+    padding: 0.15rem 0.5rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--blue) 12%, white);
-    color: var(--blue);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent);
   }
 
   .award-card__summary {
-    margin: 0.4rem 0 0;
-    color: var(--muted);
+    margin: 0.35rem 0 0;
     font-size: 0.92rem;
+    color: var(--muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .award-card__focus {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.3rem;
-    margin-top: 0.75rem;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
   }
 
   .award-card__focus span {
     font-size: 0.72rem;
-    font-weight: 600;
-    padding: 0.22rem 0.5rem;
+    padding: 0.2rem 0.45rem;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--accent) 12%, white);
-    color: var(--ink);
+    background: color-mix(in srgb, var(--ink) 5%, transparent);
+    color: var(--muted);
   }
 
   .award-card__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem 0.85rem;
-    align-items: center;
-    margin-top: 0.85rem;
+    gap: 0.45rem;
+    margin-top: auto;
+    padding-top: 0.85rem;
   }
 
   .award-card__pending {
-    color: var(--muted);
     font-size: 0.82rem;
-    font-style: italic;
+    color: var(--muted);
+    align-self: center;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
+    .awards-upcoming__panel {
+      grid-template-columns: 1fr;
+    }
+
     .awards-grid {
       grid-template-columns: 1fr;
-      max-width: 26rem;
-      margin-inline: auto;
     }
 
     .award-card__media {
-      max-height: none;
+      aspect-ratio: 16 / 10;
+    }
+
+    .awards-upcoming__actions {
+      flex-direction: column;
+      align-items: stretch;
     }
   }
 </style>

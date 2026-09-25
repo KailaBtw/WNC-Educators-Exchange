@@ -16,6 +16,8 @@ export const site = {
   campusesDoingUrl: "",
   educatorProjectsUrl: "",
   awardsDriveUrl: "",
+  /** Contest / upcoming-award guidelines PDF — wire when Bill/Steven confirm. */
+  contestGuideUrl: "",
   voteUrl: "",
   acawebCourseUrl: "https://acaweb.org/AI-PD",
   org: "Land of Sky Workforce Development Board",
@@ -29,7 +31,7 @@ export const site = {
       image: asset(assets.teamLeigha),
     },
     {
-      name: "Ellie LaGrave",
+      name: "Ellie Lagrave",
       role: "Report co-author",
       image: asset(assets.teamEllie),
     },
@@ -40,18 +42,17 @@ export const site = {
     { name: "Chris Cain", role: "Host · Mars Hill University" },
     { name: "Nana Harrison", role: "UNC Asheville · registration" },
     { name: "Leigha Travis", role: "UNCA Marketing · report co-author" },
-    { name: "Ellie LaGrave", role: "UNCA Computer Science intern" },
+    { name: "Ellie Lagrave", role: "UNCA Computer Science intern" },
     { name: "Megan Coyle", role: "BRCC Computer Science intern" },
   ],
 };
 
-/** Short attribution for the 2026 WNC Educator Survey (shown with the “54” callouts). */
+/** Short attribution for the 2026 WNC Educator Survey. */
 export const surveyAttribution = {
   name: "2026 WNC Educator Survey",
   when: "January 2026",
-  respondents: "54 educators across Western North Carolina",
   blurb:
-    "In January 2026, 54 educators told us how AI is already in their classrooms, where policy hasn’t caught up, and what they need next. Those answers, and the summits with the Land of Sky Workforce Development Board, are the Top 10 Issues.",
+    "Last January we asked educators across Western North Carolina how AI shows up in their classrooms, where policy hasn’t kept up, and what they need next. Their answers—and the conversations at the Land of Sky summits—became the Top 10 Issues.",
 };
 
 export type SiteConfig = typeof site;

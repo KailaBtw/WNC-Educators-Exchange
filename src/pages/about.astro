@@ -1,13 +1,17 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import StatRow from "../components/ui/StatRow.astro";
 import Button from "../components/ui/Button.astro";
 import ContactCta from "../components/layout/ContactCta.astro";
 import { site, surveyAttribution } from "../content/site";
-import { stats } from "../content/stats";
-import { summitCommittee } from "../content/committee";
+import { summitCommittee, type CommitteePerson } from "../content/committee";
 import { assets, routes } from "../config/site";
 import { asset, withBase } from "../lib/paths";
+
+const host = summitCommittee.groups.find((g) => g.id === "host")?.people[0];
+
+function personPhoto(person: CommitteePerson) {
+  return person.image ? withBase(person.image) : null;
+}
 ---
 
 <BaseLayout
@@ -21,23 +25,21 @@ import { asset, withBase } from "../lib/paths";
         <h1>Educators Exchanging Ideas about A.I.</h1>
         <div class="prose muted">
           <p>
-            Artificial intelligence has arrived in WNC classrooms whether educators are ready for it
-            or not. The Exchange exists so faculty, staff, and campus leaders do not have to navigate
-            that shift alone.
+            AI is already in WNC classrooms. The Exchange exists so faculty, staff, and campus leaders
+            don’t have to figure it out alone.
           </p>
           <p>
-            {site.brainHubBlurb} With support from the {site.org}, we convene regional summits,
-            publish findings from the educator survey, and keep a shared record of what is working—and
-            what still needs institutional commitment. The November 13 Exchange at Mars Hill University
-            continues that work.
+            We’re part of the 2026 Brain Hub work, with support from the {site.org}. We bring people
+            together at regional summits, share what we learn from the educator survey, and keep track
+            of what’s working—and what still needs campus support. November 13 at Mars Hill University
+            is the next gathering.
           </p>
           <p>
-            Physical colleges still provide community and place. Online tools extend access. Neither
-            replaces the other, and neither absolves us of teaching students to think before they
-            outsource the work. Brain first, then AI.
+            Campuses still matter for community and place. Online tools help with access. Neither
+            replaces the other, and neither lets us off the hook for teaching students to think before
+            they hand the work to a machine. Brain first, then AI.
           </p>
         </div>
-        <StatRow stats={stats.aboutTeaser} />
         <p class="about-page__survey muted">{surveyAttribution.blurb}</p>
         <div class="about-page__actions">
           <Button href={routes.november}>November 13 event</Button>
@@ -52,9 +54,9 @@ import { asset, withBase } from "../lib/paths";
       <p class="eyebrow">Survey source</p>
       <h2>{surveyAttribution.name}</h2>
       <p class="muted">
-        In {surveyAttribution.when} we surveyed {surveyAttribution.respondents}. Every “54” on this
-        site is that group. The campus practice cards on the Schools page come from Leigha Travis’s
-        writeups of their answers.
+        {surveyAttribution.when}. Educators across Western North Carolina answered questions about AI
+        in teaching and learning. Leigha Travis turned those writeups into the campus practice cards
+        on the Schools page.
       </p>
     </div>
   </section>
@@ -92,21 +94,29 @@ import { asset, withBase } from "../lib/paths";
         Exchange at Mars Hill University.
       </p>
 
-      <article class="about-person-card about-person-card--featured">
-        <img
-          class="about-person-card__photo"
-          src={asset(assets.teamChrisCain)}
-          alt="Chris Cain, Mars Hill University"
-          width="96"
-          height="96"
-        />
-        <div class="about-person-card__body">
-          <p class="about-person-card__role">Host</p>
-          <h3>Chris Cain</h3>
-          <p class="about-person-card__org">Mars Hill University</p>
-          <a class="about-person-card__email" href="mailto:ccain@mhu.edu">ccain@mhu.edu</a>
-        </div>
-      </article>
+      {
+        host && (
+          <article class="about-person-card about-person-card--featured">
+            {personPhoto(host) ? (
+              <img
+                class="about-person-card__photo"
+                src={personPhoto(host)!}
+                alt={`${host.name}, ${host.org}`}
+                width="96"
+                height="96"
+              />
+            ) : null}
+            <div class="about-person-card__body">
+              <p class="about-person-card__role">Host</p>
+              <h3>{host.name}</h3>
+              <p class="about-person-card__org">{host.org}</p>
+              <a class="about-person-card__email" href={`mailto:${host.email}`}>
+                {host.email}
+              </a>
+            </div>
+          </article>
+        )
+      }
 
       <div class="about-committee__groups">
         {
@@ -116,24 +126,52 @@ import { asset, withBase } from "../lib/paths";
               <div class="about-committee__group">
                 <h3>{group.title}</h3>
                 <div class="about-person-grid">
-                  {group.people.map((person) => (
-                    <article class="about-person-card">
-                      <div class="about-person-card__body">
-                        <h4>{person.name}</h4>
-                        <p class="about-person-card__org">{person.org}</p>
-                        <a class="about-person-card__email" href={`mailto:${person.email}`}>
-                          {person.email}
-                        </a>
-                      </div>
-                    </article>
-                  ))}
+                  {group.people.map((person) => {
+                    const photo = personPhoto(person);
+                    return (
+                      <article class={`about-person-card${photo ? " about-person-card--with-photo" : ""}`}>
+                        {photo ? (
+                          <img
+                            class="about-person-card__photo about-person-card__photo--grid"
+                            src={photo}
+                            alt=""
+                            width="72"
+                            height="72"
+                            loading="lazy"
+                          />
+                        ) : null}
+                        <div class="about-person-card__body">
+                          <h4>{person.name}</h4>
+                          <p class="about-person-card__org">{person.org}</p>
+                          <a class="about-person-card__email" href={`mailto:${person.email}`}>
+                            {person.email}
+                          </a>
+                        </div>
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
             ))
         }
       </div>
 
-      <article class="about-person-card about-person-card--chair">
+      <article
+        class={`about-person-card about-person-card--chair${
+          personPhoto(summitCommittee.chair) ? " about-person-card--with-photo" : ""
+        }`}
+      >
+        {
+          personPhoto(summitCommittee.chair) ? (
+            <img
+              class="about-person-card__photo about-person-card__photo--grid"
+              src={personPhoto(summitCommittee.chair)!}
+              alt={summitCommittee.chair.name}
+              width="72"
+              height="72"
+            />
+          ) : null
+        }
         <div class="about-person-card__body">
           <p class="about-person-card__role">Chair</p>
           <h3>{summitCommittee.chair.name}</h3>
@@ -145,12 +183,23 @@ import { asset, withBase } from "../lib/paths";
       </article>
 
       <div class="about-committee__group about-committee__group--site">
-        <h3>Website developer</h3>
+        <h3>Website development</h3>
         <div class="about-person-grid">
-          <article class="about-person-card about-person-card--site">
+          <article class="about-person-card about-person-card--site about-person-card--with-photo">
+            <img
+              class="about-person-card__photo about-person-card__photo--grid"
+              src={asset(assets.teamEllie)}
+              alt="Ellie Lagrave"
+              width="72"
+              height="72"
+              loading="lazy"
+            />
             <div class="about-person-card__body">
-              <h4>Ellie LaGrave</h4>
-              <p class="about-person-card__org">Site design &amp; development</p>
+              <h4>Ellie Lagrave</h4>
+              <p class="about-person-card__org">Site design &amp; development · UNCA Computer Science</p>
+              <a class="about-person-card__email" href="mailto:emille16@unca.edu">
+                emille16@unca.edu
+              </a>
             </div>
           </article>
         </div>
@@ -284,6 +333,13 @@ import { asset, withBase } from "../lib/paths";
     border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
   }
 
+  .about-person-card--with-photo {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
   .about-person-card--featured {
     display: grid;
     grid-template-columns: 4.75rem 1fr;
@@ -295,7 +351,7 @@ import { asset, withBase } from "../lib/paths";
 
   .about-person-card--chair {
     margin-top: 1.75rem;
-    max-width: 24rem;
+    max-width: 28rem;
     border-color: color-mix(in srgb, var(--purple) 22%, transparent);
     background:
       linear-gradient(
@@ -317,8 +373,14 @@ import { asset, withBase } from "../lib/paths";
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
+    object-position: center top;
     border-radius: calc(var(--radius-lg) - 0.35rem);
     background: color-mix(in srgb, var(--green-light) 30%, white);
+  }
+
+  .about-person-card__photo--grid {
+    width: 4.5rem;
+    max-width: 4.5rem;
   }
 
   .about-person-card--featured .about-person-card__photo {

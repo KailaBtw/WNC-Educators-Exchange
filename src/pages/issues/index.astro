@@ -10,9 +10,9 @@ import { issueFilters, issues } from "../../content/issues";
 import { routes } from "../../config/site";
 
 const reportStats = [
-  { value: stats.respondents.value, label: stats.respondents.label, color: "green-light" as const },
   { value: stats.aiActive.value, label: stats.aiActive.label, color: "blue" as const },
   { value: stats.criticalThinking.value, label: stats.criticalThinking.label, color: "purple" as const },
+  { value: stats.policyBehind.value, label: stats.policyBehind.label, color: "green-light" as const },
 ];
 ---
 
@@ -25,9 +25,8 @@ const reportStats = [
       <p class="eyebrow">Regional report</p>
       <h1>Top 10 Issues in AI Facing Educators</h1>
       <p class="issues-report__dek">
-        Based on the {surveyAttribution.name} ({surveyAttribution.when},{" "}
-        {surveyAttribution.respondents}) and regional educator summits. These are not hypothetical
-        future problems—they are showing up in classrooms across the region now.
+        From the {surveyAttribution.name} ({surveyAttribution.when}) and the regional summits. These
+        aren’t future problems—they’re already showing up in classrooms across WNC.
       </p>
       <div class="prose muted issues-report__overview">
         <p>{surveyAttribution.blurb}</p>

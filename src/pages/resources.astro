@@ -1,208 +1,335 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/ui/Button.astro";
-import { site, surveyAttribution } from "../content/site";
-import { routes } from "../config/site";
+import ContactCta from "../components/layout/ContactCta.astro";
+import {
+  resourcesIntro,
+  resourcesFeatured,
+  resourceGroups,
+  type ResourceItem,
+} from "../content/resources";
 import { withBase } from "../lib/paths";
 
-const resourceGroups = [
-  {
-    title: "Start here",
-    items: [
-      {
-        label: "Top 10 Issues in AI Facing Educators",
-        href: routes.issues,
-        blurb: `Findings from the ${surveyAttribution.name} and regional summits.`,
-        external: false,
-      },
-      {
-        label: "What schools are doing with AI",
-        href: routes.schools,
-        blurb: "Campus practice cards from the 2026 survey writeups.",
-        external: false,
-      },
-      {
-        label: "Faculty we recognize",
-        href: routes.awards,
-        blurb: "2026 BrAIn Hub Educator Award winners and profiles.",
-        external: false,
-      },
-    ],
-  },
-  {
-    title: "November 13 Exchange",
-    items: [
-      {
-        label: "Event schedule & details",
-        href: routes.november,
-        blurb: "Mars Hill University · full day program.",
-        external: false,
-      },
-      {
-        label: "Register for Nov 13",
-        href: site.registerUrl,
-        blurb: "Novera registration for the Educators Exchange.",
-        external: true,
-      },
-      {
-        label: "All events",
-        href: routes.events,
-        blurb: "Upcoming and previous gatherings.",
-        external: false,
-      },
-    ],
-  },
-  {
-    title: "Connect",
-    items: [
-      {
-        label: "About the Exchange",
-        href: routes.about,
-        blurb: "Brain Hub, Land of Sky, survey source, and summit committee.",
-        external: false,
-      },
-      {
-        label: "Contact",
-        href: routes.contact,
-        blurb: `Reach the team at ${site.contactEmail}.`,
-        external: false,
-      },
-    ],
-  },
-];
+function itemHref(item: ResourceItem) {
+  if (!item.href) return undefined;
+  if (item.external || !item.href.startsWith("/")) return item.href;
+  return withBase(item.href);
+}
 ---
 
 <BaseLayout
   title="Resources"
-  description="Links for WNC educators—Top 10 Issues, campus practices, awards, and November 13 registration."
+  description="Links for WNC faculty, students, and campus leads—Top 10 Issues, awards, contest, and November 13 registration."
 >
-  <section class="section">
-    <div class="container resources-page">
-      <p class="eyebrow">Library</p>
-      <h1>Resources</h1>
-      <p class="muted resources-page__lede">
-        A short shelf of what the Exchange publishes now. When the full Top 10 analysis PDF and partner
-        toolkits are cleared for public share, they will appear in this library.
-      </p>
-
-      <div class="resources-page__groups">
+  <section class="section resources-hero">
+    <div class="container resources-hero__inner">
+      <p class="eyebrow">{resourcesIntro.eyebrow}</p>
+      <h1>{resourcesIntro.title}</h1>
+      <p class="resources-hero__lede muted">{resourcesIntro.description}</p>
+      <nav class="resources-jump" aria-label="Jump to audience">
         {
           resourceGroups.map((group) => (
-            <section class="resources-group">
-              <h2>{group.title}</h2>
-              <ul>
-                {group.items.map((item) => (
-                  <li>
-                    {item.external ? (
-                      <a
-                        class="resources-group__link"
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <strong>
-                          {item.label}
-                          <span aria-hidden="true"> ↗</span>
-                        </strong>
-                        <span>{item.blurb}</span>
-                      </a>
-                    ) : (
-                      <a class="resources-group__link" href={withBase(item.href)}>
-                        <strong>{item.label}</strong>
-                        <span>{item.blurb}</span>
-                      </a>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </section>
+            <a href={`#${group.id}`}>{group.title}</a>
           ))
         }
-      </div>
+      </nav>
+    </div>
+  </section>
 
-      <div class="resources-page__actions">
-        <Button href={routes.issues}>Open Top 10 Issues</Button>
-        <Button href={site.registerUrl} variant="secondary" external>
-          Register for Nov 13
-        </Button>
+  <section class="section section--tight resources-featured">
+    <div class="container">
+      <div class="resources-featured__panel" data-reveal data-reveal-y="24">
+        <div class="resources-featured__copy">
+          <p class="eyebrow">{resourcesFeatured.eyebrow}</p>
+          <h2>{resourcesFeatured.title}</h2>
+          <p class="resources-featured__when">{resourcesFeatured.when}</p>
+          <p class="resources-featured__blurb">{resourcesFeatured.blurb}</p>
+        </div>
+        <div class="resources-featured__actions">
+          <Button href={resourcesFeatured.primary.href} external={resourcesFeatured.primary.external}>
+            {resourcesFeatured.primary.label}
+          </Button>
+          <Button href={resourcesFeatured.secondary.href} variant="secondary">
+            {resourcesFeatured.secondary.label}
+          </Button>
+        </div>
       </div>
     </div>
   </section>
+
+  {
+    resourceGroups.map((group, groupIndex) => (
+      <section
+        class:list={[
+          "section",
+          "resources-group",
+          `resources-group--${group.accent}`,
+          { "section--tight": groupIndex === 0 },
+        ]}
+        id={group.id}
+        style={`--group-accent: var(--${group.accent})`}
+      >
+        <div class="container">
+          <header class="resources-group__header" data-reveal data-reveal-y="20">
+            <p class="eyebrow">{group.eyebrow}</p>
+            <h2>{group.title}</h2>
+            <p class="muted">{group.lede}</p>
+          </header>
+          <ul class="resources-group__list">
+            {group.items.map((item, index) => {
+              const href = itemHref(item);
+              const soon = item.comingSoon || !href;
+              return (
+                <li data-reveal data-reveal-y="18" data-reveal-delay={String(0.04 * (index % 4))}>
+                  {soon ? (
+                    <div class="resources-item resources-item--soon" aria-disabled="true">
+                      <div class="resources-item__text">
+                        <strong>
+                          {item.label}
+                          <span class="resources-item__badge">Coming soon</span>
+                        </strong>
+                        <span>{item.blurb}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <a
+                      class="resources-item"
+                      href={href}
+                      target={item.external ? "_blank" : undefined}
+                      rel={item.external ? "noopener noreferrer" : undefined}
+                    >
+                      <div class="resources-item__text">
+                        <strong>
+                          {item.label}
+                          {item.external && <span aria-hidden="true"> ↗</span>}
+                        </strong>
+                        <span>{item.blurb}</span>
+                      </div>
+                      <span class="resources-item__cue" aria-hidden="true">
+                        →
+                      </span>
+                    </a>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+    ))
+  }
+
+  <ContactCta
+    title="Looking for something else?"
+    description="Ask about PDFs, contest guidelines, or campus materials—we will follow up when files are cleared for share."
+  />
 </BaseLayout>
 
 <style>
-  .resources-page {
-    max-width: 44rem;
+  .resources-hero__inner {
+    max-width: 42rem;
   }
 
-  .resources-page h1 {
+  .resources-hero h1 {
     font-size: clamp(2.4rem, 5vw, 3.4rem);
     margin: 0.4rem 0 1rem;
   }
 
-  .resources-page__lede {
-    margin: 0 0 2rem;
+  .resources-hero__lede {
+    margin: 0 0 1.35rem;
     max-width: 40rem;
+    font-size: 1.05rem;
   }
 
-  .resources-page__groups {
+  .resources-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .resources-jump a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.35rem;
+    padding: 0.35rem 0.95rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+    background: color-mix(in srgb, var(--white) 72%, var(--cream));
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .resources-jump a:hover {
+    border-color: color-mix(in srgb, var(--blue) 40%, transparent);
+    color: var(--purple);
+  }
+
+  .resources-featured__panel {
     display: grid;
-    gap: 2rem;
+    grid-template-columns: minmax(0, 1.2fr) auto;
+    gap: clamp(1.25rem, 3vw, 2rem);
+    align-items: center;
+    padding: clamp(1.25rem, 3vw, 1.75rem) clamp(1.25rem, 3vw, 1.85rem);
+    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in srgb, var(--green) 22%, transparent);
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--green-light) 42%, var(--cream)),
+        color-mix(in srgb, var(--white) 80%, var(--cream))
+      );
   }
 
-  .resources-group h2 {
-    margin: 0 0 0.85rem;
-    font-size: 1.15rem;
+  .resources-featured h2 {
+    margin: 0.3rem 0 0.45rem;
+    font-size: clamp(1.45rem, 3vw, 1.85rem);
+    max-width: 18ch;
+  }
+
+  .resources-featured__when {
+    margin: 0 0 0.55rem;
+    font-size: 0.95rem;
+    font-weight: 600;
     color: var(--green);
   }
 
-  .resources-group ul {
+  .resources-featured__blurb {
+    margin: 0;
+    color: var(--ink);
+    max-width: 36rem;
+    line-height: 1.55;
+  }
+
+  .resources-featured__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: flex-end;
+  }
+
+  .resources-group__header {
+    max-width: 40rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .resources-group__header h2 {
+    margin: 0.3rem 0 0.5rem;
+    font-size: clamp(1.65rem, 3.5vw, 2.15rem);
+  }
+
+  .resources-group__header .muted {
+    margin: 0;
+  }
+
+  .resources-group__list {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.85rem;
+    gap: 0.75rem;
+    max-width: 48rem;
   }
 
-  .resources-group li {
-    margin: 0;
-  }
-
-  .resources-group__link {
+  .resources-item {
     display: grid;
-    gap: 0.25rem;
-    padding: 1rem 1.1rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.85rem;
+    align-items: center;
+    padding: 1rem 1.15rem;
     border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--white) 70%, var(--cream));
-    border: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
-    text-decoration: none;
+    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+    border-left: 3px solid color-mix(in srgb, var(--group-accent, var(--green)) 55%, transparent);
+    background: color-mix(in srgb, var(--white) 72%, var(--cream));
     color: inherit;
+    text-decoration: none;
     transition: border-color 0.2s ease, transform 0.2s ease;
   }
 
-  .resources-group__link:hover {
-    border-color: color-mix(in srgb, var(--blue) 35%, transparent);
+  a.resources-item:hover {
+    border-color: color-mix(in srgb, var(--group-accent, var(--blue)) 40%, transparent);
     transform: translateY(-1px);
   }
 
-  .resources-group__link strong {
+  a.resources-item:hover strong {
+    color: var(--group-accent, var(--purple));
+  }
+
+  .resources-item--soon {
+    opacity: 0.9;
+  }
+
+  .resources-item__text {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .resources-item strong {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.6rem;
     color: var(--ink);
     font-size: 1.05rem;
   }
 
-  .resources-group__link:hover strong {
-    color: var(--purple);
-  }
-
-  .resources-group__link span {
+  .resources-item__text > span {
     color: var(--muted);
     font-size: 0.92rem;
+    line-height: 1.45;
   }
 
-  .resources-page__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 2rem;
+  .resources-item__badge {
+    display: inline-block;
+    padding: 0.12rem 0.45rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: color-mix(in srgb, var(--ink) 7%, transparent);
+  }
+
+  .resources-item__cue {
+    color: var(--group-accent, var(--green));
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 768px) {
+    .resources-featured__panel {
+      grid-template-columns: 1fr;
+    }
+
+    .resources-featured__actions {
+      justify-content: stretch;
+      flex-direction: column;
+    }
+
+    .resources-featured__actions :global(.btn) {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .resources-jump {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .resources-jump a {
+      justify-content: center;
+    }
+
+    .resources-item {
+      grid-template-columns: 1fr;
+      gap: 0.45rem;
+    }
+
+    .resources-item__cue {
+      display: none;
+    }
   }
 </style>

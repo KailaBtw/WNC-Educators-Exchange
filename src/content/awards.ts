@@ -31,8 +31,46 @@ export type Awardee = {
 };
 
 export const awardsIntro = {
-  eyebrow: "2026 faculty excellence awards",
+  eyebrow: "Awards",
   title: "Faculty we recognize",
+  description:
+    "Celebrate this year’s BrAIn Hub Educator Award winners—and watch for the next faculty & student community contest.",
+};
+
+/**
+ * Teaser for the next contest cycle. Full guidelines stay in a downloadable
+ * packet (`guideUrl`) rather than on this page.
+ */
+export const upcomingAwards = {
+  eyebrow: "Coming up",
+  title: "Faculty & student community contest",
+  summary:
+    "A contest for faculty and students working together—using AI on projects that help Western North Carolina communities. Official name and full packet are forthcoming; here’s what we know so far.",
+  when: "Introduced at the November 13 Educators Exchange · Mars Hill University",
+  lead: "Steven Young · Blue Ridge Community College",
+  highlights: [
+    {
+      label: "Who",
+      text: "Faculty and students from WNC campuses, entering as teams on community-facing AI projects.",
+    },
+    {
+      label: "What",
+      text: "Projects that put AI to work for local communities—not only classroom demos, but real regional impact.",
+    },
+    {
+      label: "When",
+      text: "Steven Young will walk through the contest during the Nov 13 afternoon program; timelines and entry steps follow in the guidelines packet.",
+    },
+  ],
+  note: "We’ll keep this page light. Full criteria, deadlines, and how to enter will live in a downloadable guide once sponsors confirm the details.",
+  /** Packet / guidelines PDF or Drive link — empty shows “coming soon” note. */
+  guideUrl: "",
+  guideLabel: "Download guidelines",
+};
+
+export const pastAwardsIntro = {
+  eyebrow: "2026 faculty excellence awards",
+  title: "This year’s winners",
   description:
     "The six 2026 AI Innovator in Education Award winners from the BrAIn Hub Educator Award—WNC educators using AI to strengthen student achievement, workforce readiness, and institutional practice.",
 };

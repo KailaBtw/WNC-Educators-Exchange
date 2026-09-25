@@ -1,7 +1,7 @@
 ---
 import SectionHeader from "../ui/SectionHeader.astro";
 import Button from "../ui/Button.astro";
-import { awardsIntro, awardees, awardProfilePath } from "../../content/awards";
+import { pastAwardsIntro, awardees, awardProfilePath } from "../../content/awards";
 import { routes } from "../../config/site";
 import { withBase } from "../../lib/paths";
 
@@ -11,7 +11,7 @@ const featured = awardees.slice(0, 3);
 <section class="section awards-teaser" id="awards">
   <div class="container">
     <div data-reveal>
-      <SectionHeader eyebrow={awardsIntro.eyebrow} title={awardsIntro.title} align="center">
+      <SectionHeader eyebrow={pastAwardsIntro.eyebrow} title="Faculty we recognize" align="center">
         <p>
           WNC faculty we recognized for how they use AI with students and on their campuses.
         </p>
