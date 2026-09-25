@@ -1,8 +1,10 @@
 ---
 import SectionHeader from "../ui/SectionHeader.astro";
 import ScheduleTimeline from "../events/ScheduleTimeline.astro";
+import PastEventCard from "../events/PastEventCard.astro";
+import PastEventDialogs from "../events/PastEventDialogs.astro";
 import Button from "../ui/Button.astro";
-import { events, getProgramLines } from "../../content/events";
+import { events } from "../../content/events";
 import { routes } from "../../config/site";
 
 const upcoming = events.find((e) => e.status === "upcoming");
@@ -70,21 +72,7 @@ const past = events.filter((e) => e.status === "past");
           <p class="eyebrow">Previous gatherings</p>
           <div class="events-home__past-grid">
             {past.map((event) => (
-              <button
-                type="button"
-                class="events-home__past-card"
-                data-open-past-event={event.slug}
-                aria-haspopup="dialog"
-              >
-                <span class="events-home__past-thumb" aria-hidden="true">
-                  <img src={event.images[0]?.src} alt="" width="64" height="64" />
-                </span>
-                <span class="events-home__past-copy">
-                  <span class="events-home__past-date">{event.dateLabel}</span>
-                  <span class="events-home__past-title">{event.title}</span>
-                  <span class="events-home__past-summary">{event.summary}</span>
-                </span>
-              </button>
+              <PastEventCard event={event} />
             ))}
           </div>
         </div>
@@ -97,68 +85,7 @@ const past = events.filter((e) => e.status === "past");
   </div>
 </section>
 
-{
-  past.map((event) => (
-    <dialog
-      class="past-dialog"
-      id={`past-dialog-${event.slug}`}
-      aria-labelledby={`past-dialog-title-${event.slug}`}
-    >
-      <div class="past-dialog__panel">
-        <header class="past-dialog__header">
-          <div>
-            <p class="past-dialog__kicker">Previous gathering</p>
-            <h2 id={`past-dialog-title-${event.slug}`}>{event.title}</h2>
-            <p class="past-dialog__meta">{event.dateLabel}</p>
-          </div>
-          <button type="button" class="past-dialog__close" data-close-past-dialog aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </header>
-        <div class="past-dialog__body">
-          <p class="past-dialog__summary">{event.summary}</p>
-          <div class="past-dialog__program">
-            <h3>Session outline</h3>
-            <ol>
-              {getProgramLines(event).map((item) => (
-                <li>{item}</li>
-              ))}
-            </ol>
-          </div>
-          <div class="past-dialog__actions">
-            <Button href={`/events/${event.slug}`} variant="quiet">
-              Open event page
-            </Button>
-          </div>
-        </div>
-      </div>
-    </dialog>
-  ))
-}
-
-<script>
-  document.querySelectorAll<HTMLElement>("[data-open-past-event]").forEach((el) => {
-    el.addEventListener("click", () => {
-      const slug = el.dataset.openPastEvent;
-      if (!slug) return;
-      const dialog = document.getElementById(`past-dialog-${slug}`) as HTMLDialogElement | null;
-      dialog?.showModal();
-    });
-  });
-
-  document.querySelectorAll<HTMLButtonElement>("[data-close-past-dialog]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const dialog = btn.closest("dialog") as HTMLDialogElement | null;
-      dialog?.close();
-    });
-  });
-
-  document.querySelectorAll<HTMLDialogElement>(".past-dialog").forEach((dialog) => {
-    dialog.addEventListener("click", (event) => {
-      if (event.target === dialog) dialog.close();
-    });
-  });
-</script>
+<PastEventDialogs events={events} />
 
 <style>
   .events-home__featured {
@@ -232,201 +159,19 @@ const past = events.filter((e) => e.status === "past");
   }
 
   .events-home__past .eyebrow {
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.95rem;
   }
 
   .events-home__past-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-
-  .events-home__past-card {
-    display: flex;
-    gap: 0.95rem;
-    align-items: flex-start;
-    width: 100%;
-    min-width: 0;
-    margin: 0;
-    padding: 1rem;
-    border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--white) 70%, var(--cream));
-    border: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
-    text-align: left;
-    color: inherit;
-    font: inherit;
-    cursor: pointer;
-    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .events-home__past-card:hover,
-  .events-home__past-card:focus-visible {
-    border-color: color-mix(in srgb, var(--blue) 35%, transparent);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px color-mix(in srgb, var(--ink) 6%, transparent);
-    outline: none;
-  }
-
-  .events-home__past-thumb {
-    flex: 0 0 3.5rem;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 0.65rem;
-    overflow: hidden;
-    background: color-mix(in srgb, var(--green-light) 40%, white);
-  }
-
-  .events-home__past-thumb img {
-    display: block;
-    width: 3.5rem;
-    height: 3.5rem;
-    max-width: 3.5rem;
-    max-height: 3.5rem;
-    object-fit: cover;
-  }
-
-  .events-home__past-copy {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    min-width: 0;
-    flex: 1;
-  }
-
-  .events-home__past-date,
-  .events-home__past-title,
-  .events-home__past-summary {
-    display: block;
-  }
-
-  .events-home__past-date {
-    color: var(--blue);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .events-home__past-title {
-    font-family: var(--font-display);
-    font-size: 1.2rem;
-    font-weight: 600;
-    line-height: 1.25;
-  }
-
-  .events-home__past-summary {
-    color: var(--muted);
-    font-size: 0.9rem;
-    line-height: 1.45;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    gap: clamp(1rem, 2.5vw, 1.5rem);
   }
 
   .events-home__cta {
     display: flex;
     justify-content: center;
     margin-top: 1.75rem;
-  }
-
-  .past-dialog {
-    width: min(30rem, calc(100vw - 1.5rem));
-    max-height: min(88vh, 36rem);
-    padding: 0;
-    border: 0;
-    border-radius: var(--radius-lg);
-    background: var(--cream);
-    box-shadow: 0 28px 64px color-mix(in srgb, var(--ink) 26%, transparent);
-  }
-
-  .past-dialog::backdrop {
-    background: color-mix(in srgb, var(--ink) 48%, transparent);
-  }
-
-  .past-dialog__panel {
-    display: flex;
-    flex-direction: column;
-    max-height: min(88vh, 36rem);
-  }
-
-  .past-dialog__header {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    align-items: flex-start;
-    padding: 1.35rem 1.35rem 1.1rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
-    background: color-mix(in srgb, var(--white) 72%, var(--cream));
-  }
-
-  .past-dialog__kicker {
-    margin: 0 0 0.3rem;
-    color: var(--blue);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .past-dialog__header h2 {
-    margin: 0;
-    font-size: clamp(1.35rem, 3vw, 1.7rem);
-    line-height: 1.2;
-  }
-
-  .past-dialog__meta {
-    margin: 0.4rem 0 0;
-    color: var(--muted);
-    font-size: 0.92rem;
-    font-weight: 600;
-  }
-
-  .past-dialog__close {
-    flex-shrink: 0;
-    width: 2.35rem;
-    height: 2.35rem;
-    border: 0;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--ink) 6%, white);
-    color: var(--ink);
-    font-size: 1.45rem;
-    line-height: 1;
-    cursor: pointer;
-  }
-
-  .past-dialog__close:hover {
-    background: color-mix(in srgb, var(--ink) 12%, white);
-  }
-
-  .past-dialog__body {
-    padding: 1.2rem 1.35rem 1.45rem;
-    overflow: auto;
-  }
-
-  .past-dialog__summary {
-    margin: 0 0 1.15rem;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  .past-dialog__program h3 {
-    margin: 0 0 0.65rem;
-    font-size: 0.95rem;
-    letter-spacing: 0.02em;
-  }
-
-  .past-dialog__program ol {
-    margin: 0;
-    padding-left: 1.15rem;
-    display: grid;
-    gap: 0.4rem;
-    color: var(--muted);
-    font-size: 0.92rem;
-  }
-
-  .past-dialog__actions {
-    margin-top: 1.25rem;
   }
 
   @media (max-width: 720px) {

@@ -1,0 +1,415 @@
+---
+import Button from "../ui/Button.astro";
+import type { EventItem } from "../../content/events";
+import { getProgramLines } from "../../content/events";
+
+interface Props {
+  events: EventItem[];
+}
+
+const { events } = Astro.props;
+const past = events.filter((e) => e.status === "past");
+---
+
+{
+  past.map((event) => {
+    const program = getProgramLines(event);
+    const slides = event.images;
+    return (
+      <dialog
+        class="past-dialog"
+        id={`past-dialog-${event.slug}`}
+        aria-labelledby={`past-dialog-title-${event.slug}`}
+      >
+        <div class="past-dialog__panel">
+          <header class="past-dialog__header">
+            <div class="past-dialog__header-copy">
+              <p class="past-dialog__kicker">Previous gathering · {event.category}</p>
+              <h2 id={`past-dialog-title-${event.slug}`}>{event.title}</h2>
+              <p class="past-dialog__meta">{event.dateLabel}</p>
+            </div>
+            <button type="button" class="past-dialog__close" data-close-past-dialog aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </header>
+
+          <div class="past-dialog__body">
+            {
+              slides.length > 0 && (
+                <div class="past-dialog__carousel" data-past-carousel>
+                  <div class="past-dialog__stage">
+                    {slides.map((img, index) => (
+                      <figure
+                        class="past-dialog__slide"
+                        data-past-slide
+                        hidden={index !== 0}
+                      >
+                        <img src={img.src} alt={img.alt} width="960" height="540" />
+                        {(img.caption || img.subtitle) && (
+                          <figcaption>
+                            {img.caption && <strong>{img.caption}</strong>}
+                            {img.subtitle && <span>{img.subtitle}</span>}
+                          </figcaption>
+                        )}
+                      </figure>
+                    ))}
+                  </div>
+                  {slides.length > 1 && (
+                    <div class="past-dialog__controls">
+                      <button type="button" data-past-prev aria-label="Previous photo">
+                        ←
+                      </button>
+                      <div class="past-dialog__dots" role="tablist" aria-label="Photos">
+                        {slides.map((_, index) => (
+                          <button
+                            type="button"
+                            role="tab"
+                            data-past-dot={String(index)}
+                            aria-selected={index === 0 ? "true" : "false"}
+                            aria-label={`Show photo ${index + 1}`}
+                            class:list={{ "is-active": index === 0 }}
+                          />
+                        ))}
+                      </div>
+                      <button type="button" data-past-next aria-label="Next photo">
+                        →
+                      </button>
+                      <span class="past-dialog__count" data-past-count>
+                        1 / {slides.length}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )
+            }
+
+            <div class="past-dialog__content">
+              <p class="past-dialog__summary">{event.summary}</p>
+              {
+                program.length > 0 && (
+                  <div class="past-dialog__program">
+                    <h3>Session outline</h3>
+                    <ol>
+                      {program.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ol>
+                  </div>
+                )
+              }
+              <div class="past-dialog__actions">
+                <Button href={`/events/${event.slug}`}>Open full event page</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </dialog>
+    );
+  })
+}
+
+<script>
+  function setupPastCarousels() {
+    document.querySelectorAll<HTMLElement>("[data-past-carousel]").forEach((root) => {
+      const slides = Array.from(root.querySelectorAll<HTMLElement>("[data-past-slide]"));
+      if (slides.length < 2) return;
+
+      const dots = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-past-dot]"));
+      const countEl = root.querySelector<HTMLElement>("[data-past-count]");
+      let index = 0;
+
+      const show = (next: number) => {
+        index = (next + slides.length) % slides.length;
+        slides.forEach((slide, i) => {
+          slide.hidden = i !== index;
+        });
+        dots.forEach((dot, i) => {
+          const active = i === index;
+          dot.classList.toggle("is-active", active);
+          dot.setAttribute("aria-selected", active ? "true" : "false");
+        });
+        if (countEl) countEl.textContent = `${index + 1} / ${slides.length}`;
+      };
+
+      root.querySelector("[data-past-prev]")?.addEventListener("click", () => show(index - 1));
+      root.querySelector("[data-past-next]")?.addEventListener("click", () => show(index + 1));
+      dots.forEach((dot) => {
+        dot.addEventListener("click", () => {
+          const i = Number(dot.dataset.pastDot ?? 0);
+          show(i);
+        });
+      });
+    });
+  }
+
+  function setupPastDialogs() {
+    document.querySelectorAll<HTMLElement>("[data-open-past-event]").forEach((el) => {
+      el.addEventListener("click", () => {
+        const slug = el.dataset.openPastEvent;
+        if (!slug) return;
+        const dialog = document.getElementById(`past-dialog-${slug}`) as HTMLDialogElement | null;
+        dialog?.showModal();
+      });
+    });
+
+    document.querySelectorAll<HTMLButtonElement>("[data-close-past-dialog]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const dialog = btn.closest("dialog") as HTMLDialogElement | null;
+        dialog?.close();
+      });
+    });
+
+    document.querySelectorAll<HTMLDialogElement>(".past-dialog").forEach((dialog) => {
+      dialog.addEventListener("click", (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+    });
+  }
+
+  setupPastCarousels();
+  setupPastDialogs();
+</script>
+
+<style is:global>
+  .past-dialog {
+    width: min(52rem, calc(100vw - 1.25rem));
+    max-height: min(92vh, 46rem);
+    padding: 0;
+    border: 0;
+    border-radius: 1.35rem;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  .past-dialog::backdrop {
+    background:
+      radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--blue) 24%, transparent), transparent 42%),
+      color-mix(in srgb, var(--ink) 58%, transparent);
+    backdrop-filter: blur(4px);
+  }
+
+  .past-dialog__panel {
+    display: flex;
+    flex-direction: column;
+    max-height: min(92vh, 46rem);
+    background: var(--cream);
+    border-radius: 1.35rem;
+    overflow: hidden;
+    box-shadow:
+      0 28px 70px color-mix(in srgb, #000 28%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--white) 30%, transparent);
+  }
+
+  .past-dialog__header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.25rem 1.35rem 1.1rem;
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--blue) 14%, var(--cream)),
+        color-mix(in srgb, var(--white) 80%, var(--cream))
+      );
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  }
+
+  .past-dialog__kicker {
+    margin: 0 0 0.3rem;
+    color: var(--blue);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .past-dialog__header h2 {
+    margin: 0;
+    font-size: clamp(1.45rem, 3vw, 1.9rem);
+    line-height: 1.2;
+    max-width: 22ch;
+  }
+
+  .past-dialog__meta {
+    margin: 0.4rem 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .past-dialog__close {
+    flex-shrink: 0;
+    width: 2.45rem;
+    height: 2.45rem;
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ink) 7%, white);
+    color: var(--ink);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .past-dialog__close:hover {
+    background: color-mix(in srgb, var(--ink) 14%, white);
+  }
+
+  .past-dialog__body {
+    padding: 1.15rem 1.35rem 1.45rem;
+    overflow: auto;
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .past-dialog__carousel {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .past-dialog__stage {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--ink) 88%, var(--blue));
+    aspect-ratio: 16 / 9;
+    max-height: 22rem;
+  }
+
+  .past-dialog__slide {
+    margin: 0;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .past-dialog__slide[hidden] {
+    display: none;
+  }
+
+  .past-dialog__slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .past-dialog__slide figcaption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    gap: 0.15rem;
+    padding: 1.1rem 1.15rem 1rem;
+    background: linear-gradient(transparent, color-mix(in srgb, var(--ink) 72%, transparent));
+    color: #fff;
+  }
+
+  .past-dialog__slide figcaption strong {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+  }
+
+  .past-dialog__slide figcaption span {
+    font-size: 0.85rem;
+    opacity: 0.9;
+  }
+
+  .past-dialog__controls {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+
+  .past-dialog__controls > button[data-past-prev],
+  .past-dialog__controls > button[data-past-next] {
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    background: var(--white);
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .past-dialog__controls > button[data-past-prev]:hover,
+  .past-dialog__controls > button[data-past-next]:hover {
+    border-color: color-mix(in srgb, var(--green) 45%, transparent);
+    color: var(--green);
+  }
+
+  .past-dialog__dots {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+  }
+
+  .past-dialog__dots button {
+    width: 0.55rem;
+    height: 0.55rem;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ink) 18%, transparent);
+    cursor: pointer;
+  }
+
+  .past-dialog__dots button.is-active {
+    width: 1.1rem;
+    background: var(--green);
+  }
+
+  .past-dialog__count {
+    margin-left: auto;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  .past-dialog__content {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .past-dialog__summary {
+    margin: 0;
+    color: var(--muted);
+    font-size: 1.02rem;
+    line-height: 1.55;
+    max-width: 42rem;
+  }
+
+  .past-dialog__program h3 {
+    margin: 0 0 0.65rem;
+    font-size: 0.95rem;
+  }
+
+  .past-dialog__program ol {
+    margin: 0;
+    padding-left: 1.15rem;
+    display: grid;
+    gap: 0.45rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .past-dialog__actions {
+    margin-top: 0.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .past-dialog__stage {
+      aspect-ratio: 4 / 3;
+      max-height: none;
+    }
+
+    .past-dialog__header h2 {
+      max-width: none;
+    }
+  }
+</style>

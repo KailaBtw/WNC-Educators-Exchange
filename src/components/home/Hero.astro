@@ -6,10 +6,16 @@ import { cssUrl } from "../../lib/paths";
 ---
 
 <section class="hero">
-  <div class="hero__media" aria-hidden="true" style={`--hero-image: ${cssUrl("heroUnca")}`}>
-    <span class="hero__place">UNCA campus</span>
-    <span class="hero__org">Part of the “Brain Hub” org</span>
-  </div>
+  <div class="hero__media" aria-hidden="true" style={`--hero-image: ${cssUrl("heroUnca")}`} />
+  <a
+    class="hero__place"
+    href="https://www.unca.edu/"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    UNCA campus
+  </a>
+  <span class="hero__org">Part of the “Brain Hub” org</span>
   <div class="container hero__content" data-reveal data-reveal-y="24">
     <p class="hero__brand">{site.name}</p>
     <h1>AI for educators, grounded in Western North Carolina.</h1>
@@ -51,7 +57,7 @@ import { cssUrl } from "../../lib/paths";
     position: absolute;
     left: var(--page-gutter);
     bottom: 1rem;
-    z-index: 1;
+    z-index: 2;
     padding: 0.28rem 0.65rem;
     border-radius: 0.45rem;
     background: color-mix(in srgb, var(--ink) 55%, transparent);
@@ -60,13 +66,26 @@ import { cssUrl } from "../../lib/paths";
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .hero__place:hover,
+  .hero__place:focus-visible {
+    background: color-mix(in srgb, var(--ink) 72%, transparent);
+    color: var(--white);
+    outline: none;
+  }
+
+  .hero__place:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--white) 70%, transparent);
   }
 
   .hero__org {
     position: absolute;
     right: var(--page-gutter);
     bottom: 1rem;
-    z-index: 1;
+    z-index: 2;
     padding: 0.28rem 0.65rem;
     border-radius: 0.45rem;
     background: color-mix(in srgb, var(--ink) 55%, transparent);

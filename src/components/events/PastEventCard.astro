@@ -1,0 +1,167 @@
+---
+import type { EventItem } from "../../content/events";
+
+interface Props {
+  event: EventItem;
+  /** Optional stagger for reveal animations */
+  revealDelay?: string;
+}
+
+const { event, revealDelay } = Astro.props;
+const cover = event.images[0];
+---
+
+<button
+  type="button"
+  class="past-card"
+  data-open-past-event={event.slug}
+  data-reveal={revealDelay != null ? "" : undefined}
+  data-reveal-delay={revealDelay}
+  data-reveal-y={revealDelay != null ? "24" : undefined}
+  aria-haspopup="dialog"
+>
+  <span class="past-card__media" aria-hidden="true">
+    {
+      cover ? (
+        <img src={cover.src} alt="" width="640" height="400" loading="lazy" />
+      ) : (
+        <span class="past-card__media-fallback" />
+      )
+    }
+    <span class="past-card__date">{event.dateLabel}</span>
+  </span>
+  <span class="past-card__body">
+    <span class="past-card__kicker">Previous gathering · {event.category}</span>
+    <span class="past-card__title">{event.title}</span>
+    <span class="past-card__summary">{event.summary}</span>
+    <span class="past-card__cta">View photos &amp; outline →</span>
+  </span>
+</button>
+
+<style>
+  .past-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--white) 78%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
+    text-align: left;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .past-card:hover,
+  .past-card:focus-visible {
+    border-color: color-mix(in srgb, var(--blue) 40%, transparent);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 34px color-mix(in srgb, var(--ink) 9%, transparent);
+    outline: none;
+  }
+
+  .past-card__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    min-height: 11rem;
+    background: color-mix(in srgb, var(--green-light) 40%, white);
+    overflow: hidden;
+  }
+
+  .past-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+  }
+
+  .past-card:hover .past-card__media img {
+    transform: scale(1.04);
+  }
+
+  .past-card__media-fallback {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--green-light) 50%, white),
+      color-mix(in srgb, var(--blue) 18%, white)
+    );
+  }
+
+  .past-card__date {
+    position: absolute;
+    left: 0.85rem;
+    bottom: 0.85rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 0.55rem;
+    background: color-mix(in srgb, var(--cream) 92%, white);
+    color: var(--blue);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .past-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 1.15rem 1.2rem 1.25rem;
+    flex: 1;
+  }
+
+  .past-card__kicker {
+    color: var(--green);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .past-card__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .past-card__summary {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .past-card__cta {
+    margin-top: auto;
+    padding-top: 0.55rem;
+    color: var(--purple);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .past-card:hover .past-card__cta {
+    color: var(--green);
+  }
+
+  @media (max-width: 640px) {
+    .past-card__media {
+      min-height: 9.5rem;
+    }
+  }
+</style>
