@@ -5,6 +5,8 @@ export type ProgramSession = {
   id: string;
   time: string;
   title: string;
+  /** One-line teaser shown on the timeline card. */
+  blurb: string;
   leads?: string;
   detail?: string;
   topics?: string[];
@@ -80,17 +82,20 @@ const eventsRaw: EventItem[] = [
         id: "registration",
         time: "9:00 am",
         title: "Registration and Networking",
+        blurb: "Check in and meet colleagues",
       },
       {
         id: "welcome",
         time: "9:30 – 10:00 am",
         title: "Welcome",
+        blurb: "Host welcome and opening remarks",
         leads: "Chris Cain and Mars Hill Leadership · Bill Sederburg",
       },
       {
         id: "issues-context",
         time: "10:00 – 10:20 am",
         title: "Issues in AI and Education in Context in Western NC",
+        blurb: "Survey snapshot and regional context",
         leads: "Jonathan Wade",
         detail:
           "Pre-survey summary of issues; discussion of challenges; demonstration of avatars; discussion of agentic course completion. Introduction of table topics and resources from hosts, sponsors, and speakers.",
@@ -99,6 +104,7 @@ const eventsRaw: EventItem[] = [
         id: "campus-intros",
         time: "10:20 – 11:00 am",
         title: "Campus Introductions including students",
+        blurb: "Campus share-outs with students",
         leads: "Chris Cain",
         detail:
           "Facilitated campus share-outs, including students. Invited institutions and lead representatives introduce current AI work—streamlined when campus leads complete the infrastructure / policy / resources survey.",
@@ -108,6 +114,7 @@ const eventsRaw: EventItem[] = [
         time: "11:00 – 11:50 am",
         title:
           "More than a Human in the Loop: Equipping Learners for Cognitive Sovereignty in a World of AI",
+        blurb: "Keynote on learning with AI",
         leads: "Dr. John Sherlock, Professor, Western Carolina University",
         detail:
           "International work on AI, learning, pedagogy, and human development—including an EDUCAUSE / Dell faculty cohort on teaching and learning with AI.",
@@ -120,11 +127,13 @@ const eventsRaw: EventItem[] = [
         id: "lunch",
         time: "12:00 pm",
         title: "Lunch",
+        blurb: "Eat, recharge, and socialize",
       },
       {
         id: "lunch-conversations",
         time: "12:30 pm",
         title: "Lunch Conversations",
+        blurb: "Table topics during lunch",
         leads: "Ian Selig",
         detail: "Table conversations during lunch; proposed topics will be printed for each table.",
         topics: novemberTableTopics,
@@ -133,18 +142,21 @@ const eventsRaw: EventItem[] = [
         id: "scapin",
         time: "1:00 – 1:50 pm",
         title: "From Answers to Evidence: Assessment in the Age of AI",
+        blurb: "Rethinking assessment with AI",
         leads: "Tim Scapin, Haywood Community College",
       },
       {
         id: "bring-together",
         time: "1:50 – 2:20 pm",
         title: "Bringing together the Day",
+        blurb: "Synthesis of what we heard",
         leads: "Jonathan Wade",
       },
       {
         id: "contest",
         time: "2:20 – 2:40 pm",
         title: "Faculty / Student Contest",
+        blurb: "Spotlight on contest entries",
         leads: "Steven Young",
         detail: "Working title—official contest name forthcoming.",
       },
@@ -152,6 +164,7 @@ const eventsRaw: EventItem[] = [
         id: "wrap",
         time: "2:40 – 3:00 pm",
         title: "Wrap Up and Next Steps",
+        blurb: "Closing and what comes next",
         leads: "Bill Sederburg",
       },
     ],

@@ -32,69 +32,91 @@ const firstId = sessions[0]?.id ?? "";
     >
       <p class="schedule__hint">
         {showDetail
-          ? "Scroll sideways to browse · Select a session for details"
-          : "Scroll sideways for a day-at-a-glance preview"}
+          ? "Drag sideways to browse · Select a session for details"
+          : "Drag sideways for a day-at-a-glance preview"}
       </p>
-      <div class="schedule__track-wrap">
+      <div class="schedule__scrollbox">
         <div
-          class="schedule__track"
-          role="group"
-          aria-label={showDetail ? "Program sessions" : "Day-at-a-glance sessions"}
+          class="schedule__scrollbar"
+          data-schedule-scrollbar
+          role="scrollbar"
+          aria-controls={`${idPrefix}-track`}
+          aria-orientation="horizontal"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={0}
         >
-          <div class="schedule__line" aria-hidden="true" />
-          {sessions.map((session, index) => (
-            <button
-              type="button"
-              class:list={["schedule__stop", { "is-active": index === 0 }]}
-              data-schedule-stop
-              data-session-id={session.id}
-              aria-pressed={index === 0 ? "true" : "false"}
-              aria-controls={showDetail ? `${idPrefix}-detail` : undefined}
-            >
-              <span class="schedule__dot" aria-hidden="true" />
-              <span class="schedule__time">{session.time}</span>
-              <span class="schedule__title">{session.title}</span>
-            </button>
-          ))}
+          <div class="schedule__scrollbar-thumb" data-schedule-thumb />
+        </div>
+        <div class="schedule__track-wrap" data-schedule-track id={`${idPrefix}-track`}>
+          <div
+            class="schedule__track"
+            role="group"
+            aria-label={showDetail ? "Program sessions" : "Day-at-a-glance sessions"}
+          >
+            <div class="schedule__line" aria-hidden="true" />
+            {sessions.map((session, index) => (
+              <button
+                type="button"
+                class:list={["schedule__stop", { "is-active": index === 0 }]}
+                data-schedule-stop
+                data-session-id={session.id}
+                aria-pressed={index === 0 ? "true" : "false"}
+                aria-controls={showDetail ? `${idPrefix}-detail` : undefined}
+              >
+                <span class="schedule__dot" aria-hidden="true" />
+                <span class="schedule__time">{session.time}</span>
+                <span class="schedule__card">
+                  <span class="schedule__title">{session.title}</span>
+                  <span class="schedule__blurb">{session.blurb}</span>
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {showDetail && (
-        <div
-          class="schedule__detail"
-          id={`${idPrefix}-detail`}
-          data-schedule-detail
-          aria-live="polite"
-        >
-          {sessions.map((session) => (
-            <article
-              class="schedule__panel"
-              data-session-panel={session.id}
-              hidden={session.id !== firstId}
-            >
-              <p class="schedule__panel-time">{session.time}</p>
-              <h3 class="schedule__panel-title">{session.title}</h3>
-              {session.leads && <p class="schedule__panel-leads">{session.leads}</p>}
-              {!brief && session.detail && <p class="schedule__panel-detail">{session.detail}</p>}
-              {!brief && session.link && (
-                <p class="schedule__panel-link">
-                  <a href={session.link.href} target="_blank" rel="noopener noreferrer">
-                    {session.link.label} ↗
-                  </a>
-                </p>
-              )}
-              {!brief && session.topics && session.topics.length > 0 && (
-                <div class="schedule__topics">
-                  <p class="schedule__topics-label">Proposed table topics</p>
-                  <ul>
-                    {session.topics.map((topic) => (
-                      <li>{topic}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </article>
-          ))}
+        <div class="schedule__detail-wrap">
+          <div class="schedule__caret" data-schedule-caret aria-hidden="true" />
+          <div
+            class="schedule__detail"
+            id={`${idPrefix}-detail`}
+            data-schedule-detail
+            aria-live="polite"
+          >
+            <p class="schedule__detail-label">Selected session</p>
+            {sessions.map((session) => (
+              <article
+                class="schedule__panel"
+                data-session-panel={session.id}
+                hidden={session.id !== firstId}
+              >
+                <p class="schedule__panel-time">{session.time}</p>
+                <h3 class="schedule__panel-title">{session.title}</h3>
+                <p class="schedule__panel-blurb">{session.blurb}</p>
+                {session.leads && <p class="schedule__panel-leads">{session.leads}</p>}
+                {!brief && session.detail && <p class="schedule__panel-detail">{session.detail}</p>}
+                {!brief && session.link && (
+                  <p class="schedule__panel-link">
+                    <a href={session.link.href} target="_blank" rel="noopener noreferrer">
+                      {session.link.label} ↗
+                    </a>
+                  </p>
+                )}
+                {!brief && session.topics && session.topics.length > 0 && (
+                  <div class="schedule__topics">
+                    <p class="schedule__topics-label">Proposed table topics</p>
+                    <ul>
+                      {session.topics.map((topic) => (
+                        <li>{topic}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -102,16 +124,277 @@ const firstId = sessions[0]?.id ?? "";
 }
 
 <script>
+  function setupDragScroll(el: HTMLElement) {
+    const track = el.querySelector<HTMLElement>(".schedule__track");
+    let pointerId: number | null = null;
+    let startX = 0;
+    let startPos = 0;
+    let pos = 0;
+    let dragged = false;
+    let capturing = false;
+    let velocity = 0;
+    let lastX = 0;
+    let lastT = 0;
+    let raf = 0;
+    let lastFrame = 0;
+    const THRESHOLD = 8;
+    const RUBBER = 0.42;
+    const FRICTION = 0.0028;
+    const SPRING = 0.14;
+    const DAMP = 0.82;
+    const STOP = 0.035;
+
+    function maxScroll() {
+      return Math.max(0, el.scrollWidth - el.clientWidth);
+    }
+
+    function stopMomentum() {
+      if (!raf) return;
+      cancelAnimationFrame(raf);
+      raf = 0;
+    }
+
+    function apply(raw: number, rubber = true) {
+      const max = maxScroll();
+      let scroll = raw;
+      let pull = 0;
+      if (raw < 0) {
+        scroll = 0;
+        pull = rubber ? -raw * RUBBER : 0;
+      } else if (raw > max) {
+        scroll = max;
+        pull = rubber ? -(raw - max) * RUBBER : 0;
+      }
+      el.scrollLeft = scroll;
+      if (track) {
+        track.style.transform = pull ? `translate3d(${pull}px, 0, 0)` : "";
+      }
+    }
+
+    function tick(now: number) {
+      const dt = Math.min(32, now - lastFrame || 16);
+      lastFrame = now;
+      const max = maxScroll();
+
+      if (pos < 0 || pos > max) {
+        const target = pos < 0 ? 0 : max;
+        velocity += (target - pos) * SPRING;
+        velocity *= DAMP;
+      } else {
+        const decay = Math.exp(-FRICTION * dt);
+        velocity *= decay;
+      }
+
+      pos += velocity * dt;
+      apply(pos, true);
+
+      const out = pos < -0.5 || pos > max + 0.5;
+      const moving = Math.abs(velocity) > STOP;
+      if (moving || out) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+
+      pos = Math.min(max, Math.max(0, pos));
+      apply(pos, false);
+      velocity = 0;
+      raf = 0;
+    }
+
+    function startMomentum() {
+      stopMomentum();
+      lastFrame = performance.now();
+      raf = requestAnimationFrame(tick);
+    }
+
+    el.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "touch") return;
+      if (e.button !== 0) return;
+      stopMomentum();
+      if (track) track.style.transform = "";
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      lastX = e.clientX;
+      lastT = performance.now();
+      pos = el.scrollLeft;
+      startPos = pos;
+      velocity = 0;
+      dragged = false;
+      capturing = false;
+    });
+
+    el.addEventListener("pointermove", (e) => {
+      if (pointerId !== e.pointerId) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) < THRESHOLD && !dragged) return;
+      if (!capturing) {
+        capturing = true;
+        dragged = true;
+        el.setPointerCapture(e.pointerId);
+        el.classList.add("is-dragging");
+      }
+
+      const now = performance.now();
+      const dt = now - lastT;
+      if (dt > 0 && dt < 64) {
+        // scrollLeft rises when pointer moves left
+        const instant = (lastX - e.clientX) / dt;
+        velocity = velocity * 0.7 + instant * 0.3;
+      }
+      lastX = e.clientX;
+      lastT = now;
+
+      pos = startPos - dx;
+      apply(pos, true);
+    });
+
+    function endDrag(e: PointerEvent) {
+      if (pointerId !== e.pointerId) return;
+      pointerId = null;
+      capturing = false;
+      el.classList.remove("is-dragging");
+      try {
+        el.releasePointerCapture(e.pointerId);
+      } catch {
+        /* already released */
+      }
+
+      if (dragged) {
+        // Cap flick speed; keep direction from last samples
+        velocity = Math.max(-2.8, Math.min(2.8, velocity));
+        const max = maxScroll();
+        if (pos < 0 || pos > max || Math.abs(velocity) > STOP) {
+          startMomentum();
+        } else {
+          apply(pos, false);
+        }
+        window.setTimeout(() => {
+          dragged = false;
+        }, 0);
+      }
+    }
+
+    el.addEventListener("pointerup", endDrag);
+    el.addEventListener("pointercancel", endDrag);
+
+    el.addEventListener(
+      "click",
+      (e) => {
+        if (!dragged) return;
+        e.preventDefault();
+        e.stopPropagation();
+        dragged = false;
+      },
+      true,
+    );
+  }
+
+  function setupTopScrollbar(track: HTMLElement, bar: HTMLElement, thumb: HTMLElement) {
+    let draggingThumb = false;
+    let dragStartX = 0;
+    let dragStartScroll = 0;
+
+    function metrics() {
+      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+      const trackRatio = track.scrollWidth > 0 ? track.clientWidth / track.scrollWidth : 1;
+      const thumbW = Math.max(28, bar.clientWidth * trackRatio);
+      const travel = Math.max(0, bar.clientWidth - thumbW);
+      return { maxScroll, thumbW, travel };
+    }
+
+    function update() {
+      const { maxScroll, thumbW, travel } = metrics();
+      const left = maxScroll <= 0 ? 0 : (track.scrollLeft / maxScroll) * travel;
+      thumb.style.width = `${thumbW}px`;
+      thumb.style.transform = `translateX(${left}px)`;
+      bar.classList.toggle("is-idle", maxScroll <= 0);
+      const value = maxScroll <= 0 ? 0 : Math.round((track.scrollLeft / maxScroll) * 100);
+      bar.setAttribute("aria-valuenow", String(value));
+    }
+
+    function scrollFromClientX(clientX: number) {
+      const { maxScroll, thumbW, travel } = metrics();
+      if (maxScroll <= 0 || travel <= 0) return;
+      const barRect = bar.getBoundingClientRect();
+      const x = clientX - barRect.left - thumbW / 2;
+      const ratio = Math.min(1, Math.max(0, x / travel));
+      track.scrollLeft = ratio * maxScroll;
+    }
+
+    track.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    const ro = new ResizeObserver(update);
+    ro.observe(track);
+    ro.observe(bar);
+
+    thumb.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      draggingThumb = true;
+      dragStartX = e.clientX;
+      dragStartScroll = track.scrollLeft;
+      thumb.setPointerCapture(e.pointerId);
+      bar.classList.add("is-dragging");
+    });
+
+    thumb.addEventListener("pointermove", (e) => {
+      if (!draggingThumb) return;
+      const { maxScroll, travel } = metrics();
+      if (maxScroll <= 0 || travel <= 0) return;
+      const dx = e.clientX - dragStartX;
+      track.scrollLeft = dragStartScroll + (dx / travel) * maxScroll;
+    });
+
+    function endThumb(e: PointerEvent) {
+      if (!draggingThumb) return;
+      draggingThumb = false;
+      bar.classList.remove("is-dragging");
+      try {
+        thumb.releasePointerCapture(e.pointerId);
+      } catch {
+        /* already released */
+      }
+    }
+
+    thumb.addEventListener("pointerup", endThumb);
+    thumb.addEventListener("pointercancel", endThumb);
+
+    bar.addEventListener("pointerdown", (e) => {
+      if (e.target === thumb) return;
+      scrollFromClientX(e.clientX);
+    });
+
+    update();
+  }
+
   function setupSchedule(root: HTMLElement) {
     const stops = root.querySelectorAll<HTMLButtonElement>("[data-schedule-stop]");
     const panels = root.querySelectorAll<HTMLElement>("[data-session-panel]");
+    const detailWrap = root.querySelector<HTMLElement>(".schedule__detail-wrap");
+    const caret = root.querySelector<HTMLElement>("[data-schedule-caret]");
+    const trackWrap = root.querySelector<HTMLElement>("[data-schedule-track]");
+    const scrollbar = root.querySelector<HTMLElement>("[data-schedule-scrollbar]");
+    const thumb = root.querySelector<HTMLElement>("[data-schedule-thumb]");
+
+    function positionCaret(active: HTMLElement) {
+      if (!caret || !detailWrap) return;
+      const wrapRect = detailWrap.getBoundingClientRect();
+      const stopRect = active.getBoundingClientRect();
+      const x = stopRect.left + stopRect.width / 2 - wrapRect.left;
+      const clamped = Math.max(18, Math.min(wrapRect.width - 18, x));
+      caret.style.left = `${clamped}px`;
+    }
 
     function activate(id: string) {
+      let activeStop: HTMLElement | null = null;
+      const track = trackWrap?.querySelector<HTMLElement>(".schedule__track");
+      if (track) track.style.transform = "";
       stops.forEach((stop) => {
         const on = stop.dataset.sessionId === id;
         stop.classList.toggle("is-active", on);
         stop.setAttribute("aria-pressed", on ? "true" : "false");
         if (on) {
+          activeStop = stop;
           stop.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
         }
       });
@@ -119,6 +402,9 @@ const firstId = sessions[0]?.id ?? "";
       panels.forEach((panel) => {
         panel.hidden = panel.dataset.sessionPanel !== id;
       });
+      if (activeStop) {
+        requestAnimationFrame(() => positionCaret(activeStop!));
+      }
     }
 
     stops.forEach((stop) => {
@@ -126,6 +412,27 @@ const firstId = sessions[0]?.id ?? "";
         const id = stop.dataset.sessionId;
         if (id) activate(id);
       });
+    });
+
+    if (trackWrap) {
+      setupDragScroll(trackWrap);
+      if (scrollbar && thumb) setupTopScrollbar(trackWrap, scrollbar, thumb);
+      trackWrap.addEventListener(
+        "scroll",
+        () => {
+          const active = root.querySelector<HTMLElement>(".schedule__stop.is-active");
+          if (active) positionCaret(active);
+        },
+        { passive: true },
+      );
+    }
+
+    const first = root.querySelector<HTMLElement>(".schedule__stop.is-active");
+    if (first) positionCaret(first);
+
+    window.addEventListener("resize", () => {
+      const active = root.querySelector<HTMLElement>(".schedule__stop.is-active");
+      if (active) positionCaret(active);
     });
   }
 
@@ -135,7 +442,7 @@ const firstId = sessions[0]?.id ?? "";
 <style>
   .schedule {
     display: grid;
-    gap: 1rem;
+    gap: 0.85rem;
   }
 
   .schedule__hint {
@@ -147,29 +454,114 @@ const firstId = sessions[0]?.id ?? "";
     color: var(--muted);
   }
 
+  .schedule__scrollbox {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--ink) 5%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+    box-shadow: inset 0 1px 3px color-mix(in srgb, var(--ink) 7%, transparent);
+    overflow: hidden;
+  }
+
+  .schedule__scrollbar {
+    position: relative;
+    z-index: 2;
+    height: 0.35rem;
+    margin: 0.45rem 0.75rem 0.2rem;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--ink) 12%, var(--cream));
+    box-shadow: inset 0 1px 1px color-mix(in srgb, var(--ink) 8%, transparent);
+    cursor: pointer;
+    touch-action: none;
+  }
+
+  .schedule__scrollbar.is-idle {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .schedule__scrollbar-thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    min-width: 1.75rem;
+    border-radius: var(--radius-pill);
+    background: var(--green);
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 16%, transparent);
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .schedule__scrollbar.is-dragging .schedule__scrollbar-thumb,
+  .schedule__scrollbar-thumb:hover,
+  .schedule__scrollbar-thumb:active {
+    cursor: grabbing;
+    background: var(--green-strong);
+  }
+
   .schedule__track-wrap {
+    position: relative;
     overflow-x: auto;
+    overflow-y: hidden;
     overscroll-behavior-x: contain;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 0.5rem;
-    scrollbar-width: thin;
+    padding: 0.55rem 0.75rem 0.9rem;
+    cursor: grab;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .schedule__track-wrap::-webkit-scrollbar {
+    display: none;
+  }
+
+  .schedule__track-wrap.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  .schedule__track-wrap.is-dragging .schedule__stop {
+    pointer-events: none;
   }
 
   .schedule__track {
     position: relative;
     display: flex;
-    gap: 0.75rem;
+    gap: 0.85rem;
     min-width: max-content;
-    padding: 1.25rem 0.25rem 0.5rem;
+    padding: 1.1rem 0.35rem 0.35rem;
+    will-change: transform;
+  }
+
+  .schedule__track-wrap::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 2.75rem;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--ink) 6%, var(--cream))
+    );
   }
 
   .schedule__line {
     position: absolute;
-    left: 0.5rem;
-    right: 0.5rem;
-    top: 1.55rem;
-    height: 2px;
-    background: color-mix(in srgb, var(--green) 35%, var(--cream));
+    left: 0.65rem;
+    right: 0.65rem;
+    top: 1.45rem;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      var(--green),
+      color-mix(in srgb, var(--green) 40%, var(--cream))
+    );
     pointer-events: none;
   }
 
@@ -177,9 +569,10 @@ const firstId = sessions[0]?.id ?? "";
     position: relative;
     z-index: 1;
     display: grid;
-    gap: 0.45rem;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: 1fr;
     justify-items: start;
-    width: 11.5rem;
+    width: 12.5rem;
     padding: 0;
     border: 0;
     background: transparent;
@@ -190,24 +583,30 @@ const firstId = sessions[0]?.id ?? "";
   }
 
   .schedule__dot {
-    width: 0.85rem;
-    height: 0.85rem;
+    width: 0.95rem;
+    height: 0.95rem;
     border-radius: 50%;
-    margin-left: 0.15rem;
+    margin-left: 0.2rem;
     background: var(--cream);
-    box-shadow: inset 0 0 0 2px var(--green);
+    box-shadow:
+      inset 0 0 0 2.5px var(--green-strong),
+      0 0 0 3px color-mix(in srgb, var(--cream) 90%, transparent);
     transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   }
 
   .schedule__stop.is-active .schedule__dot {
     background: var(--green);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 22%, transparent);
-    transform: scale(1.08);
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--green) 30%, transparent),
+      0 1px 4px color-mix(in srgb, var(--ink) 20%, transparent);
+    transform: scale(1.14);
   }
 
   .schedule__time {
     display: block;
-    margin-top: 0.35rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.35rem;
+    padding-left: 0.05rem;
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -215,34 +614,109 @@ const firstId = sessions[0]?.id ?? "";
     color: var(--blue-strong);
   }
 
-  .schedule__title {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    padding: 0.65rem 0.75rem;
+  .schedule__card {
+    display: grid;
+    gap: 0.35rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.7rem 0.8rem 0.75rem;
     border-radius: var(--radius-md);
-    background: color-mix(in srgb, var(--white) 80%, var(--cream));
-    border: 1px solid color-mix(in srgb, var(--green) 14%, transparent);
-    font-size: 0.88rem;
-    font-weight: 600;
-    line-height: 1.3;
-    min-height: 4.6rem;
-    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    background: var(--white);
+    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+    border-left: 3px solid color-mix(in srgb, var(--green) 45%, transparent);
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--ink) 8%, transparent),
+      0 4px 10px color-mix(in srgb, var(--ink) 6%, transparent);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
   }
 
-  .schedule__stop:hover .schedule__title,
-  .schedule__stop.is-active .schedule__title {
-    border-color: color-mix(in srgb, var(--green) 45%, transparent);
-    background: var(--white);
+  .schedule__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+
+  .schedule__blurb {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+
+  .schedule__stop:hover .schedule__card {
+    border-color: color-mix(in srgb, var(--green) 35%, transparent);
+    border-left-color: var(--green);
+    box-shadow:
+      0 2px 4px color-mix(in srgb, var(--ink) 10%, transparent),
+      0 8px 18px color-mix(in srgb, var(--ink) 10%, transparent);
     transform: translateY(-2px);
   }
 
+  .schedule__stop.is-active .schedule__card {
+    border-color: color-mix(in srgb, var(--green) 40%, transparent);
+    border-left: 4px solid var(--green-strong);
+    box-shadow:
+      0 2px 4px color-mix(in srgb, var(--green) 12%, transparent),
+      0 8px 18px color-mix(in srgb, var(--ink) 12%, transparent);
+    transform: translateY(-2px);
+  }
+
+  .schedule__stop:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: var(--radius-md);
+  }
+
+  .schedule__detail-wrap {
+    position: relative;
+    margin-top: -0.15rem;
+  }
+
+  .schedule__caret {
+    position: absolute;
+    top: -0.5rem;
+    left: 1.5rem;
+    width: 1rem;
+    height: 1rem;
+    background: color-mix(in srgb, var(--green-light) 22%, white);
+    border-left: 2px solid var(--green-strong);
+    border-top: 2px solid var(--green-strong);
+    transform: translateX(-50%) rotate(45deg);
+    z-index: 2;
+    transition: left 0.25s ease;
+    box-shadow: -2px -2px 4px color-mix(in srgb, var(--ink) 4%, transparent);
+  }
+
   .schedule__detail {
+    position: relative;
     padding: 1.15rem 1.25rem;
     border-radius: var(--radius-lg);
     background: color-mix(in srgb, var(--green-light) 22%, white);
-    border: 1px solid color-mix(in srgb, var(--green) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--green) 22%, transparent);
+    border-left: 4px solid var(--green-strong);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--ink) 6%, transparent);
+  }
+
+  .schedule__detail-label {
+    margin: 0 0 0.55rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-strong);
   }
 
   .schedule__panel-time {
@@ -255,9 +729,16 @@ const firstId = sessions[0]?.id ?? "";
   }
 
   .schedule__panel-title {
-    margin: 0 0 0.45rem;
+    margin: 0 0 0.35rem;
     font-size: clamp(1.15rem, 2.2vw, 1.45rem);
     line-height: 1.25;
+  }
+
+  .schedule__panel-blurb {
+    margin: 0 0 0.65rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
   }
 
   .schedule__panel-leads {
@@ -316,15 +797,28 @@ const firstId = sessions[0]?.id ?? "";
     gap: 0.75rem;
   }
 
+  .schedule--compact .schedule__scrollbar {
+    margin: 0.45rem 0.6rem 0.1rem;
+  }
+
+  .schedule--compact .schedule__track-wrap {
+    padding: 0.45rem 0.6rem 0.75rem;
+  }
+
   .schedule--compact .schedule__stop {
-    width: 9.25rem;
+    width: 10.75rem;
+  }
+
+  .schedule--compact .schedule__card {
+    padding: 0.55rem 0.65rem 0.6rem;
   }
 
   .schedule--compact .schedule__title {
-    font-size: 0.8rem;
-    min-height: 3.6rem;
-    -webkit-line-clamp: 2;
-    padding: 0.5rem 0.6rem;
+    font-size: 0.84rem;
+  }
+
+  .schedule--compact .schedule__blurb {
+    font-size: 0.72rem;
   }
 
   .schedule--compact .schedule__detail {
@@ -337,45 +831,64 @@ const firstId = sessions[0]?.id ?? "";
 
   /* —— Full (event page) —— */
   .schedule--full {
-    gap: 1.5rem;
+    gap: 0.35rem;
   }
 
   .schedule--full .schedule__hint {
     font-size: 0.85rem;
   }
 
+  .schedule--full .schedule__scrollbox {
+    border-radius: var(--radius-lg) var(--radius-lg) 0.85rem 0.85rem;
+  }
+
+  .schedule--full .schedule__scrollbar {
+    margin: 0.5rem 1rem 0.15rem;
+    height: 0.4rem;
+  }
+
+  .schedule--full .schedule__track-wrap {
+    padding: 0.65rem 1rem 1rem;
+  }
+
   .schedule--full .schedule__track {
     gap: 1rem;
-    padding-top: 1.5rem;
+    padding-top: 1.35rem;
   }
 
   .schedule--full .schedule__line {
-    top: 1.75rem;
-    height: 3px;
+    top: 1.65rem;
+    height: 4px;
   }
 
   .schedule--full .schedule__stop {
-    width: min(14rem, 42vw);
-    min-width: 12rem;
+    width: min(14.5rem, 44vw);
+    min-width: 12.5rem;
   }
 
   .schedule--full .schedule__dot {
-    width: 1rem;
-    height: 1rem;
+    width: 1.05rem;
+    height: 1.05rem;
   }
 
   .schedule--full .schedule__time {
     font-size: 0.8rem;
   }
 
+  .schedule--full .schedule__card {
+    padding: 0.85rem 0.95rem 0.9rem;
+  }
+
   .schedule--full .schedule__title {
     font-size: 1rem;
-    min-height: 5.5rem;
-    padding: 0.85rem 0.95rem;
+  }
+
+  .schedule--full .schedule__blurb {
+    font-size: 0.84rem;
   }
 
   .schedule--full .schedule__detail {
-    padding: 1.5rem 1.65rem;
+    padding: 1.35rem 1.5rem 1.5rem;
   }
 
   .schedule--full .schedule__panel-title {
@@ -391,17 +904,33 @@ const firstId = sessions[0]?.id ?? "";
   }
 
   .schedule--track-only .schedule__track {
-    padding-bottom: 0.15rem;
+    padding-bottom: 0.1rem;
   }
 
   @media (max-width: 640px) {
+    .schedule__scrollbox {
+      border-radius: calc(var(--radius-lg) - 0.25rem);
+    }
+
+    .schedule__scrollbar {
+      margin: 0.5rem 0.55rem 0.1rem;
+    }
+
+    .schedule__track-wrap {
+      padding: 0.45rem 0.55rem 0.8rem;
+    }
+
+    .schedule--full .schedule__scrollbox {
+      border-radius: calc(var(--radius-lg) - 0.25rem);
+    }
+
     .schedule--full .schedule__stop {
-      width: 11rem;
-      min-width: 10.5rem;
+      width: 12.25rem;
+      min-width: 11.5rem;
     }
 
     .schedule--compact .schedule__stop {
-      width: 8.5rem;
+      width: 10.5rem;
     }
   }
 </style>
