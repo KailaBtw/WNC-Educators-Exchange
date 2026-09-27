@@ -14,7 +14,7 @@ alwaysApply: true
 ## Schedules
 
 - Interactive horizontal timeline is the program UI for Nov 13.
-- **Home:** `size="compact"` + `brief` + `showDetail={false}` — day-at-a-glance track only; CTAs below steer to the event page.
+- **Home:** `size="compact"` + `brief` + `showDetail` — day-at-a-glance track with a light selected-session panel (no deep topics); CTAs below still steer to the event page.
 - **Event page:** `size="full"` — primary content, not an afterthought under placeholders.
 - Always show a short hint that the track scrolls sideways and sessions are selectable.
 - Design for touch: horizontal scroll with `overscroll-behavior-x: contain`; stack CTAs full-width under ~640px.

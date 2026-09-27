@@ -48,31 +48,34 @@ const firstId = sessions[0]?.id ?? "";
         >
           <div class="schedule__scrollbar-thumb" data-schedule-thumb />
         </div>
-        <div class="schedule__track-wrap" data-schedule-track id={`${idPrefix}-track`}>
-          <div
-            class="schedule__track"
-            role="group"
-            aria-label={showDetail ? "Program sessions" : "Day-at-a-glance sessions"}
-          >
-            <div class="schedule__line" aria-hidden="true" />
-            {sessions.map((session, index) => (
-              <button
-                type="button"
-                class:list={["schedule__stop", { "is-active": index === 0 }]}
-                data-schedule-stop
-                data-session-id={session.id}
-                aria-pressed={index === 0 ? "true" : "false"}
-                aria-controls={showDetail ? `${idPrefix}-detail` : undefined}
-              >
-                <span class="schedule__dot" aria-hidden="true" />
-                <span class="schedule__time">{session.time}</span>
-                <span class="schedule__card">
-                  <span class="schedule__title">{session.title}</span>
-                  <span class="schedule__blurb">{session.blurb}</span>
-                </span>
-              </button>
-            ))}
+        <div class="schedule__track-shell">
+          <div class="schedule__track-wrap" data-schedule-track id={`${idPrefix}-track`}>
+            <div
+              class="schedule__track"
+              role="group"
+              aria-label={showDetail ? "Program sessions" : "Day-at-a-glance sessions"}
+            >
+              <div class="schedule__line" aria-hidden="true" />
+              {sessions.map((session, index) => (
+                <button
+                  type="button"
+                  class:list={["schedule__stop", { "is-active": index === 0 }]}
+                  data-schedule-stop
+                  data-session-id={session.id}
+                  aria-pressed={index === 0 ? "true" : "false"}
+                  aria-controls={showDetail ? `${idPrefix}-detail` : undefined}
+                >
+                  <span class="schedule__dot" aria-hidden="true" />
+                  <span class="schedule__time">{session.time}</span>
+                  <span class="schedule__card">
+                    <span class="schedule__title">{session.title}</span>
+                    <span class="schedule__blurb">{session.blurb}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
+          <div class="schedule__fade" aria-hidden="true" />
         </div>
       </div>
 
@@ -125,7 +128,6 @@ const firstId = sessions[0]?.id ?? "";
 
 <script>
   function setupDragScroll(el: HTMLElement) {
-    const track = el.querySelector<HTMLElement>(".schedule__track");
     let pointerId: number | null = null;
     let startX = 0;
     let startPos = 0;
@@ -138,10 +140,7 @@ const firstId = sessions[0]?.id ?? "";
     let raf = 0;
     let lastFrame = 0;
     const THRESHOLD = 8;
-    const RUBBER = 0.42;
     const FRICTION = 0.0028;
-    const SPRING = 0.14;
-    const DAMP = 0.82;
     const STOP = 0.035;
 
     function maxScroll() {
@@ -154,49 +153,44 @@ const firstId = sessions[0]?.id ?? "";
       raf = 0;
     }
 
-    function apply(raw: number, rubber = true) {
+    function clamp(raw: number) {
       const max = maxScroll();
-      let scroll = raw;
-      let pull = 0;
-      if (raw < 0) {
-        scroll = 0;
-        pull = rubber ? -raw * RUBBER : 0;
-      } else if (raw > max) {
-        scroll = max;
-        pull = rubber ? -(raw - max) * RUBBER : 0;
-      }
-      el.scrollLeft = scroll;
-      if (track) {
-        track.style.transform = pull ? `translate3d(${pull}px, 0, 0)` : "";
-      }
+      return Math.min(max, Math.max(0, raw));
+    }
+
+    function apply(raw: number) {
+      pos = clamp(raw);
+      el.scrollLeft = pos;
     }
 
     function tick(now: number) {
       const dt = Math.min(32, now - lastFrame || 16);
       lastFrame = now;
       const max = maxScroll();
+      const next = pos + velocity * dt;
 
-      if (pos < 0 || pos > max) {
-        const target = pos < 0 ? 0 : max;
-        velocity += (target - pos) * SPRING;
-        velocity *= DAMP;
-      } else {
-        const decay = Math.exp(-FRICTION * dt);
-        velocity *= decay;
+      // Hard stop at edges — no rubber-band snap-back.
+      if (next <= 0) {
+        apply(0);
+        velocity = 0;
+        raf = 0;
+        return;
+      }
+      if (next >= max) {
+        apply(max);
+        velocity = 0;
+        raf = 0;
+        return;
       }
 
-      pos += velocity * dt;
-      apply(pos, true);
+      velocity *= Math.exp(-FRICTION * dt);
+      apply(next);
 
-      const out = pos < -0.5 || pos > max + 0.5;
-      const moving = Math.abs(velocity) > STOP;
-      if (moving || out) {
+      if (Math.abs(velocity) > STOP) {
         raf = requestAnimationFrame(tick);
         return;
       }
 
-      pos = Math.min(max, Math.max(0, pos));
-      apply(pos, false);
       velocity = 0;
       raf = 0;
     }
@@ -211,7 +205,6 @@ const firstId = sessions[0]?.id ?? "";
       if (e.pointerType === "touch") return;
       if (e.button !== 0) return;
       stopMomentum();
-      if (track) track.style.transform = "";
       pointerId = e.pointerId;
       startX = e.clientX;
       lastX = e.clientX;
@@ -235,17 +228,15 @@ const firstId = sessions[0]?.id ?? "";
       }
 
       const now = performance.now();
-      const dt = now - lastT;
-      if (dt > 0 && dt < 64) {
-        // scrollLeft rises when pointer moves left
-        const instant = (lastX - e.clientX) / dt;
+      const sampleDt = now - lastT;
+      if (sampleDt > 0 && sampleDt < 64) {
+        const instant = (lastX - e.clientX) / sampleDt;
         velocity = velocity * 0.7 + instant * 0.3;
       }
       lastX = e.clientX;
       lastT = now;
 
-      pos = startPos - dx;
-      apply(pos, true);
+      apply(startPos - dx);
     });
 
     function endDrag(e: PointerEvent) {
@@ -260,13 +251,11 @@ const firstId = sessions[0]?.id ?? "";
       }
 
       if (dragged) {
-        // Cap flick speed; keep direction from last samples
         velocity = Math.max(-2.8, Math.min(2.8, velocity));
-        const max = maxScroll();
-        if (pos < 0 || pos > max || Math.abs(velocity) > STOP) {
+        if (Math.abs(velocity) > STOP) {
           startMomentum();
         } else {
-          apply(pos, false);
+          apply(pos);
         }
         window.setTimeout(() => {
           dragged = false;
@@ -387,8 +376,6 @@ const firstId = sessions[0]?.id ?? "";
 
     function activate(id: string) {
       let activeStop: HTMLElement | null = null;
-      const track = trackWrap?.querySelector<HTMLElement>(".schedule__track");
-      if (track) track.style.transform = "";
       stops.forEach((stop) => {
         const on = stop.dataset.sessionId === id;
         stop.classList.toggle("is-active", on);
@@ -501,6 +488,11 @@ const firstId = sessions[0]?.id ?? "";
     background: var(--green-strong);
   }
 
+  .schedule__track-shell {
+    position: relative;
+    min-width: 0;
+  }
+
   .schedule__track-wrap {
     position: relative;
     overflow-x: auto;
@@ -532,17 +524,17 @@ const firstId = sessions[0]?.id ?? "";
     gap: 0.85rem;
     min-width: max-content;
     padding: 1.1rem 0.35rem 0.35rem;
-    will-change: transform;
   }
 
-  .schedule__track-wrap::after {
-    content: "";
+  /* Pinned to the visible edge — not inside the scrolling content */
+  .schedule__fade {
     position: absolute;
     right: 0;
     top: 0;
     bottom: 0;
-    width: 2.75rem;
+    width: 2.5rem;
     pointer-events: none;
+    z-index: 2;
     background: linear-gradient(
       90deg,
       transparent,

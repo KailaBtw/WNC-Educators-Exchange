@@ -25,23 +25,21 @@ const archiveSlides = past.flatMap((event) =>
   title="Events"
   description="Past and upcoming WNC Educators Exchange gatherings, including the November 13 event at Mars Hill University."
 >
-  <section class="section events-page-hero">
-    <div class="container events-page-hero__inner">
-      <p class="eyebrow">Events</p>
-      <h1>Regional gatherings</h1>
-      <p class="events-page-hero__dek">
-        Brain Hub and January shaped the Top 10 Issues report. November 13 at Mars Hill is next—scan
-        the day schedule, register, or reopen what came before.
-      </p>
-    </div>
-  </section>
-
   {
     upcoming && (
-      <section class="section section--tight" id="upcoming">
+      <section class="section" id="upcoming">
         <div class="container">
           <article class="events-page__featured" data-reveal data-reveal-y="28">
-            <header class="events-page__featured-head">
+            <header class="events-page__intro">
+              <p class="eyebrow">Events</p>
+              <h1>Regional gatherings</h1>
+              <p class="events-page__intro-dek">
+                Brain Hub and January shaped the Top 10 Issues. Next: November 13 at Mars Hill—schedule,
+                register, or revisit past gatherings below.
+              </p>
+            </header>
+
+            <div class="events-page__featured-head">
               <div class="events-page__featured-copy">
                 <p class="events-page__status">Upcoming · {upcoming.category}</p>
                 <h2>{upcoming.title}</h2>
@@ -69,7 +67,7 @@ const archiveSlides = past.flatMap((event) =>
                   <figcaption>{upcoming.images[0].caption ?? "November Exchange"}</figcaption>
                 </figure>
               )}
-            </header>
+            </div>
 
             {upcoming.sessions?.length ? (
               <div class="events-page__schedule">
@@ -155,20 +153,6 @@ const archiveSlides = past.flatMap((event) =>
 <PastEventDialogs events={events} />
 
 <style>
-  .events-page-hero__inner {
-    max-width: 42rem;
-  }
-
-  .events-page-hero h1 {
-    font-size: clamp(2.3rem, 5vw, 3.4rem);
-    margin: 0.35rem 0 0.75rem;
-  }
-
-  .events-page-hero__dek {
-    color: var(--muted);
-    margin: 0;
-  }
-
   .events-page__featured {
     display: grid;
     gap: 1.5rem;
@@ -181,6 +165,28 @@ const archiveSlides = past.flatMap((event) =>
         color-mix(in srgb, var(--cream) 88%, white)
       );
     border: 1px solid color-mix(in srgb, var(--green) 14%, transparent);
+  }
+
+  .events-page__intro {
+    padding-bottom: 0.15rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
+  }
+
+  .events-page__intro .eyebrow {
+    margin: 0 0 0.3rem;
+  }
+
+  .events-page__intro h1 {
+    margin: 0 0 0.4rem;
+    font-size: clamp(1.65rem, 3.5vw, 2.25rem);
+    line-height: 1.15;
+  }
+
+  .events-page__intro-dek {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.98rem;
+    max-width: 40rem;
   }
 
   .events-page__featured-head {
