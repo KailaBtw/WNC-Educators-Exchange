@@ -364,34 +364,65 @@ const firstId = sessions[0]?.id ?? "";
     const trackWrap = root.querySelector<HTMLElement>("[data-schedule-track]");
     const scrollbar = root.querySelector<HTMLElement>("[data-schedule-scrollbar]");
     const thumb = root.querySelector<HTMLElement>("[data-schedule-thumb]");
+    let caretRaf = 0;
 
-    function positionCaret(active: HTMLElement) {
-      if (!caret || !detailWrap) return;
+    function syncCaret() {
+      if (!caret || !detailWrap || !trackWrap) return;
+      const active = root.querySelector<HTMLElement>(".schedule__stop.is-active");
+      if (!active) {
+        caret.classList.add("is-hidden");
+        return;
+      }
+
       const wrapRect = detailWrap.getBoundingClientRect();
+      const trackRect = trackWrap.getBoundingClientRect();
       const stopRect = active.getBoundingClientRect();
-      const x = stopRect.left + stopRect.width / 2 - wrapRect.left;
-      const clamped = Math.max(18, Math.min(wrapRect.width - 18, x));
-      caret.style.left = `${clamped}px`;
+      const center = stopRect.left + stopRect.width / 2;
+
+      // Follow the active stop only while its center is on-screen in the track.
+      // Hide instead of clamping to an edge (that was the jumpy look).
+      const onScreen = center >= trackRect.left + 4 && center <= trackRect.right - 4;
+      const x = center - wrapRect.left;
+      const inPanel = x >= 10 && x <= wrapRect.width - 10;
+
+      if (!onScreen || !inPanel) {
+        caret.classList.add("is-hidden");
+        return;
+      }
+
+      const half = caret.offsetWidth / 2;
+      caret.classList.remove("is-hidden");
+      caret.style.transform = `translate3d(${x - half}px, 0, 0) rotate(45deg)`;
+    }
+
+    function scheduleCaretSync() {
+      if (caretRaf) return;
+      caretRaf = requestAnimationFrame(() => {
+        caretRaf = 0;
+        syncCaret();
+      });
     }
 
     function activate(id: string) {
-      let activeStop: HTMLElement | null = null;
       stops.forEach((stop) => {
         const on = stop.dataset.sessionId === id;
         stop.classList.toggle("is-active", on);
         stop.setAttribute("aria-pressed", on ? "true" : "false");
-        if (on) {
-          activeStop = stop;
-          stop.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        if (on && trackWrap) {
+          const wrapRect = trackWrap.getBoundingClientRect();
+          const stopRect = stop.getBoundingClientRect();
+          const pad = 12;
+          if (stopRect.left < wrapRect.left + pad || stopRect.right > wrapRect.right - pad) {
+            stop.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "nearest" });
+          }
         }
       });
-      if (!panels.length) return;
-      panels.forEach((panel) => {
-        panel.hidden = panel.dataset.sessionPanel !== id;
-      });
-      if (activeStop) {
-        requestAnimationFrame(() => positionCaret(activeStop!));
+      if (panels.length) {
+        panels.forEach((panel) => {
+          panel.hidden = panel.dataset.sessionPanel !== id;
+        });
       }
+      scheduleCaretSync();
     }
 
     stops.forEach((stop) => {
@@ -404,23 +435,11 @@ const firstId = sessions[0]?.id ?? "";
     if (trackWrap) {
       setupDragScroll(trackWrap);
       if (scrollbar && thumb) setupTopScrollbar(trackWrap, scrollbar, thumb);
-      trackWrap.addEventListener(
-        "scroll",
-        () => {
-          const active = root.querySelector<HTMLElement>(".schedule__stop.is-active");
-          if (active) positionCaret(active);
-        },
-        { passive: true },
-      );
+      trackWrap.addEventListener("scroll", scheduleCaretSync, { passive: true });
     }
 
-    const first = root.querySelector<HTMLElement>(".schedule__stop.is-active");
-    if (first) positionCaret(first);
-
-    window.addEventListener("resize", () => {
-      const active = root.querySelector<HTMLElement>(".schedule__stop.is-active");
-      if (active) positionCaret(active);
-    });
+    window.addEventListener("resize", scheduleCaretSync);
+    syncCaret();
   }
 
   document.querySelectorAll<HTMLElement>("[data-schedule]").forEach(setupSchedule);
@@ -679,17 +698,23 @@ const firstId = sessions[0]?.id ?? "";
 
   .schedule__caret {
     position: absolute;
-    top: -0.5rem;
-    left: 1.5rem;
-    width: 1rem;
-    height: 1rem;
+    top: -0.45rem;
+    left: 0;
+    width: 0.85rem;
+    height: 0.85rem;
     background: color-mix(in srgb, var(--green-light) 22%, white);
     border-left: 2px solid var(--green-strong);
     border-top: 2px solid var(--green-strong);
-    transform: translateX(-50%) rotate(45deg);
+    transform: translate3d(1.35rem, 0, 0) rotate(45deg);
     z-index: 2;
-    transition: left 0.25s ease;
-    box-shadow: -2px -2px 4px color-mix(in srgb, var(--ink) 4%, transparent);
+    box-shadow: -1px -1px 3px color-mix(in srgb, var(--ink) 4%, transparent);
+    opacity: 1;
+    pointer-events: none;
+    transition: opacity 0.12s ease;
+  }
+
+  .schedule__caret.is-hidden {
+    opacity: 0;
   }
 
   .schedule__detail {
