@@ -37,6 +37,7 @@ function isActive(href: string) {
           <a
             href={withBase(link.href)}
             class:list={["nav__link", { "is-active": isActive(link.href) }]}
+            aria-current={isActive(link.href) ? "page" : undefined}
           >
             {link.label}
           </a>

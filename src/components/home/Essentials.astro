@@ -41,7 +41,13 @@ const practicePreview = schoolPractices.slice(0, 3);
           }
         </ol>
         <div class="unify-card__actions">
-          <button type="button" class="unify-card__cta" data-open-modal="issues" data-index="0">
+          <button
+            type="button"
+            class="unify-card__cta"
+            data-open-modal="issues"
+            data-index="0"
+            aria-label="See more about the Top 10 Issues"
+          >
             See more
           </button>
           <a class="unify-card__readmore" href={withBase(routes.issues)}>Read more →</a>
@@ -83,7 +89,13 @@ const practicePreview = schoolPractices.slice(0, 3);
           }
         </ol>
         <div class="unify-card__actions">
-          <button type="button" class="unify-card__cta" data-open-modal="schools" data-index="0">
+          <button
+            type="button"
+            class="unify-card__cta"
+            data-open-modal="schools"
+            data-index="0"
+            aria-label="See more about what schools are doing with AI"
+          >
             See more
           </button>
           <a class="unify-card__readmore" href={withBase(routes.schools)}>Read more →</a>
@@ -457,7 +469,7 @@ const practicePreview = schoolPractices.slice(0, 3);
   }
 
   .unify--alt .unify-card__eyebrow {
-    color: var(--blue);
+    color: var(--blue-strong);
   }
 
   .unify-card h2 {
@@ -563,7 +575,7 @@ const practicePreview = schoolPractices.slice(0, 3);
   }
 
   .unify--alt .unify-card__cta {
-    background: var(--blue);
+    background: var(--blue-strong);
   }
 
   .unify-card__cta:hover {
@@ -587,8 +599,8 @@ const practicePreview = schoolPractices.slice(0, 3);
   }
 
   .unify--alt .unify-card__readmore {
-    background: color-mix(in srgb, var(--blue) 14%, white);
-    color: var(--blue);
+    background: color-mix(in srgb, var(--blue-strong) 14%, white);
+    color: var(--blue-strong);
   }
 
   .unify-card__readmore:hover {
@@ -598,7 +610,7 @@ const practicePreview = schoolPractices.slice(0, 3);
   }
 
   .unify--alt .unify-card__readmore:hover {
-    background: var(--blue);
+    background: var(--blue-strong);
     color: var(--white);
   }
 

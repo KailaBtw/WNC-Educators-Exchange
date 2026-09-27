@@ -20,12 +20,12 @@ const cover = event.images[0];
   data-reveal-y={revealDelay != null ? "24" : undefined}
   aria-haspopup="dialog"
 >
-  <span class="past-card__media" aria-hidden="true">
+  <span class="past-card__media">
     {
       cover ? (
         <img src={cover.src} alt="" width="640" height="400" loading="lazy" />
       ) : (
-        <span class="past-card__media-fallback" />
+        <span class="past-card__media-fallback" aria-hidden="true" />
       )
     }
     <span class="past-card__date">{event.dateLabel}</span>
@@ -107,7 +107,7 @@ const cover = event.images[0];
     padding: 0.35rem 0.65rem;
     border-radius: 0.55rem;
     background: color-mix(in srgb, var(--cream) 92%, white);
-    color: var(--blue);
+    color: var(--blue-strong);
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -123,7 +123,7 @@ const cover = event.images[0];
   }
 
   .past-card__kicker {
-    color: var(--green);
+    color: var(--green-strong);
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.1em;
