@@ -36,13 +36,16 @@ const firstId = sessions[0]?.id ?? "";
           : "Scroll sideways for a day-at-a-glance preview"}
       </p>
       <div class="schedule__track-wrap">
-        <div class="schedule__track" role="list">
+        <div
+          class="schedule__track"
+          role="group"
+          aria-label={showDetail ? "Program sessions" : "Day-at-a-glance sessions"}
+        >
           <div class="schedule__line" aria-hidden="true" />
           {sessions.map((session, index) => (
             <button
               type="button"
               class:list={["schedule__stop", { "is-active": index === 0 }]}
-              role="listitem"
               data-schedule-stop
               data-session-id={session.id}
               aria-pressed={index === 0 ? "true" : "false"}

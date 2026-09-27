@@ -1,9 +1,9 @@
 /**
  * Deploy / hosting settings — change HERE, not across the site.
  *
- * GitHub project Pages needs `githubPagesBase` (repo name).
- * When wncexchange.com is primary, set env CUSTOM_DOMAIN=1 so Astro
- * builds with base "/" (see astro.config.mjs).
+ * Default build uses wncexchange.com with base "/".
+ * For project Pages under github.io/<repo>, set CUSTOM_DOMAIN=0
+ * so Astro uses `githubPagesBase` (see astro.config.mjs).
  */
 export const deploy = {
   /** Public marketing domain */

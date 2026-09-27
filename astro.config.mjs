@@ -3,8 +3,8 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import { deploy } from './src/config/site.ts';
 
-// When wncexchange.com is primary, set CUSTOM_DOMAIN=1 in GitHub Actions.
-const customDomain = process.env.CUSTOM_DOMAIN === '1';
+// Official domain is primary (base "/"). Opt into project-Pages path with CUSTOM_DOMAIN=0.
+const customDomain = process.env.CUSTOM_DOMAIN !== '0';
 
 /** @type {import('astro').AstroUserConfig} */
 export default defineConfig({
