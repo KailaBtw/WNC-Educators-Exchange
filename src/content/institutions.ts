@@ -1,3 +1,6 @@
+import { withBase } from "../lib/paths";
+import { logoForInstitutionId } from "./partners";
+
 export type InstitutionKind = "community-college" | "university" | "k12" | "other";
 
 export type Institution = {
@@ -10,6 +13,8 @@ export type Institution = {
   focus: string[];
   tools: string[];
   more: string;
+  /** Optional logo path under /public */
+  logo?: string;
 };
 
 export const institutionsIntro = {
@@ -29,7 +34,7 @@ export const institutionFilters: { id: "all" | InstitutionKind; label: string }[
 ];
 
 /** Short campus cards drawn from Leigha Travis’s 2026 survey writeups. */
-export const institutions: Institution[] = [
+const institutionsRaw: Institution[] = [
   {
     id: "abtech",
     name: "Asheville-Buncombe Technical Community College",
@@ -211,3 +216,8 @@ export const institutions: Institution[] = [
     more: "PD is broad but uneven; departments still carry much cost—UNC System premium access is planned next year. Priorities: privacy, accessibility, trust, and keeping AI a support tool rather than a substitute for judgment.",
   },
 ];
+
+export const institutions: Institution[] = institutionsRaw.map((campus) => {
+  const logo = logoForInstitutionId(campus.id);
+  return logo ? { ...campus, logo: withBase(logo) } : campus;
+});

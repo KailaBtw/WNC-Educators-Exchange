@@ -5,6 +5,7 @@ import ScheduleTimeline from "../../components/events/ScheduleTimeline.astro";
 import EventCarousel from "../../components/events/EventCarousel";
 import PastEventCard from "../../components/events/PastEventCard.astro";
 import PastEventDialogs from "../../components/events/PastEventDialogs.astro";
+import ParticipatingOrgs from "../../components/events/ParticipatingOrgs.astro";
 import ContactCta from "../../components/layout/ContactCta.astro";
 import { events } from "../../content/events";
 
@@ -23,10 +24,11 @@ const archiveSlides = past.flatMap((event) =>
 
 <BaseLayout
   title="Events"
-  description="Past and upcoming WNC Educators Exchange gatherings, including the November 13 event at Mars Hill University."
+  description="Past and upcoming WNC Educators’ Exchange gatherings, including the November 13 event at Mars Hill University."
 >
   {
     upcoming && (
+      <>
       <section class="section" id="upcoming">
         <div class="container">
           <article class="events-page__featured" data-reveal data-reveal-y="28">
@@ -34,7 +36,7 @@ const archiveSlides = past.flatMap((event) =>
               <p class="eyebrow">Events</p>
               <h1>Regional gatherings</h1>
               <p class="events-page__intro-dek">
-                Brain Hub and January shaped the Top 10 Issues. Next: November 13 at Mars Hill—schedule,
+                Brainhub and January shaped the Top 10 Issues. Next: November 13 at Mars Hill—schedule,
                 register, or revisit past gatherings below.
               </p>
             </header>
@@ -101,6 +103,15 @@ const archiveSlides = past.flatMap((event) =>
           </article>
         </div>
       </section>
+
+      {upcoming.participatingOrgs && upcoming.participatingOrgs.length > 0 && (
+        <ParticipatingOrgs
+          orgs={upcoming.participatingOrgs}
+          heading="Participating organizations"
+          lede="Host campus, sponsoring institutions, and partners for the November Exchange."
+        />
+      )}
+      </>
     )
   }
 
@@ -110,7 +121,7 @@ const archiveSlides = past.flatMap((event) =>
         <div class="container">
           <div class="events-page__past-head" data-reveal>
             <p class="eyebrow">Archive</p>
-            <h2>Previous gatherings</h2>
+            <h2 class="events-page__past-title">Previous gatherings</h2>
             <p class="muted">
               Earlier convenings that fed the survey conversation and the regional workplan. Open a
               card for photos and the session outline.
@@ -137,7 +148,7 @@ const archiveSlides = past.flatMap((event) =>
             client:load
             slides={archiveSlides}
             heading="From past gatherings"
-            body="Real photos from Brain Hub (June) and the January AI Summit. Browse here, then open an event card above for the session outline."
+            body="Real photos from Brainhub (June). Browse here, then open an event card above for the session outline."
           />
         </div>
       </section>
@@ -293,7 +304,7 @@ const archiveSlides = past.flatMap((event) =>
 
   .events-page__past-head h2 {
     margin: 0.3rem 0 0.5rem;
-    font-size: clamp(1.7rem, 3vw, 2.25rem);
+    font-size: clamp(1.9rem, 3.4vw, 2.5rem);
   }
 
   .events-page__past-grid {

@@ -16,7 +16,7 @@ function personPhoto(person: CommitteePerson) {
 
 <BaseLayout
   title="About"
-  description="About the WNC Educators Exchange: Brain Hub initiatives, Land of Sky support, and the Top 10 Issues report."
+  description="About the WNC Educators’ Exchange: Brainhub initiatives, Land of Sky support, and the Top 10 Issues report."
 >
   <section class="section">
     <div class="container about-page">
@@ -29,7 +29,7 @@ function personPhoto(person: CommitteePerson) {
             don’t have to figure it out alone.
           </p>
           <p>
-            We’re part of the 2026 Brain Hub work, with support from the {site.org}. We bring people
+            We’re part of the 2026 {site.brainHubName} work, with support from the {site.org}. We bring people
             together at regional summits, share what we learn from the educator survey, and keep track
             of what’s working—and what still needs campus support. November 13 at Mars Hill University
             is the next gathering.
@@ -64,9 +64,9 @@ function personPhoto(person: CommitteePerson) {
   <section class="section section--tight about-partners">
     <div class="container">
       <p class="eyebrow">Partners</p>
-      <h2>Brain Hub &amp; Land of Sky</h2>
+      <h2>{site.brainHubName} &amp; Land of Sky</h2>
       <p class="muted about-partners__lede">
-        The Educators Exchange sits inside the 2026 Brain Hub initiatives and is organized with
+        The Educators’ Exchange sits inside the 2026 {site.brainHubName} initiatives and is organized with
         support from the {site.org}.
       </p>
       <div class="about-partners__logos">
@@ -90,7 +90,7 @@ function personPhoto(person: CommitteePerson) {
       <p class="eyebrow">November 13</p>
       <h2>{summitCommittee.title}</h2>
       <p class="muted about-committee__lede">
-        Host, presenters, sponsoring campuses, interns, and Land of Sky partners for the Educators
+        Host, presenters, sponsoring campuses, interns, and Land of Sky partners for the Educators’
         Exchange at Mars Hill University.
       </p>
 
@@ -175,7 +175,7 @@ function personPhoto(person: CommitteePerson) {
         <div class="about-person-card__body">
           <p class="about-person-card__role">Chair</p>
           <h3>{summitCommittee.chair.name}</h3>
-          <p class="about-person-card__org">WNC Educators Exchange</p>
+          <p class="about-person-card__org">WNC Educators’ Exchange</p>
           <a class="about-person-card__email" href={`mailto:${summitCommittee.chair.email}`}>
             {summitCommittee.chair.email}
           </a>

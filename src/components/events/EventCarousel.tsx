@@ -16,7 +16,7 @@ type Props = {
 export default function EventCarousel({
   slides,
   heading = "From past gatherings",
-  body = "A growing archive of photos from Brain Hub, January, and regional Exchange days.",
+  body = "A growing archive of photos from Brainhub and regional Exchange days.",
 }: Props) {
   const [index, setIndex] = useState(0);
   const total = slides.length;

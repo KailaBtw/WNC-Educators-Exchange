@@ -1,0 +1,156 @@
+---
+import type { PartnerOrg } from "../../content/partners";
+
+interface Props {
+  orgs: PartnerOrg[];
+  heading?: string;
+  lede?: string;
+}
+
+const {
+  orgs,
+  heading = "Participating organizations",
+  lede = "Campuses and partners connected to this gathering.",
+} = Astro.props;
+---
+
+{
+  orgs.length > 0 && (
+    <section class="section section--tight partner-orgs" id="partners">
+      <div class="container">
+        <div class="partner-orgs__head">
+          <p class="eyebrow">Partners</p>
+          <h2>{heading}</h2>
+          <p class="muted">{lede}</p>
+        </div>
+        <ul class="partner-orgs__grid">
+          {orgs.map((org) => (
+            <li class="partner-orgs__item" data-org={org.id}>
+              <div class="partner-orgs__mark" aria-hidden={org.logo ? "true" : undefined}>
+                {org.logo ? (
+                  <img src={org.logo} alt={`${org.name} logo`} width="140" height="70" loading="lazy" />
+                ) : (
+                  <span class="partner-orgs__fallback" aria-hidden="true">
+                    {org.name
+                      .split(/\s+/)
+                      .filter(Boolean)
+                      .slice(0, 2)
+                      .map((w) => w[0])
+                      .join("")
+                      .toUpperCase()}
+                  </span>
+                )}
+              </div>
+              <span class="partner-orgs__name">{org.name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .partner-orgs__head {
+    margin-bottom: 1.1rem;
+    max-width: 40rem;
+  }
+
+  .partner-orgs__head h2 {
+    margin: 0.25rem 0 0.4rem;
+    font-size: clamp(1.45rem, 3vw, 1.9rem);
+  }
+
+  .partner-orgs__head .muted {
+    margin: 0;
+  }
+
+  .partner-orgs__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .partner-orgs__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 5.75rem;
+    padding: 0.65rem 0.55rem;
+    text-align: center;
+    border-radius: var(--radius-md, 0.75rem);
+    background: color-mix(in srgb, var(--white) 82%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
+  }
+
+  .partner-orgs__mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.35rem 0.45rem;
+    border-radius: 0.45rem;
+    background: color-mix(in srgb, var(--white) 92%, var(--cream));
+  }
+
+  .partner-orgs__mark img {
+    max-width: 6.5rem;
+    max-height: 3rem;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .partner-orgs__item[data-org="unca"] .partner-orgs__mark img,
+  .partner-orgs__item[data-org="buncombe-county-schools"] .partner-orgs__mark img {
+    max-width: 8.75rem;
+    max-height: 3.85rem;
+  }
+
+  .partner-orgs__item[data-org="ab-tech"] .partner-orgs__mark img,
+  .partner-orgs__item[data-org="haywood"] .partner-orgs__mark img,
+  .partner-orgs__item[data-org="warren-wilson"] .partner-orgs__mark img {
+    max-width: 7.5rem;
+    max-height: 3.5rem;
+  }
+
+  .partner-orgs__fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.55rem;
+    background: color-mix(in srgb, var(--green-light) 45%, white);
+    color: var(--green-strong, var(--green));
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .partner-orgs__name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  @media (min-width: 720px) {
+    .partner-orgs__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .partner-orgs__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+  }
+</style>

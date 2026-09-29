@@ -16,7 +16,7 @@ const past = events.filter((e) => e.status === "past");
     <div data-reveal>
       <SectionHeader eyebrow="Events" title="Event information">
         <p>
-          Next up: Friday, November 13, at Mars Hill University. About 120 people.
+          Next up: Friday, November 13, at Mars Hill University. Enrollment limited.
         </p>
       </SectionHeader>
     </div>
@@ -68,7 +68,7 @@ const past = events.filter((e) => e.status === "past");
     {
       past.length > 0 && (
         <div class="events-home__past" data-reveal data-reveal-delay="0.08" data-reveal-y="24">
-          <p class="eyebrow">Previous gatherings</p>
+          <p class="events-home__past-heading">Previous gatherings</p>
           <div class="events-home__past-grid">
             {past.map((event) => (
               <PastEventCard event={event} />
@@ -157,8 +157,13 @@ const past = events.filter((e) => e.status === "past");
     margin-top: clamp(1.75rem, 4vw, 2.5rem);
   }
 
-  .events-home__past .eyebrow {
-    margin-bottom: 0.95rem;
+  .events-home__past-heading {
+    margin: 0 0 0.95rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.45rem, 3vw, 1.85rem);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--ink);
   }
 
   .events-home__past-grid {

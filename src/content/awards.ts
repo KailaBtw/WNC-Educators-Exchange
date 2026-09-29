@@ -32,7 +32,7 @@ export type Awardee = {
 
 export const awardsIntro = {
   eyebrow: "Awards",
-  title: "Faculty we recognize",
+  title: "2026 A.I. Innovation in Education Award Winners",
   description:
     "Celebrate this year’s BrAIn Hub Educator Award winners—and watch for the next faculty & student community contest.",
 };
@@ -46,7 +46,7 @@ export const upcomingAwards = {
   title: "Faculty & student community contest",
   summary:
     "A contest for faculty and students working together—using AI on projects that help Western North Carolina communities. Official name and full packet are forthcoming; here’s what we know so far.",
-  when: "Introduced at the November 13 Educators Exchange · Mars Hill University",
+  when: "Introduced at the November 13 Educators’ Exchange · Mars Hill University",
   lead: "Steven Young · Blue Ridge Community College",
   highlights: [
     {
@@ -70,7 +70,7 @@ export const upcomingAwards = {
 
 export const pastAwardsIntro = {
   eyebrow: "2026 faculty excellence awards",
-  title: "This year’s winners",
+  title: "2026 A.I. Innovation in Education Award Winners",
   description:
     "The six 2026 AI Innovator in Education Award winners from the BrAIn Hub Educator Award—WNC educators using AI to strengthen student achievement, workforce readiness, and institutional practice.",
 };
@@ -187,19 +187,18 @@ const awardeesRaw: Awardee[] = [
   {
     id: "brandy-hadley",
     name: "Brandy Hadley",
-    institution: "Western North Carolina",
+    institution: "Appalachian State University",
     recognition: "2026 AI Innovator in Education Award",
     year: "2026",
-    stance: "Profile forthcoming",
+    stance: "Practice with purpose",
     category: "Faculty excellence",
     summary:
-      "2026 BrAIn Hub Educator Award winner. Project summary and a dedicated headshot will be added when materials arrive; award certificate is available below.",
-    focus: ["Award certificate available", "Full profile materials pending"],
-    image: "/images/awards/regional-faculty.svg",
-    imageAlt: "Portrait placeholder for Brandy Hadley",
+      "2026 BrAIn Hub Educator Award winner from Appalachian State University. Full project summary will expand as materials arrive; portrait and award certificate are available below.",
+    focus: ["Award certificate available", "Appalachian State University"],
+    image: "/images/awards/brandy-hadley.png",
+    imageAlt: "Portrait of Brandy Hadley, Appalachian State University",
     certificateUrl: "/files/certs/brandy-hadley.png",
     certificateImage: "/images/awards/certs/brandy-hadley.png",
-    pendingMedia: true,
   },
 ];
 

@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Button from "../../components/ui/Button.astro";
 import ScheduleTimeline from "../../components/events/ScheduleTimeline.astro";
 import EventCarousel from "../../components/events/EventCarousel";
+import ParticipatingOrgs from "../../components/events/ParticipatingOrgs.astro";
 import ContactCta from "../../components/layout/ContactCta.astro";
 import { events, getEvent, getProgramLines } from "../../content/events";
 import { site } from "../../content/site";
@@ -137,10 +138,28 @@ const gallerySlides = event.images.map((img) => ({
             client:load
             slides={gallerySlides}
             heading={`${event.title} photos`}
-            body="Archive placeholders for this gathering—replace with final images when available."
+            body="Photos from this gathering and related regional days."
           />
         </div>
       </section>
+    )
+  }
+
+  {
+    event.participatingOrgs && event.participatingOrgs.length > 0 && (
+      <ParticipatingOrgs
+        orgs={event.participatingOrgs}
+        heading={
+          event.status === "upcoming"
+            ? "Participating organizations"
+            : "Sponsor organizations"
+        }
+        lede={
+          event.status === "upcoming"
+            ? "Host campus, sponsoring institutions, and partners for the November Exchange."
+            : "Campuses and partners from the January gathering mailing list."
+        }
+      />
     )
   }
 
@@ -152,8 +171,7 @@ const gallerySlides = event.images.map((img) => ({
             <p class="eyebrow">Registration</p>
             <h2>Join us November 13</h2>
             <p class="muted">
-              Registration is hosted on a separate site. Capacity at Mars Hill University is about
-              120 educators.
+              Registration is hosted on a separate site. Enrollment is limited.
             </p>
           </div>
           <Button href={event.registerUrl ?? site.registerUrl} external>

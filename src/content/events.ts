@@ -1,5 +1,10 @@
 import { withBase } from "../lib/paths";
 import { site } from "./site";
+import {
+  januarySponsorOrgs,
+  novemberParticipatingOrgs,
+  type PartnerOrg,
+} from "./partners";
 
 export type ProgramSession = {
   id: string;
@@ -29,6 +34,8 @@ export type EventItem = {
   sessions?: ProgramSession[];
   /** Prep notes shown on the upcoming event page. */
   beforeEvent?: string[];
+  /** Participating / sponsor organizations for logo strip. */
+  participatingOrgs?: PartnerOrg[];
 };
 
 const novemberTableTopics = [
@@ -45,36 +52,37 @@ const novemberTableTopics = [
 const eventsRaw: EventItem[] = [
   {
     slug: "november-2026",
-    title: "Western North Carolina AI Educator’s Exchange",
+    title: "Western North Carolina AI Educators’ Exchange",
     category: "Summit",
     dateLabel: "Friday, November 13, 2026",
     status: "upcoming",
     summary:
       "Educators from across Western North Carolina will meet at Mars Hill to compare what they’re doing with AI and decide what comes next.",
-    location: "Mars Hill University (capacity ~120)",
+    location: "Mars Hill University · Enrollment limited",
     registerUrl: site.registerUrl,
+    participatingOrgs: novemberParticipatingOrgs,
     beforeEvent: [
       "Survey to all participants (based on last year’s instrument).",
       "New survey to campus leads about infrastructure, institutional policies, and resources—so campus introductions can stay focused.",
     ],
     images: [
       {
-        src: "/images/events/archive/brain-01.jpg",
-        alt: "Registration desk at a regional educator gathering",
-        caption: "Registration",
+        src: "/images/events/archive/brain-04.jpg",
+        alt: "Educators seated at round tables across a convention center floor",
+        caption: "In the room",
         subtitle: "From recent WNC educator gatherings",
       },
       {
         src: "/images/events/archive/brain-03.jpg",
         alt: "Educators networking at round tables in a large hall",
-        caption: "In the room",
+        caption: "Networking",
         subtitle: "Cross-campus conversation",
       },
       {
         src: "/images/events/archive/jan-07.jpg",
-        alt: "Educator speaking at a microphone during a summit panel",
+        alt: "Educator speaking at a microphone during a Brainhub panel",
         caption: "Campus voices",
-        subtitle: "What neighboring campuses are trying",
+        subtitle: "June Brainhub panel",
       },
     ],
     sessions: [
@@ -102,18 +110,18 @@ const eventsRaw: EventItem[] = [
       },
       {
         id: "campus-intros",
-        time: "10:20 – 11:00 am",
-        title: "Campus Introductions including students",
-        blurb: "Campus share-outs with students",
+        time: "10:20 – 10:40 am",
+        title: "Campus Introductions",
+        blurb: "Campus share-outs",
         leads: "Chris Cain",
         detail:
-          "Facilitated campus share-outs, including students. Invited institutions and lead representatives introduce current AI work—streamlined when campus leads complete the infrastructure / policy / resources survey.",
+          "Facilitated campus share-outs. Invited institutions and lead representatives introduce current AI work—streamlined when campus leads complete the infrastructure / policy / resources survey.",
       },
       {
         id: "sherlock",
-        time: "11:00 – 11:50 am",
+        time: "10:40 – 11:30 am",
         title:
-          "More than a Human in the Loop: Equipping Learners for Cognitive Sovereignty in a World of AI",
+          "More than a Human in the Loop: Equipping Learners for Cognitive Sovereignty in a world of AI",
         blurb: "Keynote on learning with AI",
         leads: "Dr. John Sherlock, Professor, Western Carolina University",
         detail:
@@ -124,14 +132,8 @@ const eventsRaw: EventItem[] = [
         },
       },
       {
-        id: "lunch",
-        time: "12:00 pm",
-        title: "Lunch",
-        blurb: "Eat, recharge, and socialize",
-      },
-      {
         id: "lunch-conversations",
-        time: "12:30 pm",
+        time: "11:30 am – 12:00 pm",
         title: "Lunch Conversations",
         blurb: "Table topics during lunch",
         leads: "Ian Selig",
@@ -141,7 +143,7 @@ const eventsRaw: EventItem[] = [
       {
         id: "scapin",
         time: "1:00 – 1:50 pm",
-        title: "From Answers to Evidence: Assessment in the Age of AI",
+        title: "Adjusting Assessment for the World of AI",
         blurb: "Rethinking assessment with AI",
         leads: "Tim Scapin, Haywood Community College",
       },
@@ -171,7 +173,7 @@ const eventsRaw: EventItem[] = [
   },
   {
     slug: "brain-hub",
-    title: "Brain Hub",
+    title: "Brainhub",
     category: "Past Event",
     dateLabel: "June 2026",
     status: "past",
@@ -180,38 +182,56 @@ const eventsRaw: EventItem[] = [
     location: "Asheville",
     images: [
       {
-        src: "/images/events/archive/brain-01.jpg",
-        alt: "Attendees checking in at the Brain Hub registration desk",
-        caption: "Welcome desk",
-        subtitle: "NC Works partners helping educators check in",
+        src: "/images/events/archive/brain-04.jpg",
+        alt: "Convention center floor filled with educators at round tables",
+        caption: "On the floor",
+        subtitle: "Brainhub · June 2026",
       },
       {
         src: "/images/events/archive/brain-02.jpg",
-        alt: "Educators gathered for Brain Hub sessions",
+        alt: "Educators gathered for Brainhub sessions",
         caption: "Opening energy",
         subtitle: "Faculty and partners filling the room",
       },
       {
         src: "/images/events/archive/brain-03.jpg",
-        alt: "Two educators talking beside round tables at Brain Hub",
+        alt: "Two educators talking beside round tables at Brainhub",
         caption: "Networking",
         subtitle: "Cross-campus contacts between sessions",
       },
       {
-        src: "/images/events/archive/brain-04.jpg",
-        alt: "Brain Hub program in progress",
-        caption: "Program in motion",
-        subtitle: "AI literacy and workforce pathways",
+        src: "/images/events/archive/jan-01-crop.jpg",
+        alt: "Panelists speaking at the June Brainhub gathering",
+        caption: "Summit panel",
+        subtitle: "June Brainhub panel",
+      },
+      {
+        src: "/images/events/archive/jan-03.jpg",
+        alt: "Panelist speaking at the June Brainhub gathering",
+        caption: "On the mic",
+        subtitle: "Ideas that shaped the Top 10 Issues",
+      },
+      {
+        src: "/images/events/archive/jan-07.jpg",
+        alt: "Educator speaking with campus partners on screen behind",
+        caption: "Campus voices",
+        subtitle: "Montreat, Haywood CC, and neighbors in the mix",
+      },
+      {
+        src: "/images/events/archive/jan-11.jpg",
+        alt: "Educator speaking into a microphone at Brainhub",
+        caption: "Open forum",
+        subtitle: "Policy, pedagogy, and place",
       },
       {
         src: "/images/events/archive/brain-07.jpg",
-        alt: "Educator smiling during conversation at Brain Hub",
+        alt: "Educator smiling during conversation at Brainhub",
         caption: "In conversation",
         subtitle: "Asheville Athletics venue",
       },
       {
         src: "/images/events/archive/brain-08.jpg",
-        alt: "Brain Hub attendees engaged in discussion",
+        alt: "Brainhub attendees engaged in discussion",
         caption: "Table talk",
         subtitle: "Practice sharing across institutions",
       },
@@ -227,46 +247,23 @@ const eventsRaw: EventItem[] = [
     slug: "january-event",
     title: "January AI Summit",
     category: "Past Event",
-    dateLabel: "January 2026",
+    dateLabel: "January 23, 2026",
     status: "past",
     summary:
       "The January summit. What people said there, along with the survey, became the Top 10 Issues.",
+    participatingOrgs: januarySponsorOrgs,
     images: [
       {
-        src: "/images/events/archive/jan-01.jpg",
-        alt: "Panelists speaking at the January AI Summit",
-        caption: "Summit panel",
-        subtitle: "Regional educators on the record",
-      },
-      {
-        src: "/images/events/archive/jan-03.jpg",
-        alt: "Panelist in a purple blazer speaking at the January AI Summit",
-        caption: "On the mic",
-        subtitle: "Ideas that shaped the Top 10 Issues",
-      },
-      {
-        src: "/images/events/archive/jan-07.jpg",
-        alt: "Warren Wilson educator speaking with campus partners on screen behind",
-        caption: "Campus voices",
-        subtitle: "Montreat, Haywood CC, and neighbors in the mix",
-      },
-      {
-        src: "/images/events/archive/jan-11.jpg",
-        alt: "Educator speaking into a microphone at the January summit",
-        caption: "Open forum",
-        subtitle: "Policy, pedagogy, and place",
-      },
-      {
-        src: "/images/events/archive/jan-05.jpg",
-        alt: "January AI Summit attendees in discussion",
+        src: "/images/events/archive/brain-02.jpg",
+        alt: "Educators gathered at a regional AI summit",
         caption: "Room energy",
         subtitle: "From conversation toward a regional workplan",
       },
       {
-        src: "/images/events/archive/jan-12.jpg",
-        alt: "January AI Summit gathering",
-        caption: "Takeaways",
-        subtitle: "What the survey found, live in the room",
+        src: "/images/events/archive/brain-08.jpg",
+        alt: "Attendees in discussion at round tables",
+        caption: "Table talk",
+        subtitle: "Campus partners comparing practice",
       },
     ],
     program: [
@@ -281,6 +278,10 @@ const eventsRaw: EventItem[] = [
 export const events: EventItem[] = eventsRaw.map((event) => ({
   ...event,
   images: event.images.map((img) => ({ ...img, src: withBase(img.src) })),
+  participatingOrgs: event.participatingOrgs?.map((org) => ({
+    ...org,
+    logo: org.logo ? withBase(org.logo) : undefined,
+  })),
 }));
 
 export function getEvent(slug: string) {

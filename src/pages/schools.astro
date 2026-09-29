@@ -59,6 +59,30 @@ import { institutions, institutionsIntro, institutionFilters } from "../content/
               }`}
             >
               <div class="school-card__stripe" aria-hidden="true" />
+              <div class="school-card__brand">
+                {
+                  campus.logo ? (
+                    <img
+                      class:list={[
+                        "school-card__logo",
+                        {
+                          "school-card__logo--lg":
+                            campus.id === "unca" || campus.id === "buncombe-county-schools",
+                        },
+                      ]}
+                      src={campus.logo}
+                      alt={`${campus.name} logo`}
+                      width="120"
+                      height="48"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span class="school-card__logo-fallback" aria-hidden="true">
+                      {campus.shortName.slice(0, 3).toUpperCase()}
+                    </span>
+                  )
+                }
+              </div>
               <div class="school-card__head">
                 <p class="school-card__stance">{campus.stance}</p>
                 <h3>
@@ -211,6 +235,46 @@ import { institutions, institutionsIntro, institutionFilters } from "../content/
     inset: 0 auto 0 0;
     width: 0.35rem;
     background: var(--accent);
+  }
+
+  .school-card__brand {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.35rem 0.45rem;
+    margin-left: 0.1rem;
+    border-radius: 0.45rem;
+    background: color-mix(in srgb, var(--white) 90%, var(--cream));
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .school-card__logo {
+    max-width: 8.5rem;
+    max-height: 3.25rem;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .school-card__logo--lg {
+    max-width: 11rem;
+    max-height: 4.25rem;
+  }
+
+  .school-card__logo-fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.35rem;
+    height: 2.35rem;
+    padding: 0 0.45rem;
+    border-radius: 0.45rem;
+    background: color-mix(in srgb, var(--accent) 14%, white);
+    color: var(--accent);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
   }
 
   .school-card__stance {

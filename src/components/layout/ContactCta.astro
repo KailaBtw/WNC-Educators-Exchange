@@ -58,7 +58,7 @@ const {
     const data = new FormData(target);
     const email = String(data.get("email") || "").trim();
     const message = String(data.get("message") || "").trim();
-    const subject = encodeURIComponent("WNC Educators Exchange inquiry");
+    const subject = encodeURIComponent("WNC Educators’ Exchange inquiry");
     const body = encodeURIComponent(`From: ${email}\n\n${message}`);
     window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
   });

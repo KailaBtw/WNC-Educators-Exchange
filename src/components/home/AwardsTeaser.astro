@@ -5,15 +5,16 @@ import { pastAwardsIntro, awardees, awardProfilePath } from "../../content/award
 import { routes } from "../../config/site";
 import { withBase } from "../../lib/paths";
 
-const featured = awardees.slice(0, 3);
+const featured = awardees;
+const accents = ["var(--purple)", "var(--blue)", "var(--green)"] as const;
 ---
 
 <section class="section awards-teaser" id="awards">
   <div class="container">
     <div data-reveal>
-      <SectionHeader eyebrow={pastAwardsIntro.eyebrow} title="Faculty we recognize" align="center">
+      <SectionHeader eyebrow={pastAwardsIntro.eyebrow} title={pastAwardsIntro.title} align="center">
         <p>
-          WNC faculty we recognized for how they use AI with students and on their campuses.
+          WNC faculty recognized for how they use AI with students and on their campuses.
         </p>
       </SectionHeader>
     </div>
@@ -21,38 +22,28 @@ const featured = awardees.slice(0, 3);
     <div class="awards-teaser__rail">
       {
         featured.map((person, index) => (
-          <article
+          <a
             class="awards-teaser__card"
+            href={withBase(awardProfilePath(person.id))}
             data-reveal
-            data-reveal-delay={String(0.06 * index)}
-            data-reveal-y="28"
-            style={`--accent: ${index === 0 ? "var(--purple)" : index === 1 ? "var(--blue)" : "var(--green)"}`}
+            data-reveal-delay={String(0.04 * index)}
+            data-reveal-y="20"
+            style={`--accent: ${accents[index % accents.length]}`}
           >
-            <a class="awards-teaser__media" href={withBase(awardProfilePath(person.id))}>
-              <img src={person.image} alt={person.imageAlt} />
-              <span class="awards-teaser__year">{person.year}</span>
-            </a>
-            <div class="awards-teaser__body">
-              <p class="awards-teaser__stance">{person.stance}</p>
-              <h3>
-                <a href={withBase(awardProfilePath(person.id))}>{person.name}</a>
-              </h3>
-              <p class="awards-teaser__institution">{person.institution}</p>
-              <p class="awards-teaser__recognition">{person.recognition}</p>
-              <p class="awards-teaser__category">{person.category}</p>
-              <div class="awards-teaser__focus">
-                {person.focus.slice(0, 2).map((item) => (
-                  <span>{item}</span>
-                ))}
-              </div>
-            </div>
-          </article>
+            <span class="awards-teaser__media">
+              <img src={person.image} alt="" width="120" height="120" loading="lazy" />
+            </span>
+            <span class="awards-teaser__body">
+              <span class="awards-teaser__name">{person.name}</span>
+              <span class="awards-teaser__institution">{person.institution}</span>
+            </span>
+          </a>
         ))
       }
     </div>
 
-    <div class="awards-teaser__cta" data-reveal data-reveal-delay="0.14" data-reveal-y="24">
-      <Button href={routes.awards}>See all faculty we recognize →</Button>
+    <div class="awards-teaser__cta" data-reveal data-reveal-delay="0.12" data-reveal-y="20">
+      <Button href={routes.awards}>See all award winners →</Button>
     </div>
   </div>
 </section>
@@ -65,12 +56,11 @@ const featured = awardees.slice(0, 3);
       var(--cream);
   }
 
-  /* One row of cards: 1 → 2 → 3 as the viewport widens. */
   .awards-teaser__rail {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(1rem, 2.5vw, 1.5rem);
-    max-width: 20rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+    max-width: 40rem;
     margin-inline: auto;
   }
 
@@ -78,155 +68,95 @@ const featured = awardees.slice(0, 3);
     --accent: var(--purple);
     display: flex;
     flex-direction: column;
-    min-height: 100%;
-    padding: 0.75rem;
-    border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--white) 72%, var(--cream));
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 0.45rem 0.65rem;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    border-radius: var(--radius-md, 0.75rem);
+    background: color-mix(in srgb, var(--white) 78%, var(--cream));
     border: 1px solid color-mix(in srgb, var(--purple) 10%, transparent);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
-
-  .awards-teaser__card:nth-child(n + 2) {
-    display: none;
+    transition: transform 0.2s ease, border-color 0.2s ease;
   }
 
   .awards-teaser__card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 28px color-mix(in srgb, var(--ink) 8%, transparent);
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
   }
 
   .awards-teaser__media {
-    position: relative;
     display: block;
-    border-radius: calc(var(--radius-lg) - 0.3rem);
+    width: 4.25rem;
+    height: 4.25rem;
+    border-radius: 999px;
     overflow: hidden;
-    aspect-ratio: 4 / 5;
     background: color-mix(in srgb, var(--green-light) 35%, white);
+    flex-shrink: 0;
   }
 
   .awards-teaser__media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.45s ease;
-  }
-
-  .awards-teaser__media:hover img {
-    transform: scale(1.04);
-  }
-
-  .awards-teaser__year {
-    position: absolute;
-    left: 0.75rem;
-    bottom: 0.75rem;
-    padding: 0.3rem 0.55rem;
-    border-radius: 0.55rem;
-    background: color-mix(in srgb, var(--cream) 92%, white);
-    color: var(--accent);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    object-position: center top;
   }
 
   .awards-teaser__body {
     display: grid;
-    gap: 0.25rem;
-    padding: 0.9rem 0.2rem 0.25rem;
+    gap: 0.15rem;
+    min-width: 0;
   }
 
-  .awards-teaser__stance {
-    margin: 0;
-    color: var(--accent);
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-
-  .awards-teaser__card h3 {
-    margin: 0;
-    font-size: 1.3rem;
+  .awards-teaser__name {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
     line-height: 1.2;
   }
 
-  .awards-teaser__card h3 a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .awards-teaser__card h3 a:hover {
-    color: var(--purple);
-  }
-
   .awards-teaser__institution {
-    margin: 0;
-    color: var(--blue);
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-
-  .awards-teaser__recognition {
-    margin: 0.15rem 0 0;
     color: var(--muted);
-    font-size: 0.88rem;
-  }
-
-  .awards-teaser__category {
-    margin: 0.35rem 0 0;
-    display: inline-flex;
-    width: fit-content;
-    padding: 0.18rem 0.5rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--blue) 12%, white);
-    color: var(--blue);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .awards-teaser__focus {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-    margin-top: 0.55rem;
-  }
-
-  .awards-teaser__focus span {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.2rem 0.5rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--accent) 12%, white);
-    color: var(--ink);
+    font-size: 0.72rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .awards-teaser__cta {
     display: flex;
     justify-content: center;
-    margin-top: 1.75rem;
+    margin-top: 1.25rem;
   }
 
-  @media (min-width: 640px) {
-    .awards-teaser__rail {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-width: 42rem;
-    }
-
-    .awards-teaser__card:nth-child(2) {
-      display: flex;
-    }
-  }
-
-  @media (min-width: 900px) {
+  @media (min-width: 720px) {
     .awards-teaser__rail {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: 48rem;
+      gap: 0.75rem;
+    }
+
+    .awards-teaser__media {
+      width: 4.75rem;
+      height: 4.75rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .awards-teaser__rail {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       max-width: none;
     }
 
-    .awards-teaser__card:nth-child(3) {
-      display: flex;
+    .awards-teaser__media {
+      width: 4.5rem;
+      height: 4.5rem;
+    }
+
+    .awards-teaser__name {
+      font-size: 0.88rem;
     }
   }
 </style>

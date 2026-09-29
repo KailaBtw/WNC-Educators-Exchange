@@ -17,7 +17,7 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
 ---
 
 <BaseLayout
-  title="Faculty we recognize"
+  title={awardsIntro.title}
   description="2026 BrAIn Hub Educator Award winners and the upcoming faculty & student community contest."
 >
   <section class="section awards-hero">
@@ -286,7 +286,7 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
   .awards-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(1.15rem, 2.5vw, 1.75rem);
+    gap: clamp(0.85rem, 2vw, 1.25rem);
   }
 
   .award-card {
@@ -308,15 +308,16 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
   .award-card__media {
     position: relative;
     display: block;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 16 / 11;
     overflow: hidden;
-    background: color-mix(in srgb, var(--green-light) 40%, white);
+    background: color-mix(in srgb, var(--green-light) 30%, white);
   }
 
   .award-card__media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center top;
     transition: transform 0.35s ease;
   }
 
@@ -340,13 +341,13 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
   .award-card__body {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-    padding: 1.15rem 1.2rem 1.3rem;
+    gap: 0.3rem;
+    padding: 0.85rem 0.95rem 1rem;
   }
 
   .award-card__stance {
     margin: 0;
-    font-size: 0.82rem;
+    font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.02em;
     color: var(--accent);
@@ -354,7 +355,7 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
 
   .award-card h2 {
     margin: 0;
-    font-size: 1.35rem;
+    font-size: 1.15rem;
     line-height: 1.2;
   }
 
@@ -392,11 +393,11 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
   }
 
   .award-card__summary {
-    margin: 0.35rem 0 0;
-    font-size: 0.92rem;
+    margin: 0.25rem 0 0;
+    font-size: 0.85rem;
     color: var(--muted);
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }

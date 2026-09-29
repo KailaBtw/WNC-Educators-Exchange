@@ -28,7 +28,7 @@ export const resourcesIntro = {
 /** Featured band under the hero — primary next step for most visitors. */
 export const resourcesFeatured = {
   eyebrow: "Next gathering",
-  title: "November 13 Educators Exchange",
+  title: "November 13 Educators’ Exchange",
   when: "Friday, November 13, 2026 · Mars Hill University",
   blurb:
     "Full day schedule, contest slot, and campus share-outs. Register through Novera, then skim the program.",
@@ -60,7 +60,7 @@ export const resourceGroups: ResourceGroup[] = [
     accent: "purple",
     items: [
       {
-        label: "Top 10 Issues in AI Facing Educators",
+        label: "Top 10 A.I. Issues Facing WNC Educators",
         href: routes.issues,
         blurb: `Findings from the ${surveyAttribution.name} and regional summits.`,
       },
@@ -70,7 +70,7 @@ export const resourceGroups: ResourceGroup[] = [
         blurb: "Campus practice cards from the 2026 survey writeups.",
       },
       {
-        label: "Faculty we recognize",
+        label: "2026 A.I. Innovation in Education Award Winners",
         href: routes.awards,
         blurb: "2026 BrAIn Hub Educator Award winners and profiles.",
       },
@@ -134,24 +134,24 @@ export const resourceGroups: ResourceGroup[] = [
     id: "leads",
     title: "Educators & leads",
     eyebrow: "Bring a campus",
-    lede: "Registration, events archive, Brain Hub framing, and how to reach the team.",
+    lede: "Registration, events archive, Brainhub framing, and how to reach the team.",
     accent: "green",
     items: [
       {
         label: "Register for Nov 13",
         href: site.registerUrl,
-        blurb: "Novera registration for the Educators Exchange.",
+        blurb: "Novera registration for the Educators’ Exchange.",
         external: true,
       },
       {
         label: "All events",
         href: routes.events,
-        blurb: "Upcoming Exchange and past Brain Hub / January gatherings.",
+        blurb: "Upcoming Exchange and past Brainhub / January gatherings.",
       },
       {
         label: "About the Exchange",
         href: routes.about,
-        blurb: "Brain Hub, Land of Sky, survey source, and summit committee.",
+        blurb: "Brainhub, Land of Sky, survey source, and summit committee.",
       },
       {
         label: "Contact",
