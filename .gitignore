@@ -23,5 +23,5 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# private files
+# private files (includes raw/archival photo dumps)
 private/
