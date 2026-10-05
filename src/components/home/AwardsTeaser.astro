@@ -31,7 +31,14 @@ const accents = ["var(--purple)", "var(--blue)", "var(--green)"] as const;
             style={`--accent: ${accents[index % accents.length]}`}
           >
             <span class="awards-teaser__media">
-              <img src={person.image} alt="" width="120" height="120" loading="lazy" />
+              <img
+                src={person.image}
+                alt=""
+                width="120"
+                height="120"
+                loading="lazy"
+                style={person.imagePosition ? `object-position: ${person.imagePosition}` : undefined}
+              />
             </span>
             <span class="awards-teaser__body">
               <span class="awards-teaser__name">{person.name}</span>
@@ -100,7 +107,7 @@ const accents = ["var(--purple)", "var(--blue)", "var(--green)"] as const;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center 40%;
   }
 
   .awards-teaser__body {

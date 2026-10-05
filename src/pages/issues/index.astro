@@ -25,14 +25,14 @@ const reportStats = [
       <p class="eyebrow">Regional report</p>
       <h1>Top 10 A.I. Issues Facing WNC Educators</h1>
       <p class="issues-report__dek">
-        From the {surveyAttribution.name} ({surveyAttribution.when}) and the regional summits. These
-        aren’t future problems—they’re already showing up in classrooms across WNC.
+        Ten issues from the {surveyAttribution.name} ({surveyAttribution.when}) and regional summits.
+        Already showing up in WNC classrooms—not hypotheticals for later.
       </p>
       <div class="prose muted issues-report__overview">
         <p>{surveyAttribution.blurb}</p>
         <p>
-          The survey makes the picture clear: {stats.aiActive.value} of AI-active faculty already use
-          these tools, {stats.policyBehind.value} say policy is behind or nonexistent, and
+          Snapshot: {stats.aiActive.value} of AI-active faculty already use these tools,
+          {stats.policyBehind.value} say policy is behind or nonexistent, and
           {stats.criticalThinking.value} name loss of critical thinking as their leading concern.
         </p>
         <p>
@@ -45,12 +45,15 @@ const reportStats = [
       <div class="issues-report__actions">
         {
           site.fullReportUrl ? (
-            <Button href={site.fullReportUrl} external>
-              Full written analysis (PDF)
-            </Button>
+            <Button href={site.fullReportUrl}>Download full analysis (PDF)</Button>
           ) : (
             <Button href="#the-ten-issues">Browse the ten issues</Button>
           )
+        }
+        {
+          site.shortReportUrl ? (
+            <Button href={site.shortReportUrl} variant="secondary">Download short overview (PDF)</Button>
+          ) : null
         }
         <Button href={routes.schools} variant="secondary">What schools are doing with AI</Button>
       </div>

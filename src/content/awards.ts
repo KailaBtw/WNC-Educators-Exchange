@@ -17,6 +17,8 @@ export type Awardee = {
   focus: string[];
   image: string;
   imageAlt: string;
+  /** CSS object-position for card/profile crops (default center 28%). */
+  imagePosition?: string;
   /** Full proposal / nomination packet under /public */
   proposalPdf?: string;
   /** Summit award slide PDF under /public */
@@ -195,8 +197,9 @@ const awardeesRaw: Awardee[] = [
     summary:
       "2026 BrAIn Hub Educator Award winner from Appalachian State University. Full project summary will expand as materials arrive; portrait and award certificate are available below.",
     focus: ["Award certificate available", "Appalachian State University"],
-    image: "/images/awards/brandy-hadley.png",
+    image: "/images/awards/hadley-portrait-900.jpg",
     imageAlt: "Portrait of Brandy Hadley, Appalachian State University",
+    imagePosition: "62% 28%",
     certificateUrl: "/files/certs/brandy-hadley.png",
     certificateImage: "/images/awards/certs/brandy-hadley.png",
   },

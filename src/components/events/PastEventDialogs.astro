@@ -1,7 +1,5 @@
 ---
-import Button from "../ui/Button.astro";
 import type { EventItem } from "../../content/events";
-import { getProgramLines } from "../../content/events";
 
 interface Props {
   events: EventItem[];
@@ -13,20 +11,27 @@ const past = events.filter((e) => e.status === "past");
 
 {
   past.map((event) => {
-    const program = getProgramLines(event);
     const slides = event.images;
+    const coverSrc = event.bannerSrc ?? slides[0]?.src;
+    const orgs = event.participatingOrgs ?? [];
     return (
       <dialog
         class="past-dialog"
         id={`past-dialog-${event.slug}`}
         aria-labelledby={`past-dialog-title-${event.slug}`}
+        style={coverSrc ? `--past-cover: url('${coverSrc}')` : undefined}
       >
         <div class="past-dialog__panel">
-          <header class="past-dialog__header">
-            <div class="past-dialog__header-copy">
+          <header class="past-dialog__banner">
+            <div class="past-dialog__banner-copy">
               <p class="past-dialog__kicker">Previous gathering · {event.category}</p>
               <h2 id={`past-dialog-title-${event.slug}`}>{event.title}</h2>
-              <p class="past-dialog__meta">{event.dateLabel}</p>
+              <p class="past-dialog__meta">
+                <span>{event.dateLabel}</span>
+                {event.location && <span class="past-dialog__meta-sep">·</span>}
+                {event.location && <span>{event.location}</span>}
+              </p>
+              <p class="past-dialog__summary">{event.summary}</p>
             </div>
             <button type="button" class="past-dialog__close" data-close-past-dialog aria-label="Close">
               <span aria-hidden="true">×</span>
@@ -36,7 +41,7 @@ const past = events.filter((e) => e.status === "past");
           <div class="past-dialog__body">
             {
               slides.length > 0 && (
-                <div class="past-dialog__carousel" data-past-carousel>
+                <div class="past-dialog__gallery" data-past-carousel>
                   <div class="past-dialog__stage">
                     {slides.map((img, index) => (
                       <figure
@@ -54,53 +59,71 @@ const past = events.filter((e) => e.status === "past");
                       </figure>
                     ))}
                   </div>
-                  {slides.length > 1 && (
-                    <div class="past-dialog__controls">
-                      <button type="button" data-past-prev aria-label="Previous photo">
-                        ←
-                      </button>
-                      <div class="past-dialog__dots" role="tablist" aria-label="Photos">
-                        {slides.map((_, index) => (
-                          <button
-                            type="button"
-                            role="tab"
-                            data-past-dot={String(index)}
-                            aria-selected={index === 0 ? "true" : "false"}
-                            aria-label={`Show photo ${index + 1}`}
-                            class:list={{ "is-active": index === 0 }}
-                          />
-                        ))}
-                      </div>
-                      <button type="button" data-past-next aria-label="Next photo">
-                        →
-                      </button>
-                      <span class="past-dialog__count" data-past-count>
-                        1 / {slides.length}
-                      </span>
-                    </div>
-                  )}
+
+                  {
+                    slides.length > 1 && (
+                      <>
+                        <div class="past-dialog__controls">
+                          <button type="button" data-past-prev aria-label="Previous photo">
+                            ←
+                          </button>
+                          <div class="past-dialog__dots" role="tablist" aria-label="Photos">
+                            {slides.map((_, index) => (
+                              <button
+                                type="button"
+                                role="tab"
+                                data-past-dot={String(index)}
+                                aria-selected={index === 0 ? "true" : "false"}
+                                aria-label={`Show photo ${index + 1}`}
+                                class:list={{ "is-active": index === 0 }}
+                              />
+                            ))}
+                          </div>
+                          <button type="button" data-past-next aria-label="Next photo">
+                            →
+                          </button>
+                          <span class="past-dialog__count" data-past-count>
+                            1 / {slides.length}
+                          </span>
+                        </div>
+
+                        <div class="past-dialog__thumbs" aria-hidden="true">
+                          {slides.map((img, index) => (
+                            <button
+                              type="button"
+                              data-past-thumb={String(index)}
+                              class:list={{ "is-active": index === 0 }}
+                              tabindex="-1"
+                            >
+                              <img src={img.src} alt="" width="120" height="80" loading="lazy" />
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )
+                  }
                 </div>
               )
             }
 
-            <div class="past-dialog__content">
-              <p class="past-dialog__summary">{event.summary}</p>
-              {
-                program.length > 0 && (
-                  <div class="past-dialog__program">
-                    <h3>Session outline</h3>
-                    <ol>
-                      {program.map((item) => (
-                        <li>{item}</li>
-                      ))}
-                    </ol>
-                  </div>
-                )
-              }
-              <div class="past-dialog__actions">
-                <Button href={`/events/${event.slug}`}>Open full event page</Button>
-              </div>
-            </div>
+            {
+              orgs.length > 0 && (
+                <div class="past-dialog__orgs">
+                  <p class="past-dialog__section-label">Sponsors &amp; partners</p>
+                  <ul>
+                    {orgs.map((org) => (
+                      <li title={org.name}>
+                        {org.logo ? (
+                          <img src={org.logo} alt={org.name} width="88" height="40" loading="lazy" />
+                        ) : (
+                          <span class="past-dialog__org-fallback">{org.name}</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            }
           </div>
         </div>
       </dialog>
@@ -115,6 +138,7 @@ const past = events.filter((e) => e.status === "past");
       if (slides.length < 2) return;
 
       const dots = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-past-dot]"));
+      const thumbs = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-past-thumb]"));
       const countEl = root.querySelector<HTMLElement>("[data-past-count]");
       let index = 0;
 
@@ -128,6 +152,9 @@ const past = events.filter((e) => e.status === "past");
           dot.classList.toggle("is-active", active);
           dot.setAttribute("aria-selected", active ? "true" : "false");
         });
+        thumbs.forEach((thumb, i) => {
+          thumb.classList.toggle("is-active", i === index);
+        });
         if (countEl) countEl.textContent = `${index + 1} / ${slides.length}`;
       };
 
@@ -135,8 +162,12 @@ const past = events.filter((e) => e.status === "past");
       root.querySelector("[data-past-next]")?.addEventListener("click", () => show(index + 1));
       dots.forEach((dot) => {
         dot.addEventListener("click", () => {
-          const i = Number(dot.dataset.pastDot ?? 0);
-          show(i);
+          show(Number(dot.dataset.pastDot ?? 0));
+        });
+      });
+      thumbs.forEach((thumb) => {
+        thumb.addEventListener("click", () => {
+          show(Number(thumb.dataset.pastThumb ?? 0));
         });
       });
     });
@@ -172,108 +203,159 @@ const past = events.filter((e) => e.status === "past");
 
 <style is:global>
   .past-dialog {
-    width: min(52rem, calc(100vw - 1.25rem));
-    max-height: min(92vh, 46rem);
+    --dialog-accent: var(--blue);
+    --dialog-accent-soft: var(--green);
+    width: min(46rem, calc(100vw - 1.25rem));
+    max-height: min(90vh, 48rem);
     padding: 0;
     border: 0;
-    border-radius: 1.35rem;
+    border-radius: 1.5rem;
     background: transparent;
     overflow: hidden;
   }
 
   .past-dialog::backdrop {
     background:
-      radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--blue) 24%, transparent), transparent 42%),
-      color-mix(in srgb, var(--ink) 58%, transparent);
+      radial-gradient(circle at 20% 10%, color-mix(in srgb, var(--dialog-accent-soft) 28%, transparent), transparent 42%),
+      color-mix(in srgb, var(--ink) 62%, transparent);
     backdrop-filter: blur(4px);
   }
 
   .past-dialog__panel {
     display: flex;
     flex-direction: column;
-    max-height: min(92vh, 46rem);
-    background: var(--cream);
-    border-radius: 1.35rem;
+    max-height: min(90vh, 48rem);
+    background: color-mix(in srgb, var(--white) 55%, var(--cream));
+    border-radius: 1.5rem;
     overflow: hidden;
     box-shadow:
-      0 28px 70px color-mix(in srgb, #000 28%, transparent),
-      0 0 0 1px color-mix(in srgb, var(--white) 30%, transparent);
+      0 28px 70px color-mix(in srgb, #000 30%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--white) 35%, transparent);
+    animation: pastPop 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  .past-dialog__header {
+  @keyframes pastPop {
+    from {
+      opacity: 0;
+      transform: translateY(1.1rem) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .past-dialog__banner {
+    position: relative;
+    flex: 0 0 auto;
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    align-items: flex-start;
-    padding: 1.25rem 1.35rem 1.1rem;
-    background:
+    align-items: start;
+    padding: 1.25rem 1.35rem 1.2rem;
+    color: var(--white);
+    isolation: isolate;
+    overflow: hidden;
+    background-color: color-mix(in srgb, var(--ink) 62%, var(--dialog-accent));
+    background-image:
       linear-gradient(
-        135deg,
-        color-mix(in srgb, var(--blue) 14%, var(--cream)),
-        color-mix(in srgb, var(--white) 80%, var(--cream))
-      );
-    border-bottom: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+        145deg,
+        color-mix(in srgb, var(--ink) 86%, transparent),
+        color-mix(in srgb, var(--ink) 68%, transparent) 38%,
+        color-mix(in srgb, var(--ink) 55%, transparent) 62%,
+        color-mix(in srgb, var(--dialog-accent) 22%, transparent) 82%,
+        color-mix(in srgb, var(--ink) 58%, transparent)
+      ),
+      var(--past-cover, none);
+    background-size: cover;
+    background-position: center 40%;
+  }
+
+  .past-dialog__banner-copy {
+    min-width: 0;
+    max-width: 38rem;
   }
 
   .past-dialog__kicker {
     margin: 0 0 0.3rem;
-    color: var(--blue);
     font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0.9;
   }
 
-  .past-dialog__header h2 {
+  .past-dialog__banner h2 {
     margin: 0;
-    font-size: clamp(1.45rem, 3vw, 1.9rem);
-    line-height: 1.2;
-    max-width: 22ch;
+    font-size: clamp(1.55rem, 3vw, 2rem);
+    color: var(--white);
+    line-height: 1.15;
   }
 
   .past-dialog__meta {
     margin: 0.4rem 0 0;
-    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.45rem;
     font-size: 0.95rem;
     font-weight: 600;
+    opacity: 0.9;
+  }
+
+  .past-dialog__meta-sep {
+    opacity: 0.55;
+  }
+
+  .past-dialog__summary {
+    margin: 0.75rem 0 0;
+    max-width: 34rem;
+    font-size: 1.02rem;
+    line-height: 1.5;
+    opacity: 0.92;
   }
 
   .past-dialog__close {
-    flex-shrink: 0;
-    width: 2.45rem;
-    height: 2.45rem;
+    flex: 0 0 auto;
+    width: 2.4rem;
+    height: 2.4rem;
     border: 0;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--ink) 7%, white);
-    color: var(--ink);
-    font-size: 1.5rem;
+    background: color-mix(in srgb, var(--white) 18%, transparent);
+    color: var(--white);
+    font: inherit;
+    font-size: 1.45rem;
     line-height: 1;
     cursor: pointer;
+    transition: background 0.2s ease;
   }
 
   .past-dialog__close:hover {
-    background: color-mix(in srgb, var(--ink) 14%, white);
+    background: color-mix(in srgb, var(--white) 32%, transparent);
   }
 
   .past-dialog__body {
-    padding: 1.15rem 1.35rem 1.45rem;
-    overflow: auto;
     display: grid;
-    gap: 1.25rem;
+    gap: 1rem;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 1.1rem 1.2rem 1.25rem;
+    overflow: auto;
+    overscroll-behavior: contain;
   }
 
-  .past-dialog__carousel {
+  .past-dialog__gallery {
     display: grid;
-    gap: 0.75rem;
+    gap: 0.7rem;
+    width: 100%;
   }
 
   .past-dialog__stage {
     position: relative;
-    border-radius: var(--radius-lg);
+    width: 100%;
+    border-radius: 1rem;
     overflow: hidden;
     background: color-mix(in srgb, var(--ink) 88%, var(--blue));
-    aspect-ratio: 16 / 9;
-    max-height: 22rem;
+    aspect-ratio: 16 / 10;
   }
 
   .past-dialog__slide {
@@ -302,8 +384,8 @@ const past = events.filter((e) => e.status === "past");
     bottom: 0;
     display: grid;
     gap: 0.15rem;
-    padding: 1.1rem 1.15rem 1rem;
-    background: linear-gradient(transparent, color-mix(in srgb, var(--ink) 72%, transparent));
+    padding: 1.1rem 1.1rem 0.95rem;
+    background: linear-gradient(transparent, color-mix(in srgb, var(--ink) 78%, transparent));
     color: #fff;
   }
 
@@ -320,12 +402,13 @@ const past = events.filter((e) => e.status === "past");
   .past-dialog__controls {
     display: flex;
     align-items: center;
-    gap: 0.55rem;
-    flex-wrap: wrap;
+    gap: 0.5rem;
+    width: 100%;
   }
 
   .past-dialog__controls > button[data-past-prev],
   .past-dialog__controls > button[data-past-next] {
+    flex: 0 0 auto;
     width: 2.35rem;
     height: 2.35rem;
     border-radius: 999px;
@@ -344,13 +427,17 @@ const past = events.filter((e) => e.status === "past");
 
   .past-dialog__dots {
     display: flex;
-    gap: 0.35rem;
+    gap: 0.3rem;
     align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
   }
 
   .past-dialog__dots button {
-    width: 0.55rem;
-    height: 0.55rem;
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
     padding: 0;
     border: 0;
     border-radius: 999px;
@@ -359,11 +446,12 @@ const past = events.filter((e) => e.status === "past");
   }
 
   .past-dialog__dots button.is-active {
-    width: 1.1rem;
+    width: 1rem;
     background: var(--green);
   }
 
   .past-dialog__count {
+    flex: 0 0 auto;
     margin-left: auto;
     font-size: 0.8rem;
     font-weight: 600;
@@ -371,44 +459,107 @@ const past = events.filter((e) => e.status === "past");
     color: var(--muted);
   }
 
-  .past-dialog__content {
-    display: grid;
-    gap: 1rem;
+  .past-dialog__thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    width: 100%;
   }
 
-  .past-dialog__summary {
+  .past-dialog__thumbs button {
+    flex: 0 0 calc((100% - 1.6rem) / 5);
+    width: calc((100% - 1.6rem) / 5);
+    max-width: 5.25rem;
     margin: 0;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 0.55rem;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--ink) 8%, white);
+    cursor: pointer;
+    aspect-ratio: 4 / 3;
+  }
+
+  .past-dialog__thumbs button.is-active {
+    border-color: var(--green);
+  }
+
+  .past-dialog__thumbs img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .past-dialog__section-label {
+    margin: 0 0 0.55rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     color: var(--muted);
-    font-size: 1.02rem;
-    line-height: 1.55;
-    max-width: 42rem;
   }
 
-  .past-dialog__program h3 {
-    margin: 0 0 0.65rem;
-    font-size: 0.95rem;
-  }
-
-  .past-dialog__program ol {
+  .past-dialog__orgs ul {
+    list-style: none;
     margin: 0;
-    padding-left: 1.15rem;
-    display: grid;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.45rem;
-    color: var(--muted);
-    font-size: 0.95rem;
   }
 
-  .past-dialog__actions {
-    margin-top: 0.25rem;
+  .past-dialog__orgs li {
+    display: grid;
+    place-items: center;
+    width: 5.5rem;
+    height: 2.75rem;
+    padding: 0.35rem 0.45rem;
+    border-radius: 0.65rem;
+    background: color-mix(in srgb, var(--white) 78%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
+  }
+
+  .past-dialog__orgs img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .past-dialog__org-fallback {
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--blue-strong);
   }
 
   @media (max-width: 640px) {
-    .past-dialog__stage {
-      aspect-ratio: 4 / 3;
-      max-height: none;
+    .past-dialog {
+      width: calc(100vw - 0.85rem);
+      border-radius: 1.15rem;
     }
 
-    .past-dialog__header h2 {
+    .past-dialog__panel {
+      border-radius: 1.15rem;
+      max-height: min(94vh, 52rem);
+    }
+
+    .past-dialog__banner {
+      padding: 1.05rem 1rem 1.1rem;
+    }
+
+    .past-dialog__body {
+      padding: 0.95rem 1rem 1.1rem;
+    }
+
+    .past-dialog__stage {
+      aspect-ratio: 4 / 3;
+    }
+
+    .past-dialog__thumbs button {
+      flex-basis: calc((100% - 1.2rem) / 4);
+      width: calc((100% - 1.2rem) / 4);
       max-width: none;
     }
   }

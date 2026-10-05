@@ -7,6 +7,8 @@ interface Props {
   idPrefix?: string;
   /** compact = home teaser; full = event page hero schedule */
   size?: "compact" | "full";
+  /** horizontal = day track; vertical = stacked list; grid = all cards in a wrap */
+  layout?: "horizontal" | "vertical" | "grid";
   /** Hide deep detail (topics/long notes) — useful on home. */
   brief?: boolean;
   /** When false, only the track shows (home teaser). */
@@ -17,69 +19,146 @@ const {
   sessions,
   idPrefix = "sched",
   size = "full",
+  layout = "horizontal",
   brief = false,
   showDetail = true,
 } = Astro.props;
 const firstId = sessions[0]?.id ?? "";
+const isExpandable = layout === "vertical" || layout === "grid";
 ---
 
 {
   sessions.length > 0 && (
     <div
-      class:list={["schedule", `schedule--${size}`, { "schedule--track-only": !showDetail }]}
+      class:list={[
+        "schedule",
+        `schedule--${size}`,
+        `schedule--${layout}`,
+        { "schedule--track-only": !showDetail },
+      ]}
       data-schedule
       data-schedule-id={idPrefix}
+      data-schedule-layout={layout}
     >
       <p class="schedule__hint">
-        {showDetail
-          ? "Drag sideways to browse · Select a session for details"
-          : "Drag sideways for a day-at-a-glance preview"}
+        {isExpandable
+          ? showDetail
+            ? "Tap a session to expand speakers and notes"
+            : "Day at a glance"
+          : showDetail
+            ? "Drag sideways to browse · Select a session for details"
+            : "Drag sideways for a day-at-a-glance preview"}
       </p>
-      <div class="schedule__scrollbox">
-        <div
-          class="schedule__scrollbar"
-          data-schedule-scrollbar
-          role="scrollbar"
-          aria-controls={`${idPrefix}-track`}
-          aria-orientation="horizontal"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={0}
-        >
-          <div class="schedule__scrollbar-thumb" data-schedule-thumb />
-        </div>
-        <div class="schedule__track-shell">
-          <div class="schedule__track-wrap" data-schedule-track id={`${idPrefix}-track`}>
-            <div
-              class="schedule__track"
-              role="group"
-              aria-label={showDetail ? "Program sessions" : "Day-at-a-glance sessions"}
-            >
-              <div class="schedule__line" aria-hidden="true" />
-              {sessions.map((session, index) => (
-                <button
-                  type="button"
-                  class:list={["schedule__stop", { "is-active": index === 0 }]}
+
+      {
+        isExpandable ? (
+          <div class="schedule__stack" role="list" aria-label="Program sessions">
+            {sessions.map((session, index) => {
+              const open = showDetail && index === 0;
+              return (
+                <div
+                  class:list={["schedule__stop", { "is-active": open }]}
                   data-schedule-stop
                   data-session-id={session.id}
-                  aria-pressed={index === 0 ? "true" : "false"}
-                  aria-controls={showDetail ? `${idPrefix}-detail` : undefined}
+                  role="listitem"
                 >
-                  <span class="schedule__dot" aria-hidden="true" />
-                  <span class="schedule__time">{session.time}</span>
-                  <span class="schedule__card">
-                    <span class="schedule__title">{session.title}</span>
-                    <span class="schedule__blurb">{session.blurb}</span>
-                  </span>
-                </button>
-              ))}
+                  <button
+                    type="button"
+                    class="schedule__stop-toggle"
+                    data-schedule-toggle
+                    aria-expanded={open ? "true" : "false"}
+                    aria-controls={showDetail ? `${idPrefix}-expand-${session.id}` : undefined}
+                  >
+                    <span class="schedule__time">{session.time}</span>
+                    <span class="schedule__card">
+                      <span class="schedule__title">{session.title}</span>
+                      <span class="schedule__blurb">{session.blurb}</span>
+                    </span>
+                  </button>
+                  {
+                    showDetail && (
+                      <div
+                        class="schedule__stop-expand"
+                        id={`${idPrefix}-expand-${session.id}`}
+                        data-session-expand
+                        hidden={!open}
+                      >
+                        {session.leads && <p class="schedule__panel-leads">{session.leads}</p>}
+                        {!brief && session.detail && (
+                          <p class="schedule__panel-detail">{session.detail}</p>
+                        )}
+                        {!brief && session.link && (
+                          <p class="schedule__panel-link">
+                            <a href={session.link.href} target="_blank" rel="noopener noreferrer">
+                              {session.link.label} ↗
+                            </a>
+                          </p>
+                        )}
+                        {!brief && session.topics && session.topics.length > 0 && (
+                          <div class="schedule__topics">
+                            <p class="schedule__topics-label">Proposed table topics</p>
+                            <ul>
+                              {session.topics.map((topic) => (
+                                <li>{topic}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  }
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="schedule__scrollbox">
+            <div
+              class="schedule__scrollbar"
+              data-schedule-scrollbar
+              role="scrollbar"
+              aria-controls={`${idPrefix}-track`}
+              aria-orientation="horizontal"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={0}
+            >
+              <div class="schedule__scrollbar-thumb" data-schedule-thumb />
+            </div>
+            <div class="schedule__track-shell">
+              <div class="schedule__track-wrap" data-schedule-track id={`${idPrefix}-track`}>
+                <div
+                  class="schedule__track"
+                  role="group"
+                  aria-label={showDetail ? "Program sessions" : "Day-at-a-glance sessions"}
+                >
+                  <div class="schedule__line" aria-hidden="true" />
+                  {sessions.map((session, index) => (
+                    <button
+                      type="button"
+                      class:list={["schedule__stop", { "is-active": index === 0 }]}
+                      data-schedule-stop
+                      data-session-id={session.id}
+                      aria-pressed={index === 0 ? "true" : "false"}
+                      aria-controls={showDetail ? `${idPrefix}-detail` : undefined}
+                    >
+                      <span class="schedule__dot" aria-hidden="true" />
+                      <span class="schedule__time">{session.time}</span>
+                      <span class="schedule__card">
+                        <span class="schedule__title">{session.title}</span>
+                        <span class="schedule__blurb">{session.blurb}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div class="schedule__fade" aria-hidden="true" />
             </div>
           </div>
-          <div class="schedule__fade" aria-hidden="true" />
-        </div>
-      </div>
+        )
+      }
 
-      {showDetail && (
+      {showDetail && !isExpandable && (
         <div class="schedule__detail-wrap">
           <div class="schedule__caret" data-schedule-caret aria-hidden="true" />
           <div
@@ -357,13 +436,15 @@ const firstId = sessions[0]?.id ?? "";
   }
 
   function setupSchedule(root: HTMLElement) {
-    const stops = root.querySelectorAll<HTMLButtonElement>("[data-schedule-stop]");
+    const stops = root.querySelectorAll<HTMLElement>("[data-schedule-stop]");
     const panels = root.querySelectorAll<HTMLElement>("[data-session-panel]");
     const detailWrap = root.querySelector<HTMLElement>(".schedule__detail-wrap");
     const caret = root.querySelector<HTMLElement>("[data-schedule-caret]");
     const trackWrap = root.querySelector<HTMLElement>("[data-schedule-track]");
     const scrollbar = root.querySelector<HTMLElement>("[data-schedule-scrollbar]");
     const thumb = root.querySelector<HTMLElement>("[data-schedule-thumb]");
+    const isExpandable =
+      root.dataset.scheduleLayout === "vertical" || root.dataset.scheduleLayout === "grid";
     let caretRaf = 0;
 
     function syncCaret() {
@@ -407,7 +488,17 @@ const firstId = sessions[0]?.id ?? "";
       stops.forEach((stop) => {
         const on = stop.dataset.sessionId === id;
         stop.classList.toggle("is-active", on);
-        stop.setAttribute("aria-pressed", on ? "true" : "false");
+
+        const toggle = stop.querySelector<HTMLButtonElement>("[data-schedule-toggle]");
+        if (toggle) {
+          toggle.setAttribute("aria-expanded", on ? "true" : "false");
+        } else {
+          stop.setAttribute("aria-pressed", on ? "true" : "false");
+        }
+
+        const expand = stop.querySelector<HTMLElement>("[data-session-expand]");
+        if (expand) expand.hidden = !on;
+
         if (on && trackWrap) {
           const wrapRect = trackWrap.getBoundingClientRect();
           const stopRect = stop.getBoundingClientRect();
@@ -415,6 +506,10 @@ const firstId = sessions[0]?.id ?? "";
           if (stopRect.left < wrapRect.left + pad || stopRect.right > wrapRect.right - pad) {
             stop.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "nearest" });
           }
+        }
+
+        if (on && isExpandable) {
+          stop.scrollIntoView({ behavior: "smooth", block: "nearest" });
         }
       });
       if (panels.length) {
@@ -426,9 +521,20 @@ const firstId = sessions[0]?.id ?? "";
     }
 
     stops.forEach((stop) => {
-      stop.addEventListener("click", () => {
+      const toggle = stop.querySelector<HTMLButtonElement>("[data-schedule-toggle]");
+      const target = toggle ?? stop;
+      target.addEventListener("click", () => {
         const id = stop.dataset.sessionId;
-        if (id) activate(id);
+        if (!id) return;
+        // Expandable layouts: tap active again to collapse
+        if (isExpandable && stop.classList.contains("is-active")) {
+          stop.classList.remove("is-active");
+          toggle?.setAttribute("aria-expanded", "false");
+          const expand = stop.querySelector<HTMLElement>("[data-session-expand]");
+          if (expand) expand.hidden = true;
+          return;
+        }
+        activate(id);
       });
     });
 
@@ -924,6 +1030,187 @@ const firstId = sessions[0]?.id ?? "";
     padding-bottom: 0.1rem;
   }
 
+
+  /* —— Vertical (home condensed) —— */
+  .schedule--vertical .schedule__stack, .schedule--grid .schedule__stack {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .schedule--vertical .schedule__stop, .schedule--grid .schedule__stop {
+    display: grid;
+    gap: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+    border-left: 3px solid color-mix(in srgb, var(--green) 35%, transparent);
+    border-radius: 0.85rem;
+    background: color-mix(in srgb, var(--white) 88%, var(--cream));
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 5%, transparent);
+    overflow: hidden;
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .schedule--vertical .schedule__stop-toggle, .schedule--grid .schedule__stop-toggle {
+    display: grid;
+    grid-template-columns: 7.25rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: start;
+    width: 100%;
+    margin: 0;
+    padding: 0.75rem 0.95rem;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+  }
+
+  .schedule--vertical .schedule__stop:hover, .schedule--grid .schedule__stop:hover,
+  .schedule--vertical .schedule__stop:focus-within, .schedule--grid .schedule__stop:focus-within {
+    border-color: color-mix(in srgb, var(--green) 40%, transparent);
+    border-left-color: var(--green);
+    background: var(--white);
+  }
+
+  .schedule--vertical .schedule__stop-toggle:focus-visible, .schedule--grid .schedule__stop-toggle:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: -2px;
+  }
+
+  .schedule--vertical .schedule__stop.is-active, .schedule--grid .schedule__stop.is-active {
+    border-color: color-mix(in srgb, var(--green) 45%, transparent);
+    border-left: 4px solid var(--green-strong);
+    background: color-mix(in srgb, var(--green-light) 42%, white);
+    box-shadow:
+      0 2px 4px color-mix(in srgb, var(--green) 10%, transparent),
+      0 8px 18px color-mix(in srgb, var(--ink) 7%, transparent);
+  }
+
+  .schedule--vertical .schedule__time, .schedule--grid .schedule__time {
+    margin: 0.15rem 0 0;
+    padding: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    color: var(--blue-strong);
+  }
+
+  .schedule--vertical .schedule__card, .schedule--grid .schedule__card {
+    display: grid;
+    gap: 0.2rem;
+    width: auto;
+    padding: 0;
+    border: 0;
+    border-left: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  /* Kill horizontal timeline card chrome inside vertical rows */
+  .schedule--vertical .schedule__stop:hover .schedule__card, .schedule--grid .schedule__stop:hover .schedule__card,
+  .schedule--vertical .schedule__stop.is-active .schedule__card, .schedule--grid .schedule__stop.is-active .schedule__card {
+    border: 0;
+    border-left: 0;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .schedule--vertical .schedule__title, .schedule--grid .schedule__title {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .schedule--vertical .schedule__blurb, .schedule--grid .schedule__blurb {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .schedule--vertical .schedule__stop-expand, .schedule--grid .schedule__stop-expand {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0 0.95rem 0.9rem 0.95rem;
+    border-top: 1px solid color-mix(in srgb, var(--green) 18%, transparent);
+    margin: 0 0.15rem;
+  }
+
+  .schedule--vertical .schedule__stop-expand[hidden], .schedule--grid .schedule__stop-expand[hidden] {
+    display: none;
+  }
+
+  .schedule--vertical .schedule__stop-expand .schedule__panel-leads, .schedule--grid .schedule__stop-expand .schedule__panel-leads {
+    margin: 0.65rem 0 0;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .schedule--vertical .schedule__stop-expand .schedule__panel-detail, .schedule--grid .schedule__stop-expand .schedule__panel-detail {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  .schedule--vertical .schedule__stop-expand .schedule__panel-link, .schedule--grid .schedule__stop-expand .schedule__panel-link {
+    margin: 0;
+  }
+
+  .schedule--vertical .schedule__detail-wrap, .schedule--grid .schedule__detail-wrap {
+    display: none;
+  }
+
+  .schedule--vertical.schedule--compact .schedule__stop, .schedule--grid.schedule--compact .schedule__stop {
+    width: 100%;
+  }
+
+  .schedule--vertical.schedule--compact .schedule__stop-toggle, .schedule--grid.schedule--compact .schedule__stop-toggle {
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    padding: 0.7rem 0.85rem;
+  }
+
+  .schedule--vertical.schedule--compact .schedule__title, .schedule--grid.schedule--compact .schedule__title {
+    font-size: 0.92rem;
+  }
+
+  .schedule--vertical.schedule--compact .schedule__blurb, .schedule--grid.schedule--compact .schedule__blurb {
+    font-size: 0.75rem;
+  }
+
+  .schedule--vertical.schedule--compact .schedule__stop-expand, .schedule--grid.schedule--compact .schedule__stop-expand {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+  }
+
+  @media (max-width: 640px) {
+    .schedule--vertical .schedule__stop-toggle, .schedule--grid .schedule__stop-toggle,
+    .schedule--vertical.schedule--compact .schedule__stop-toggle, .schedule--grid.schedule--compact .schedule__stop-toggle {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+
+    .schedule--vertical .schedule__time, .schedule--grid .schedule__time {
+      margin: 0;
+    }
+  }
+
   @media (max-width: 640px) {
     .schedule__scrollbox {
       border-radius: calc(var(--radius-lg) - 0.25rem);
@@ -950,4 +1237,33 @@ const firstId = sessions[0]?.id ?? "";
       width: 10.5rem;
     }
   }
+
+  .schedule--grid .schedule__stack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .schedule--grid .schedule__stop-toggle {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .schedule--grid .schedule__time {
+    margin: 0;
+  }
+
+  .schedule--grid.schedule--full .schedule__title {
+    font-size: 1.05rem;
+  }
+
+  .schedule--grid.schedule--full .schedule__blurb {
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 720px) {
+    .schedule--grid .schedule__stack {
+      grid-template-columns: 1fr;
+    }
+  }
+
 </style>

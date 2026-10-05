@@ -21,7 +21,7 @@ export const institutionsIntro = {
   eyebrow: "WNC AI Integration Survey",
   title: "What schools are doing with AI",
   description:
-    "Campus snapshots from the 2026 WNC Educator Survey—how each institution is experimenting, where support lags, and what faculty are trying in practice.",
+    "Campus snapshots from the 2026 WNC Educator Survey—policy experiments, faculty support gaps, and tools already in classrooms. Browse below or download a printable summary.",
   credit: "Survey summaries by Leigha Travis",
 };
 
@@ -38,7 +38,7 @@ const institutionsRaw: Institution[] = [
   {
     id: "abtech",
     name: "Asheville-Buncombe Technical Community College",
-    shortName: "ABTech",
+    shortName: "A-B Tech",
     kind: "community-college",
     stance: "Experimenting widely",
     lead: "Actively trying AI across disciplines while still sorting policy, ethics, funding, and faculty readiness.",

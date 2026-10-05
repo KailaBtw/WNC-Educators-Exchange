@@ -18,12 +18,12 @@ export const schoolsIntro = {
 export const schoolPractices: SchoolPractice[] = [
   {
     id: "abtech-ryg",
-    institution: "ABTech",
+    institution: "A-B Tech",
     title: "Red / Yellow / Green AI policy on assignments",
     summary:
       "Red: no use allowed. Yellow: with supervision. Green: all uses allowed.",
     detail: [
-      "ABTech’s AI use policy uses a red, yellow, green system on assignments so faculty and students share one vocabulary for what is permitted.",
+      "A-B Tech’s AI use policy uses a red, yellow, green system on assignments so faculty and students share one vocabulary for what is permitted.",
       "Transparency sits alongside it: syllabus statements and student self-identification of AI use. Detection tools alone produce false positives and do not teach judgment.",
     ],
     tags: ["Policy", "Transparency"],

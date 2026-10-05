@@ -44,7 +44,7 @@ const past = events.filter((e) => e.status === "past");
                   sessions={upcoming.sessions}
                   idPrefix="home-nov"
                   size="compact"
-                  brief
+                  layout="vertical"
                   showDetail
                 />
               </div>
@@ -52,7 +52,7 @@ const past = events.filter((e) => e.status === "past");
           }
 
           <footer class="events-home__actions">
-            <Button href={`/events/${upcoming.slug}`}>Full schedule & details</Button>
+            <Button href={`/events/${upcoming.slug}`}>Full Event Details</Button>
             {
               upcoming.registerUrl && (
                 <Button href={upcoming.registerUrl} variant="secondary" external>

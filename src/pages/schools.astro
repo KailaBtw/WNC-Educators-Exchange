@@ -1,8 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
+import Button from "../components/ui/Button.astro";
 import ContactCta from "../components/layout/ContactCta.astro";
 import { institutions, institutionsIntro, institutionFilters } from "../content/institutions";
+import { site } from "../content/site";
+import { routes } from "../config/site";
 ---
 
 <BaseLayout
@@ -18,6 +21,14 @@ import { institutions, institutionsIntro, institutionFilters } from "../content/
       >
         <p>{institutionsIntro.description}</p>
         <p class="schools-credit">{institutionsIntro.credit}</p>
+        <div class="schools-actions">
+          {
+            site.campusesDoingUrl ? (
+              <Button href={site.campusesDoingUrl}>Download campus summary (PDF)</Button>
+            ) : null
+          }
+          <Button href={routes.issues} variant="secondary">Top 10 Issues</Button>
+        </div>
       </SectionHeader>
 
       <div class="schools-filters" role="toolbar" aria-label="Filter campuses">
@@ -160,6 +171,14 @@ import { institutions, institutionsIntro, institutionFilters } from "../content/
     color: var(--purple);
     font-weight: 600;
     font-size: 0.95rem;
+  }
+
+  .schools-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
+    margin-top: 1.1rem;
   }
 
   .schools-filters {

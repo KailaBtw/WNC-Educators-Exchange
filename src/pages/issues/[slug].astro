@@ -37,12 +37,18 @@ const next = issues[idx + 1];
       <div class="issue-page__actions">
         {
           site.fullReportUrl ? (
-            <Button href={site.fullReportUrl} external>
-              Read full analysis (PDF)
-            </Button>
+            <Button href={site.fullReportUrl}>Download full analysis (PDF)</Button>
           ) : null
         }
-        <Button href={routes.issues} variant={site.fullReportUrl ? "secondary" : "primary"}>
+        {
+          site.shortReportUrl ? (
+            <Button href={site.shortReportUrl} variant="secondary">Download short overview (PDF)</Button>
+          ) : null
+        }
+        <Button
+          href={routes.issues}
+          variant={site.fullReportUrl || site.shortReportUrl ? "secondary" : "primary"}
+        >
           All issues
         </Button>
       </div>

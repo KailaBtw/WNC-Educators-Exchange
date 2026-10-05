@@ -38,7 +38,7 @@ export const issues: Issue[] = [
   {
     number: 2,
     slug: "guidance-over-prohibition",
-    title: "Create an Open Dialog",
+    title: "Create an Open Dialogue",
     category: "classroom",
     shortBlurb:
       "Many students already use AI, so teach good judgment skills and proper use instead of bans.",
@@ -55,8 +55,8 @@ export const issues: Issue[] = [
     shortBlurb:
       "AI changes faster than policy can, so treat your guidelines as a living document.",
     body: [
-      "65% of WNC educators say their policy is behind or absent. The cause is structural: technology changes way faster than policy can keep up. The best schools treat policy as a living document and get input from front-line educators on which way to move.",
-      "Shared frameworks like ABTech’s red/yellow/green system give everyone a common vocabulary that is simple enough to revise when conditions change.",
+      "65% of WNC educators say their policy is behind or absent. The cause is structural: technology changes far faster than policy can keep up. The best schools treat policy as a living document and get input from front-line educators on which way to move.",
+      "Shared frameworks like A-B Tech’s red/yellow/green system give everyone a common vocabulary that is simple enough to revise when conditions change.",
     ],
   },
   {

@@ -1,4 +1,4 @@
-import { site, surveyAttribution } from "./site";
+import { site } from "./site";
 import { routes } from "../config/site";
 
 export type ResourceItem = {
@@ -19,10 +19,10 @@ export type ResourceGroup = {
 };
 
 export const resourcesIntro = {
-  eyebrow: "Library",
+  eyebrow: "Tools & guidance",
   title: "Resources",
   description:
-    "One place for faculty, students, and campus leads. Live Exchange pages and courses first; PDFs and shared folders appear here when partners clear them for public share.",
+    "A short list of places educators already use for course materials, captions, and AI literacy. Check what your campus has licensed before relying on any one tool.",
 };
 
 /** Featured band under the hero — primary next step for most visitors. */
@@ -36,127 +36,90 @@ export const resourcesFeatured = {
   secondary: { href: routes.november, label: "View the program →" },
 };
 
-function gated(
-  href: string | undefined,
-  live: Omit<ResourceItem, "href" | "comingSoon"> & { external?: boolean },
-  soonBlurb: string,
-): ResourceItem {
-  if (href) {
-    return { ...live, href, external: live.external ?? true };
-  }
-  return {
-    label: live.label,
-    blurb: soonBlurb,
-    comingSoon: true,
-  };
-}
-
 export const resourceGroups: ResourceGroup[] = [
   {
-    id: "faculty",
-    title: "Faculty",
-    eyebrow: "Teaching & recognition",
-    lede: "Survey findings, campus practice, award profiles, and AI professional development.",
+    id: "tools",
+    title: "Classroom tools",
+    eyebrow: "Materials first",
+    lede: "Tools that work from sources you provide—or from structured faculty PD—rather than open-ended chat.",
     accent: "purple",
     items: [
       {
-        label: "Top 10 A.I. Issues Facing WNC Educators",
-        href: routes.issues,
-        blurb: `Findings from the ${surveyAttribution.name} and regional summits.`,
+        label: "Google NotebookLM",
+        href: "https://notebooklm.google",
+        blurb:
+          "Upload readings or notes and ask questions grounded in those files. Useful for study guides; still verify citations yourself.",
+        external: true,
       },
       {
-        label: "What schools are doing with AI",
-        href: routes.schools,
-        blurb: "Campus practice cards from the 2026 survey writeups.",
-      },
-      {
-        label: "2026 A.I. Innovation in Education Award Winners",
-        href: routes.awards,
-        blurb: "2026 BrAIn Hub Educator Award winners and profiles.",
+        label: "NotebookLM for Education",
+        href: "https://edu.google.com/intl/ALL_us/ai-gemini-notebook/",
+        blurb:
+          "Google’s education overview for NotebookLM / Gemini Notebook, including Workspace for Education access paths.",
+        external: true,
       },
       {
         label: "ACAWEB AI professional development",
         href: site.acawebCourseUrl,
-        blurb: "AI-PD courses and resources for educators.",
+        blurb: "Regional AI-PD courses for educators (ACAWEB).",
         external: true,
       },
-      gated(
-        site.fullReportUrl || undefined,
-        {
-          label: "Top 10 full written analysis (PDF)",
-          blurb: "Downloadable long-form analysis of the ten issues.",
-        },
-        "Cleared for public share when authors release it.",
-      ),
-      gated(
-        site.awardsDriveUrl || undefined,
-        {
-          label: "Awards materials folder",
-          blurb: "Shared folder for award packets and related files.",
-        },
-        "Drive link when Bill publishes a public folder.",
-      ),
     ],
   },
   {
-    id: "students",
-    title: "Students",
-    eyebrow: "Projects & program",
-    lede: "Community AI projects with faculty mentors, plus the November contest slot and critical-thinking framing from the Top 10.",
+    id: "access",
+    title: "Captions & transcripts",
+    eyebrow: "Access",
+    lede: "For class recordings and live sessions—helps teachers review, and helps students who are Deaf, hard of hearing, or need text to process speech.",
     accent: "blue",
     items: [
       {
-        label: "Faculty & student community contest",
-        href: `${routes.awards}#upcoming`,
-        blurb: "Working title—teachers and students teaming on community AI projects.",
-      },
-      {
-        label: "November 13 Exchange program",
-        href: routes.november,
-        blurb: "Mars Hill University · full day schedule, including the contest slot.",
-      },
-      {
-        label: "Critical thinking before tools",
-        href: `${routes.issues}/critical-thinking`,
-        blurb: "How the Top 10 frames AI as a teaching assistant—not a substitute for student thinking.",
-      },
-      gated(
-        site.contestGuideUrl || undefined,
-        {
-          label: "Contest guidelines (PDF)",
-          blurb: "How to enter, timelines, and criteria.",
-        },
-        "Official packet after Steven Young and sponsors confirm details.",
-      ),
-    ],
-  },
-  {
-    id: "leads",
-    title: "Educators & leads",
-    eyebrow: "Bring a campus",
-    lede: "Registration, events archive, Brainhub framing, and how to reach the team.",
-    accent: "green",
-    items: [
-      {
-        label: "Register for Nov 13",
-        href: site.registerUrl,
-        blurb: "Novera registration for the Educators’ Exchange.",
+        label: "Otter.ai for Education",
+        href: "https://otter.ai/education",
+        blurb:
+          "Live captions and searchable notes for lectures or meetings. Confirm privacy and recording rules with your campus before use.",
         external: true,
       },
       {
-        label: "All events",
-        href: routes.events,
-        blurb: "Upcoming Exchange and past Brainhub / January gatherings.",
+        label: "Google Live Transcribe",
+        href: "https://support.google.com/accessibility/android/answer/9158064",
+        blurb:
+          "Free Android live captions from the device mic. Simple for in-person classes; accuracy depends on clear audio.",
+        external: true,
       },
       {
-        label: "About the Exchange",
-        href: routes.about,
-        blurb: "Brainhub, Land of Sky, survey source, and summit committee.",
+        label: "Windows Live Captions",
+        href: "https://support.microsoft.com/windows/use-live-captions-to-better-understand-audio-dd387379-ef91-83c4-e53c-9c8fb16f24db",
+        blurb:
+          "Built-in Windows captions for system audio. No extra account; still not a substitute for formal CART when required.",
+        external: true,
+      },
+    ],
+  },
+  {
+    id: "frameworks",
+    title: "Literacy & guidance",
+    eyebrow: "Frameworks",
+    lede: "Public frameworks for teaching with and about AI—useful when drafting syllabus language or campus guidance.",
+    accent: "green",
+    items: [
+      {
+        label: "UNESCO AI competency framework for teachers",
+        href: "https://www.unesco.org/en/articles/ai-competency-framework-teachers",
+        blurb: "Competencies and progression levels for educators using AI in teaching.",
+        external: true,
       },
       {
-        label: "Contact",
-        href: routes.contact,
-        blurb: `Reach the team at ${site.contactEmail}.`,
+        label: "UNESCO AI competency framework for students",
+        href: "https://www.unesco.org/en/articles/ai-competency-framework-students",
+        blurb: "Student-facing competencies for ethical and practical AI literacy.",
+        external: true,
+      },
+      {
+        label: "TeachAI guidance toolkit",
+        href: "https://www.teachai.org/toolkit",
+        blurb: "Policy and guidance templates for schools building responsible-use practices.",
+        external: true,
       },
     ],
   },

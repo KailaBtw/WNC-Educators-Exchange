@@ -28,6 +28,8 @@ export type EventItem = {
   location?: string;
   registerUrl?: string;
   images: { src: string; alt: string; caption?: string; subtitle?: string }[];
+  /** Optional modal / hero banner override (defaults to first gallery image). */
+  bannerSrc?: string;
   /** Simple bullet program (past events / fallback). */
   program?: string[];
   /** Structured schedule for interactive timeline. */
@@ -102,7 +104,7 @@ const eventsRaw: EventItem[] = [
       {
         id: "issues-context",
         time: "10:00 – 10:20 am",
-        title: "Issues in AI and Education in Context in Western NC",
+        title: "Issues in AI and Education: The Western North Carolina Context",
         blurb: "Survey snapshot and regional context",
         leads: "Jonathan Wade",
         detail:
@@ -150,7 +152,7 @@ const eventsRaw: EventItem[] = [
       {
         id: "bring-together",
         time: "1:50 – 2:20 pm",
-        title: "Bringing together the Day",
+        title: "Bringing Together the Day",
         blurb: "Synthesis of what we heard",
         leads: "Jonathan Wade",
       },
@@ -165,7 +167,7 @@ const eventsRaw: EventItem[] = [
       {
         id: "wrap",
         time: "2:40 – 3:00 pm",
-        title: "Wrap Up and Next Steps",
+        title: "Wrap-Up and Next Steps",
         blurb: "Closing and what comes next",
         leads: "Bill Sederburg",
       },
@@ -178,7 +180,7 @@ const eventsRaw: EventItem[] = [
     dateLabel: "June 2026",
     status: "past",
     summary:
-      "A large June gathering in Asheville: AI in the classroom, workforce pathways, and educators working across campuses.",
+      "WNC educators packed an Asheville floor to share classroom AI practice, workforce pathways, and what campuses were trying next.",
     location: "Asheville",
     images: [
       {
@@ -250,8 +252,9 @@ const eventsRaw: EventItem[] = [
     dateLabel: "January 23, 2026",
     status: "past",
     summary:
-      "The January summit. What people said there, along with the survey, became the Top 10 Issues.",
+      "Campus leads compared survey findings and classroom practice—the conversations that became the Top 10 Issues.",
     participatingOrgs: januarySponsorOrgs,
+    bannerSrc: "/images/events/archive/jan-11.jpg",
     images: [
       {
         src: "/images/events/archive/jan-01.jpg",
@@ -313,6 +316,7 @@ const eventsRaw: EventItem[] = [
 
 export const events: EventItem[] = eventsRaw.map((event) => ({
   ...event,
+  bannerSrc: event.bannerSrc ? withBase(event.bannerSrc) : undefined,
   images: event.images.map((img) => ({ ...img, src: withBase(img.src) })),
   participatingOrgs: event.participatingOrgs?.map((org) => ({
     ...org,

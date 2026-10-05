@@ -11,8 +11,10 @@ export const site = {
     "Findings from the 2026 WNC Educator Survey and regional summits: ten issues facing educators, campus practices in motion, and the November 13 Educators’ Exchange at Mars Hill University.",
   contactEmail: "wsederburg@gmail.com",
   registerUrl: "https://novera.events/events/wnc-educators-exchange26",
-  /** Set when the public PDF is cleared; empty = hide “full report” CTAs. */
-  fullReportUrl: "",
+  /** Local report PDFs under public/files/reports/. */
+  fullReportUrl: "/files/reports/top-10-issues-full.pdf",
+  shortReportUrl: "/files/reports/top-10-issues-short.pdf",
+  /** Optional campus-practice PDF — leave empty until partners clear one. */
   campusesDoingUrl: "",
   educatorProjectsUrl: "",
   awardsDriveUrl: "",

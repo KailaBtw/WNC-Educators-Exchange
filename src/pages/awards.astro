@@ -90,7 +90,11 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
               style={`--accent: ${index % 3 === 0 ? "var(--purple)" : index % 3 === 1 ? "var(--blue)" : "var(--green)"}`}
             >
               <a class="award-card__media" href={withBase(awardProfilePath(person.id))}>
-                <img src={person.image} alt={person.imageAlt} />
+                <img
+                  src={person.image}
+                  alt={person.imageAlt}
+                  style={person.imagePosition ? `object-position: ${person.imagePosition}` : undefined}
+                />
                 <span class="award-card__year">{person.year}</span>
               </a>
               <div class="award-card__body">
@@ -286,7 +290,8 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
   .awards-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(0.85rem, 2vw, 1.25rem);
+    gap: clamp(0.75rem, 1.8vw, 1.1rem);
+    max-width: 52rem;
   }
 
   .award-card {
@@ -308,7 +313,7 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
   .award-card__media {
     position: relative;
     display: block;
-    aspect-ratio: 16 / 11;
+    aspect-ratio: 5 / 4;
     overflow: hidden;
     background: color-mix(in srgb, var(--green-light) 30%, white);
   }
@@ -317,12 +322,12 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center 40%;
     transition: transform 0.35s ease;
   }
 
   .award-card:hover .award-card__media img {
-    transform: scale(1.03);
+    transform: scale(1.015);
   }
 
   .award-card__year {
@@ -341,8 +346,8 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
   .award-card__body {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
-    padding: 0.85rem 0.95rem 1rem;
+    gap: 0.25rem;
+    padding: 0.7rem 0.8rem 0.85rem;
   }
 
   .award-card__stance {
@@ -355,7 +360,7 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
 
   .award-card h2 {
     margin: 0;
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     line-height: 1.2;
   }
 
@@ -441,7 +446,11 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
     }
 
     .award-card__media {
-      aspect-ratio: 16 / 10;
+      aspect-ratio: 5 / 4;
+    }
+
+    .awards-grid {
+      max-width: none;
     }
 
     .awards-upcoming__actions {

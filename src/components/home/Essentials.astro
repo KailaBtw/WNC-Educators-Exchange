@@ -20,12 +20,12 @@ const practicePreview = schoolPractices.slice(0, 3);
         aria-label="Open Top 10 A.I. Issues Facing WNC Educators"
       ></button>
       <div class="unify-card__body">
-        <p class="unify-card__eyebrow">Survey report</p>
-        <h2>
+        <h2 class="unify-card__eyebrow">Survey report</h2>
+        <p class="unify-card__title">
           <button type="button" class="unify-card__title-btn" data-open-modal="issues" data-index="0">
             Top 10 A.I. Issues Facing WNC Educators
           </button>
-        </h2>
+        </p>
         <p class="unify-card__lead">{site.tagline}</p>
         <ol class="unify-card__list">
           {
@@ -68,12 +68,12 @@ const practicePreview = schoolPractices.slice(0, 3);
         aria-label="Open what schools are doing with AI"
       ></button>
       <div class="unify-card__body">
-        <p class="unify-card__eyebrow">Campus practice</p>
-        <h2>
+        <h2 class="unify-card__eyebrow">Campus practice</h2>
+        <p class="unify-card__title">
           <button type="button" class="unify-card__title-btn" data-open-modal="schools" data-index="0">
             What schools are doing with AI
           </button>
-        </h2>
+        </p>
         <p class="unify-card__lead">A few approaches already in use across WNC.</p>
         <ol class="unify-card__list">
           {
@@ -109,8 +109,8 @@ const practicePreview = schoolPractices.slice(0, 3);
   <div class="info-dialog__panel">
     <header class="info-dialog__banner">
       <div class="info-dialog__banner-copy">
-        <p class="info-dialog__kicker">Survey report</p>
-        <h2 id="issues-dialog-title">Top 10 A.I. Issues Facing WNC Educators</h2>
+        <h2 class="info-dialog__kicker" id="issues-dialog-title">Survey report</h2>
+        <p class="info-dialog__banner-title">Top 10 A.I. Issues Facing WNC Educators</p>
         <p class="info-dialog__banner-lead">Facing WNC educators · Brain first, then AI.</p>
         <a class="info-dialog__readmore" href={withBase(routes.issues)}>Read more →</a>
       </div>
@@ -191,8 +191,8 @@ const practicePreview = schoolPractices.slice(0, 3);
   <div class="info-dialog__panel">
     <header class="info-dialog__banner">
       <div class="info-dialog__banner-copy">
-        <p class="info-dialog__kicker">Campus practice</p>
-        <h2 id="schools-dialog-title">What schools are doing with AI</h2>
+        <h2 class="info-dialog__kicker" id="schools-dialog-title">Campus practice</h2>
+        <p class="info-dialog__banner-title">What schools are doing with AI</p>
         <p class="info-dialog__banner-lead">Approaches already in use across WNC campuses.</p>
         <a class="info-dialog__readmore" href={withBase(routes.schools)}>Read more →</a>
       </div>
@@ -462,19 +462,24 @@ const practicePreview = schoolPractices.slice(0, 3);
   .unify-card__eyebrow {
     margin: 0;
     color: var(--purple);
+    font-family: var(--font-sans, inherit);
     font-size: 0.7rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     font-weight: 700;
+    line-height: 1.3;
   }
 
   .unify--alt .unify-card__eyebrow {
     color: var(--blue-strong);
   }
 
-  .unify-card h2 {
+  .unify-card__title {
     margin: 0;
+    font-family: var(--font-display);
     font-size: clamp(1.55rem, 3vw, 1.9rem);
+    font-weight: 600;
+    line-height: 1.2;
   }
 
   .unify-card__title-btn {
@@ -706,16 +711,22 @@ const practicePreview = schoolPractices.slice(0, 3);
 
   .info-dialog__kicker {
     margin: 0 0 0.3rem;
+    font-family: var(--font-sans, inherit);
     font-size: 0.7rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     font-weight: 700;
+    line-height: 1.3;
     opacity: 0.9;
+    color: var(--white);
   }
 
-  .info-dialog__banner h2 {
+  .info-dialog__banner-title {
     margin: 0;
+    font-family: var(--font-display);
     font-size: clamp(1.55rem, 3vw, 2rem);
+    font-weight: 600;
+    line-height: 1.15;
     color: var(--white);
   }
 

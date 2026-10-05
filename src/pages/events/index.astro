@@ -2,7 +2,6 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Button from "../../components/ui/Button.astro";
 import ScheduleTimeline from "../../components/events/ScheduleTimeline.astro";
-import EventCarousel from "../../components/events/EventCarousel";
 import PastEventCard from "../../components/events/PastEventCard.astro";
 import PastEventDialogs from "../../components/events/PastEventDialogs.astro";
 import ParticipatingOrgs from "../../components/events/ParticipatingOrgs.astro";
@@ -11,15 +10,6 @@ import { events } from "../../content/events";
 
 const upcoming = events.find((e) => e.status === "upcoming");
 const past = events.filter((e) => e.status === "past");
-
-const archiveSlides = past.flatMap((event) =>
-  event.images.map((img) => ({
-    src: img.src,
-    alt: img.alt,
-    caption: img.caption ?? event.title,
-    subtitle: img.subtitle ? `${event.dateLabel} · ${img.subtitle}` : event.dateLabel,
-  })),
-);
 ---
 
 <BaseLayout
@@ -36,8 +26,8 @@ const archiveSlides = past.flatMap((event) =>
               <p class="eyebrow">Events</p>
               <h1>Regional gatherings</h1>
               <p class="events-page__intro-dek">
-                Brainhub and January shaped the Top 10 Issues. Next: November 13 at Mars Hill—schedule,
-                register, or revisit past gatherings below.
+                Brainhub and January shaped the Top 10 Issues. Next: November 13 at Mars Hill—expand
+                the day schedule when you need it, or jump to previous gatherings below.
               </p>
             </header>
 
@@ -56,6 +46,7 @@ const archiveSlides = past.flatMap((event) =>
                       Register for Nov 13
                     </Button>
                   )}
+                  <Button href="#archive" variant="secondary">Previous gatherings</Button>
                 </div>
               </div>
               {upcoming.images[0] && (
@@ -73,14 +64,6 @@ const archiveSlides = past.flatMap((event) =>
 
             {upcoming.sessions?.length ? (
               <div class="events-page__schedule">
-                <div class="events-page__schedule-head">
-                  <p class="eyebrow">Program</p>
-                  <h3>Full day schedule</h3>
-                  <p class="muted">
-                    Scroll sideways across the day. Select a session for speakers, notes, and table
-                    topics.
-                  </p>
-                </div>
                 {
                   upcoming.beforeEvent && upcoming.beforeEvent.length > 0 && (
                     <aside class="events-page__prep">
@@ -93,11 +76,31 @@ const archiveSlides = past.flatMap((event) =>
                     </aside>
                   )
                 }
-                <ScheduleTimeline
-                  sessions={upcoming.sessions}
-                  idPrefix="events-index-nov"
-                  size="full"
-                />
+
+                <details class="events-page__sched-fold">
+                  <summary class="events-page__sched-summary">
+                    <span class="events-page__sched-summary-copy">
+                      <span class="events-page__sched-summary-eyebrow">Program</span>
+                      <span class="events-page__sched-summary-title">Day schedule</span>
+                      <span class="events-page__sched-summary-meta">
+                        {upcoming.sessions.length} sessions · tap to expand speakers &amp; notes
+                      </span>
+                    </span>
+                    <span class="events-page__sched-summary-action" aria-hidden="true">
+                      <span class="events-page__sched-summary-open">Show schedule ↓</span>
+                      <span class="events-page__sched-summary-close">Hide schedule ↑</span>
+                    </span>
+                  </summary>
+                  <div class="events-page__sched-body">
+                    <ScheduleTimeline
+                      sessions={upcoming.sessions}
+                      idPrefix="events-index-nov"
+                      size="compact"
+                      layout="vertical"
+                      showDetail
+                    />
+                  </div>
+                </details>
               </div>
             ) : null}
           </article>
@@ -124,7 +127,7 @@ const archiveSlides = past.flatMap((event) =>
             <h2 class="events-page__past-title">Previous gatherings</h2>
             <p class="muted">
               Earlier convenings that fed the survey conversation and the regional workplan. Open a
-              card for photos and the session outline.
+              card for photos and gathering details.
             </p>
           </div>
 
@@ -135,21 +138,6 @@ const archiveSlides = past.flatMap((event) =>
               ))
             }
           </div>
-        </div>
-      </section>
-    )
-  }
-
-  {
-    archiveSlides.length > 0 && (
-      <section class="section section--tight" id="photos">
-        <div class="container" data-reveal data-reveal-y="24">
-          <EventCarousel
-            client:load
-            slides={archiveSlides}
-            heading="From past gatherings"
-            body="Photos from Brainhub (June) and the January AI Summit. Open an event card above for the full set and session outline."
-          />
         </div>
       </section>
     )
@@ -267,20 +255,12 @@ const archiveSlides = past.flatMap((event) =>
   .events-page__schedule {
     padding-top: 1.15rem;
     border-top: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
-  }
-
-  .events-page__schedule-head {
-    margin-bottom: 1rem;
-    max-width: 40rem;
-  }
-
-  .events-page__schedule-head h3 {
-    margin: 0.3rem 0 0.45rem;
-    font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+    display: grid;
+    gap: 1rem;
   }
 
   .events-page__prep {
-    margin: 0 0 1.25rem;
+    margin: 0;
     padding: 1rem 1.15rem;
     max-width: 42rem;
     border-radius: var(--radius-lg);
@@ -295,6 +275,99 @@ const archiveSlides = past.flatMap((event) =>
     gap: 0.4rem;
     color: var(--muted);
     font-size: 0.95rem;
+  }
+
+  .events-page__sched-fold {
+    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in srgb, var(--green) 22%, transparent);
+    background: color-mix(in srgb, var(--white) 72%, var(--cream));
+    overflow: hidden;
+  }
+
+  .events-page__sched-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.15rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .events-page__sched-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .events-page__sched-summary:hover {
+    background: color-mix(in srgb, var(--green-light) 22%, white);
+  }
+
+  .events-page__sched-summary:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: -2px;
+  }
+
+  .events-page__sched-summary-copy {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .events-page__sched-summary-eyebrow {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-strong);
+  }
+
+  .events-page__sched-summary-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .events-page__sched-summary-meta {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .events-page__sched-summary-action {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.55rem 1.15rem;
+    border-radius: var(--radius-pill);
+    background: var(--green);
+    color: var(--white);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  .events-page__sched-summary-close {
+    display: none;
+  }
+
+  .events-page__sched-fold[open] .events-page__sched-summary-open {
+    display: none;
+  }
+
+  .events-page__sched-fold[open] .events-page__sched-summary-close {
+    display: inline;
+  }
+
+  .events-page__sched-fold[open] .events-page__sched-summary-action {
+    background: color-mix(in srgb, var(--ink) 78%, var(--green));
+  }
+
+  .events-page__sched-body {
+    padding: 0 1rem 1.15rem;
+    border-top: 1px solid color-mix(in srgb, var(--green) 14%, transparent);
   }
 
   .events-page__past-head {
@@ -341,6 +414,15 @@ const archiveSlides = past.flatMap((event) =>
     .events-page__actions :global(.btn) {
       width: 100%;
       justify-content: center;
+    }
+
+    .events-page__sched-summary {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .events-page__sched-summary-action {
+      width: 100%;
     }
   }
 </style>

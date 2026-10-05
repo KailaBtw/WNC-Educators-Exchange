@@ -42,7 +42,13 @@ const gallery = person.gallery?.length
   <article class="section award-profile">
     <div class="container award-profile__grid">
       <div class="award-profile__media" data-reveal data-reveal-y="28">
-        <img src={person.image} alt={person.imageAlt} width="480" height="600" />
+        <img
+          src={person.image}
+          alt={person.imageAlt}
+          width="480"
+          height="600"
+          style={person.imagePosition ? `object-position: ${person.imagePosition}` : undefined}
+        />
         <span class="award-profile__year">{person.year}</span>
       </div>
 
@@ -218,6 +224,7 @@ const gallery = person.gallery?.length
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 40%;
     display: block;
   }
 
