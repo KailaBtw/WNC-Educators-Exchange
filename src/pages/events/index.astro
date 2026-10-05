@@ -13,8 +13,8 @@ const past = events.filter((e) => e.status === "past");
 ---
 
 <BaseLayout
-  title="Events"
-  description="Past and upcoming WNC Educators’ Exchange gatherings, including the November 13 event at Mars Hill University."
+  title="November 13 · Events"
+  description="Friday, November 13, 2026 Educators’ Exchange at Mars Hill University—plus previous WNC regional gatherings."
 >
   {
     upcoming && (
@@ -22,22 +22,13 @@ const past = events.filter((e) => e.status === "past");
       <section class="section" id="upcoming">
         <div class="container">
           <article class="events-page__featured" data-reveal data-reveal-y="28">
-            <header class="events-page__intro">
-              <p class="eyebrow">Events</p>
-              <h1>Regional gatherings</h1>
-              <p class="events-page__intro-dek">
-                Brainhub and January shaped the Top 10 Issues. Next: November 13 at Mars Hill—expand
-                the day schedule when you need it, or jump to previous gatherings below.
-              </p>
-            </header>
-
             <div class="events-page__featured-head">
               <div class="events-page__featured-copy">
                 <p class="events-page__status">Upcoming · {upcoming.category}</p>
-                <h2>{upcoming.title}</h2>
+                <p class="events-page__date">{upcoming.dateLabel}</p>
+                <h1>{upcoming.title}</h1>
                 <p class="events-page__meta">
-                  <span>{upcoming.dateLabel}</span>
-                  {upcoming.location && <span>· {upcoming.location}</span>}
+                  {upcoming.location && <span>{upcoming.location}</span>}
                 </p>
                 <p class="events-page__summary">{upcoming.summary}</p>
                 <div class="events-page__actions">
@@ -46,7 +37,9 @@ const past = events.filter((e) => e.status === "past");
                       Register for Nov 13
                     </Button>
                   )}
-                  <Button href="#archive" variant="secondary">Previous gatherings</Button>
+                  <Button href={`/events/${upcoming.slug}`} variant="secondary">
+                    Full program
+                  </Button>
                 </div>
               </div>
               {upcoming.images[0] && (
@@ -57,7 +50,7 @@ const past = events.filter((e) => e.status === "past");
                     width="480"
                     height="360"
                   />
-                  <figcaption>{upcoming.images[0].caption ?? "November Exchange"}</figcaption>
+                  <figcaption>November 13 · Mars Hill University</figcaption>
                 </figure>
               )}
             </div>
@@ -166,28 +159,6 @@ const past = events.filter((e) => e.status === "past");
     border: 1px solid color-mix(in srgb, var(--green) 14%, transparent);
   }
 
-  .events-page__intro {
-    padding-bottom: 0.15rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
-  }
-
-  .events-page__intro .eyebrow {
-    margin: 0 0 0.3rem;
-  }
-
-  .events-page__intro h1 {
-    margin: 0 0 0.4rem;
-    font-size: clamp(1.65rem, 3.5vw, 2.25rem);
-    line-height: 1.15;
-  }
-
-  .events-page__intro-dek {
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.98rem;
-    max-width: 40rem;
-  }
-
   .events-page__featured-head {
     display: grid;
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.85fr);
@@ -196,7 +167,7 @@ const past = events.filter((e) => e.status === "past");
   }
 
   .events-page__status {
-    margin: 0 0 0.35rem;
+    margin: 0 0 0.55rem;
     color: var(--green);
     font-size: 0.72rem;
     font-weight: 700;
@@ -204,16 +175,27 @@ const past = events.filter((e) => e.status === "past");
     text-transform: uppercase;
   }
 
-  .events-page__featured-copy h2 {
-    margin: 0 0 0.45rem;
-    font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  .events-page__date {
+    margin: 0 0 0.35rem;
+    color: var(--blue);
+    font-family: var(--font-display);
+    font-size: clamp(1.55rem, 3.2vw, 2.1rem);
+    font-weight: 600;
     line-height: 1.15;
-    max-width: 18ch;
+    letter-spacing: -0.01em;
+  }
+
+  .events-page__featured-copy h1 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(1.85rem, 3.8vw, 2.65rem);
+    line-height: 1.12;
+    max-width: none;
+    text-wrap: balance;
   }
 
   .events-page__meta {
     margin: 0 0 0.75rem;
-    color: var(--blue);
+    color: var(--green-strong, var(--green));
     font-weight: 600;
   }
 
@@ -392,7 +374,6 @@ const past = events.filter((e) => e.status === "past");
     }
 
     .events-page__featured-photo {
-      order: -1;
       max-width: 22rem;
     }
 

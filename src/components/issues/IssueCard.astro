@@ -1,7 +1,6 @@
 ---
 import type { Issue } from "../../content/issues";
 import { issueCategoryLabel } from "../../content/issues";
-import { withBase } from "../../lib/paths";
 
 interface Props {
   issue: Issue;
@@ -21,7 +20,7 @@ const { issue } = Astro.props;
     <span class="issue-card__main">
       <span class="issue-card__meta">
         <span class="issue-card__cat">{issueCategoryLabel[issue.category]}</span>
-        <span>Issue {issue.number} of 10</span>
+        <span class="issue-card__of">Issue {issue.number} of 10</span>
       </span>
       <span class="issue-card__title">{issue.title}</span>
       <span class="issue-card__flyer">{issue.shortBlurb}</span>
@@ -33,61 +32,76 @@ const { issue } = Astro.props;
     {issue.body.map((paragraph) => (
       <p>{paragraph}</p>
     ))}
-    <a class="issue-card__link" href={withBase(`/issues/${issue.slug}`)}>Open full issue page →</a>
   </div>
 </article>
 
 <style>
   .issue-card {
     border-radius: var(--radius-lg);
-    background: color-mix(in srgb, var(--white) 72%, var(--cream));
+    background: color-mix(in srgb, var(--white) 88%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--green) 14%, transparent);
     overflow: hidden;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition:
+      transform 0.22s ease,
+      box-shadow 0.22s ease,
+      border-color 0.22s ease;
   }
 
   .issue-card[hidden] {
     display: none !important;
   }
 
+  .issue-card:hover {
+    border-color: color-mix(in srgb, var(--green) 28%, transparent);
+  }
+
   .issue-card.is-open {
-    box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 8%, transparent);
+    border-color: color-mix(in srgb, var(--green) 34%, transparent);
+    box-shadow: 0 8px 22px color-mix(in srgb, var(--ink) 7%, transparent);
   }
 
   .issue-card__toggle {
     width: 100%;
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 0.85rem;
-    align-items: start;
+    grid-template-columns: 2.75rem minmax(0, 1fr) 2.25rem;
+    gap: 0.65rem 0.85rem;
+    align-items: center;
     text-align: left;
     border: 0;
     background: transparent;
-    padding: 1.1rem 1.15rem;
+    padding: 1.05rem 1.1rem;
     cursor: pointer;
     font: inherit;
     color: inherit;
   }
 
+  .issue-card__toggle:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: -2px;
+  }
+
   .issue-card__num {
     font-family: var(--font-display);
-    font-size: 1.85rem;
+    font-size: clamp(1.7rem, 2.8vw, 2.05rem);
     line-height: 1;
-    color: var(--green);
-    font-weight: 550;
-    padding-top: 0.1rem;
+    color: var(--green-strong);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
   }
 
   .issue-card__main {
     display: grid;
-    gap: 0.35rem;
+    gap: 0.28rem;
     min-width: 0;
   }
 
   .issue-card__meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.55rem;
-    font-size: 0.7rem;
+    align-items: baseline;
+    gap: 0.35rem 0.65rem;
+    font-size: 0.68rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     font-weight: 700;
@@ -98,38 +112,84 @@ const { issue } = Astro.props;
     color: var(--purple);
   }
 
+  .issue-card[data-category="classroom"] .issue-card__cat {
+    color: var(--purple);
+  }
+
+  .issue-card[data-category="workplace"] .issue-card__cat {
+    color: var(--blue-strong);
+  }
+
+  .issue-card[data-category="institution"] .issue-card__cat {
+    color: var(--green-strong);
+  }
+
+  .issue-card__of {
+    color: color-mix(in srgb, var(--muted) 82%, var(--ink));
+    font-weight: 600;
+  }
+
   .issue-card__title {
     font-family: var(--font-display);
-    font-size: clamp(1.2rem, 2.4vw, 1.45rem);
-    line-height: 1.2;
-    font-weight: 550;
+    font-size: clamp(1.22rem, 2.4vw, 1.48rem);
+    line-height: 1.22;
+    font-weight: 600;
+    color: var(--ink);
   }
 
   .issue-card__flyer {
     color: var(--muted);
-    font-size: 0.95rem;
+    font-size: 0.93rem;
     line-height: 1.45;
+    max-width: 46rem;
   }
 
   .issue-card__chevron {
-    width: 0.55rem;
-    height: 0.55rem;
-    margin-top: 0.55rem;
-    border-right: 2px solid var(--green);
-    border-bottom: 2px solid var(--green);
+    width: 2.15rem;
+    height: 2.15rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--green-light) 42%, white);
+    border: 1px solid color-mix(in srgb, var(--green) 18%, transparent);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    transition:
+      transform 0.2s ease,
+      background 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .issue-card__chevron::after {
+    content: "";
+    width: 0.42rem;
+    height: 0.42rem;
+    margin-top: -0.15rem;
+    border-right: 2px solid var(--green-strong);
+    border-bottom: 2px solid var(--green-strong);
     transform: rotate(45deg);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, margin 0.2s ease;
+  }
+
+  .issue-card__toggle:hover .issue-card__chevron {
+    background: color-mix(in srgb, var(--green-light) 62%, white);
+    border-color: color-mix(in srgb, var(--green) 30%, transparent);
   }
 
   .issue-card.is-open .issue-card__chevron {
+    background: color-mix(in srgb, var(--green) 18%, white);
+  }
+
+  .issue-card.is-open .issue-card__chevron::after {
+    margin-top: 0.15rem;
     transform: rotate(-135deg);
-    margin-top: 0.75rem;
   }
 
   .issue-card__panel {
-    padding: 0 1.15rem 1.2rem 1.15rem;
+    padding: 0 1.1rem 1.2rem calc(1.1rem + 2.75rem + 0.85rem);
     display: grid;
-    gap: 0.65rem;
+    gap: 0.7rem;
+    border-top: 1px solid color-mix(in srgb, var(--green) 12%, transparent);
+    margin-top: 0;
   }
 
   .issue-card__panel[hidden] {
@@ -140,27 +200,37 @@ const { issue } = Astro.props;
     margin: 0;
     color: var(--ink);
     font-size: 0.95rem;
-  }
-
-  .issue-card__link {
-    color: var(--green);
-    font-weight: 600;
-    text-decoration: none;
-    width: fit-content;
-    margin-top: 0.25rem;
-  }
-
-  .issue-card__link:hover {
-    color: var(--purple);
+    line-height: 1.55;
+    max-width: 42rem;
   }
 
   @media (max-width: 560px) {
     .issue-card__toggle {
-      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-columns: 2.2rem minmax(0, 1fr) 1.9rem;
+      gap: 0.55rem 0.65rem;
+      padding: 0.95rem 0.9rem;
+      align-items: start;
+    }
+
+    .issue-card__num {
+      padding-top: 0.15rem;
     }
 
     .issue-card__chevron {
-      display: none;
+      width: 1.9rem;
+      height: 1.9rem;
+      margin-top: 0.1rem;
+    }
+
+    .issue-card__panel {
+      padding: 0.85rem 0.9rem 1.05rem;
+    }
+
+    .issue-card__flyer {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
   }
 </style>
