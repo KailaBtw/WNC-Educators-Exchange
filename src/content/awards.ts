@@ -33,27 +33,27 @@ export type Awardee = {
 };
 
 export const awardsIntro = {
-  eyebrow: "Awards",
+  eyebrow: "Past Awards",
   title: "2026 A.I. Innovation in Education Award Winners",
   description:
-    "Celebrate this year’s BrAIn Hub Educator Award winners—and watch for the next faculty & student community contest.",
+    "The six 2026 BrAIn Hub Educator Award winners—WNC educators using AI to strengthen student achievement, workforce readiness, and institutional practice.",
 };
 
 /**
- * Teaser for the next contest cycle. Full guidelines stay in a downloadable
+ * Current competition cycle. Full guidelines stay in a downloadable
  * packet (`guideUrl`) rather than on this page.
  */
 export const upcomingAwards = {
-  eyebrow: "Coming up",
-  title: "Faculty & student community contest",
+  eyebrow: "Competition",
+  title: "2027 Student AI Innovator Award",
   summary:
-    "A contest for faculty and students working together—using AI on projects that help Western North Carolina communities. Official name and full packet are forthcoming; here’s what we know so far.",
-  when: "Introduced at the November 13 Educators’ Exchange · Mars Hill University",
+    "A competition for students—and the faculty who mentor them—using AI on projects that help Western North Carolina communities. Full criteria and entry steps will live in the guidelines packet.",
+  when: "Introduced at the November 13 Educators’ Exchange · Mars Hill University · Student Center",
   lead: "Steven Young · Blue Ridge Community College",
   highlights: [
     {
       label: "Who",
-      text: "Faculty and students from WNC campuses, entering as teams on community-facing AI projects.",
+      text: "Students from WNC campuses, with faculty mentors, entering community-facing AI projects.",
     },
     {
       label: "What",
@@ -61,7 +61,7 @@ export const upcomingAwards = {
     },
     {
       label: "When",
-      text: "Steven Young will walk through the contest during the Nov 13 afternoon program; timelines and entry steps follow in the guidelines packet.",
+      text: "Steven Young will walk through the award during the Nov 13 afternoon program; timelines and entry steps follow in the guidelines packet.",
     },
   ],
   note: "We’ll keep this page light. Full criteria, deadlines, and how to enter will live in a downloadable guide once sponsors confirm the details.",

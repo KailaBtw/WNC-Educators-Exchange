@@ -4,81 +4,30 @@ import Button from "../components/ui/Button.astro";
 import ContactCta from "../components/layout/ContactCta.astro";
 import {
   awardsIntro,
-  pastAwardsIntro,
-  upcomingAwards,
   awardees,
   awardProfilePath,
 } from "../content/awards";
-import { site } from "../content/site";
 import { routes } from "../config/site";
 import { withBase } from "../lib/paths";
-
-const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
 ---
 
 <BaseLayout
   title={awardsIntro.title}
-  description="2026 BrAIn Hub Educator Award winners and the upcoming faculty & student community contest."
+  description="2026 BrAIn Hub Educator Award winners from Western North Carolina campuses."
 >
   <section class="section awards-hero">
     <div class="container awards-hero__inner">
       <p class="eyebrow">{awardsIntro.eyebrow}</p>
       <h1>{awardsIntro.title}</h1>
       <p class="awards-hero__dek">{awardsIntro.description}</p>
-    </div>
-  </section>
-
-  <section class="section section--tight awards-upcoming" id="upcoming">
-    <div class="container awards-upcoming__panel" data-reveal data-reveal-y="24">
-      <div class="awards-upcoming__copy">
-        <p class="eyebrow">{upcomingAwards.eyebrow}</p>
-        <h2>{upcomingAwards.title}</h2>
-        <p class="awards-upcoming__when">{upcomingAwards.when}</p>
-        {
-          upcomingAwards.lead && (
-            <p class="awards-upcoming__lead">Led by {upcomingAwards.lead}</p>
-          )
-        }
-        <p class="awards-upcoming__summary">{upcomingAwards.summary}</p>
-        <p class="awards-upcoming__note muted">{upcomingAwards.note}</p>
-        <div class="awards-upcoming__actions">
-          {
-            guideUrl ? (
-              <Button href={guideUrl} external>
-                {upcomingAwards.guideLabel}
-              </Button>
-            ) : (
-              <span class="awards-upcoming__soon">Guidelines download coming soon</span>
-            )
-          }
-          <Button href={routes.november} variant={guideUrl ? "secondary" : "quiet"}>
-            Nov 13 program →
-          </Button>
-          <Button href={routes.contact} variant="ghost">
-            Ask a question
-          </Button>
-        </div>
+      <div class="awards-hero__actions">
+        <Button href={routes.contest} variant="ghost">2027 Student AI Innovator Award →</Button>
       </div>
-      <ul class="awards-upcoming__highlights" aria-label="Contest overview">
-        {
-          upcomingAwards.highlights.map((item) => (
-            <li>
-              <span class="awards-upcoming__hl-label">{item.label}</span>
-              <p>{item.text}</p>
-            </li>
-          ))
-        }
-      </ul>
     </div>
   </section>
 
   <section class="section awards-grid-section" id="winners">
     <div class="container">
-      <header class="awards-past__header" data-reveal data-reveal-y="20">
-        <p class="eyebrow">{pastAwardsIntro.eyebrow}</p>
-        <h2>{pastAwardsIntro.title}</h2>
-        <p class="awards-past__dek muted">{pastAwardsIntro.description}</p>
-      </header>
       <div class="awards-grid">
         {
           awardees.map((person, index) => (
@@ -158,13 +107,13 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
 
 <style>
   .awards-hero__inner {
-    max-width: 40rem;
+    max-width: 42rem;
   }
 
   .awards-hero h1 {
-    font-size: clamp(2.3rem, 5vw, 3.35rem);
+    font-size: clamp(2.1rem, 4.5vw, 3.1rem);
     margin: 0.4rem 0 0.85rem;
-    max-width: 16ch;
+    max-width: 22ch;
   }
 
   .awards-hero__dek {
@@ -173,118 +122,8 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
     font-size: 1.08rem;
   }
 
-  .awards-upcoming {
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--green-light) 28%, var(--cream)),
-        var(--cream)
-      );
-  }
-
-  .awards-upcoming__panel {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-    gap: clamp(1.5rem, 4vw, 2.75rem);
-    align-items: start;
-  }
-
-  .awards-upcoming__copy {
-    max-width: 38rem;
-  }
-
-  .awards-upcoming h2 {
-    margin: 0.35rem 0 0.5rem;
-    font-size: clamp(1.65rem, 3.5vw, 2.15rem);
-    max-width: 18ch;
-  }
-
-  .awards-upcoming__when {
-    margin: 0 0 0.35rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--green);
-  }
-
-  .awards-upcoming__lead {
-    margin: 0 0 0.85rem;
-    font-size: 0.92rem;
-    color: var(--muted);
-  }
-
-  .awards-upcoming__summary {
-    margin: 0 0 0.75rem;
-    color: var(--ink);
-    font-size: 1.05rem;
-    line-height: 1.55;
-  }
-
-  .awards-upcoming__note {
-    margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
-
-  .awards-upcoming__actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.65rem 0.85rem;
-    margin-top: 1.25rem;
-  }
-
-  .awards-upcoming__soon {
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: var(--muted);
-  }
-
-  .awards-upcoming__highlights {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 0.85rem;
-  }
-
-  .awards-upcoming__highlights li {
-    padding: 1rem 1.1rem;
-    border-radius: var(--radius-md, 12px);
-    background: color-mix(in srgb, var(--white) 72%, var(--cream));
-    border: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
-  }
-
-  .awards-upcoming__hl-label {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--green);
-  }
-
-  .awards-upcoming__highlights p {
-    margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.45;
-    color: var(--ink);
-  }
-
-  .awards-past__header {
-    max-width: 40rem;
-    margin-bottom: clamp(1.25rem, 3vw, 1.85rem);
-  }
-
-  .awards-past__header h2 {
-    margin: 0.35rem 0 0.65rem;
-    font-size: clamp(1.75rem, 3.5vw, 2.35rem);
-  }
-
-  .awards-past__dek {
-    margin: 0;
-    font-size: 1.02rem;
-    line-height: 1.55;
+  .awards-hero__actions {
+    margin-top: 1.1rem;
   }
 
   .awards-grid {
@@ -437,25 +276,13 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
   }
 
   @media (max-width: 768px) {
-    .awards-upcoming__panel {
-      grid-template-columns: 1fr;
-    }
-
     .awards-grid {
       grid-template-columns: 1fr;
+      max-width: none;
     }
 
     .award-card__media {
       aspect-ratio: 5 / 4;
-    }
-
-    .awards-grid {
-      max-width: none;
-    }
-
-    .awards-upcoming__actions {
-      flex-direction: column;
-      align-items: stretch;
     }
   }
 </style>

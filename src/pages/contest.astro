@@ -2,7 +2,9 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/ui/Button.astro";
 import ContactCta from "../components/layout/ContactCta.astro";
+import LocationCard from "../components/ui/LocationCard.astro";
 import { upcomingAwards } from "../content/awards";
+import { marsHillVenueResolved } from "../content/events";
 import { site } from "../content/site";
 import { routes } from "../config/site";
 
@@ -40,7 +42,7 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
             Nov 13 program →
           </Button>
           <Button href={routes.awards} variant="ghost">
-            Award winners →
+            Past Awards →
           </Button>
         </div>
       </div>
@@ -57,7 +59,21 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
     </div>
   </section>
 
-  <ContactCta description="Questions about the faculty–student contest or November 13 at Mars Hill? Email Bill and we’ll follow up." />
+  <section class="section section--tight contest-venue" id="location">
+    <div class="container contest-venue__inner" data-reveal data-reveal-y="20">
+      <header class="contest-venue__head">
+        <p class="eyebrow">Location</p>
+        <h2>Student Center · Mars Hill</h2>
+        <p class="muted">
+          The award is introduced at the November 13 Educators’ Exchange. Use the pin below for
+          directions.
+        </p>
+      </header>
+      <LocationCard venue={marsHillVenueResolved} />
+    </div>
+  </section>
+
+  <ContactCta description="Questions about the 2027 Student AI Innovator Award or November 13 at Mars Hill? Email Bill and we’ll follow up." />
 </BaseLayout>
 
 <style>
@@ -78,13 +94,13 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
   }
 
   .contest-page__copy {
-    max-width: 38rem;
+    max-width: 40rem;
   }
 
   .contest-page h1 {
     margin: 0.35rem 0 0.5rem;
     font-size: clamp(1.85rem, 3.8vw, 2.55rem);
-    max-width: 16ch;
+    max-width: 18ch;
     line-height: 1.15;
   }
 
@@ -158,6 +174,28 @@ const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
     font-size: 0.95rem;
     line-height: 1.45;
     color: var(--ink);
+  }
+
+  .contest-venue {
+    background: color-mix(in srgb, var(--cream) 75%, white);
+  }
+
+  .contest-venue__inner {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .contest-venue__head {
+    max-width: 40rem;
+  }
+
+  .contest-venue__head h2 {
+    margin: 0.3rem 0 0.5rem;
+    font-size: clamp(1.55rem, 3vw, 2rem);
+  }
+
+  .contest-venue__head .muted {
+    margin: 0;
   }
 
   @media (max-width: 820px) {

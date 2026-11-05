@@ -1,0 +1,147 @@
+---
+import type { VenueInfo } from "../../content/events";
+
+interface Props {
+  venue: VenueInfo;
+  /** Show greeter / parking note under the card. Default true. */
+  showNote?: boolean;
+}
+
+const { venue, showNote = true } = Astro.props;
+---
+
+<div class="location-card-wrap">
+  <article class="location-card">
+    <figure class="location-card__media">
+      <img src={venue.image} alt={venue.imageAlt} width="400" height="320" loading="lazy" />
+    </figure>
+    <div class="location-card__body">
+      <p class="location-card__building">{venue.building}</p>
+      <p class="location-card__campus">{venue.campus}</p>
+      <p class="location-card__coords">{venue.coordinates}</p>
+      <p class="location-card__place">{venue.city}</p>
+      <p class="location-card__zip">{venue.zip}</p>
+      <a class="location-card__maps" href={venue.mapsUrl} target="_blank" rel="noopener noreferrer">
+        {venue.mapsLabel}
+        <span class="visually-hidden"> (opens in Google Maps)</span>
+      </a>
+    </div>
+  </article>
+  {
+    showNote && (
+      <p class="location-card__note muted">{venue.greeterNote}</p>
+    )
+  }
+</div>
+
+<style>
+  .location-card-wrap {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 36rem;
+  }
+
+  .location-card {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background: color-mix(in srgb, var(--white) 92%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+    box-shadow: 0 10px 28px color-mix(in srgb, var(--ink) 8%, transparent);
+  }
+
+  .location-card__media {
+    margin: 0;
+    background: color-mix(in srgb, var(--green-light) 30%, white);
+    min-height: 100%;
+  }
+
+  .location-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 9.5rem;
+    object-fit: cover;
+  }
+
+  .location-card__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.15rem;
+    padding: 1rem 1.15rem;
+  }
+
+  .location-card__building {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .location-card__campus {
+    margin: 0 0 0.35rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .location-card__coords {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .location-card__place,
+  .location-card__zip {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+
+  .location-card__maps {
+    margin-top: 0.45rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  .location-card__maps:hover {
+    text-decoration: underline;
+  }
+
+  .location-card__note {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 520px) {
+    .location-card {
+      grid-template-columns: 1fr;
+    }
+
+    .location-card__media img {
+      aspect-ratio: 16 / 10;
+      min-height: 0;
+    }
+  }
+</style>

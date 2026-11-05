@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="WNC Educators Exchange">
+  <rect width="64" height="64" rx="14" fill="#1d4e6b"/>
+  <path d="M0 52 L16 36 L26 46 L40 32 L64 52 V64 H0Z" fill="#2f7f8f"/>
+  <path d="M0 58 L14 48 L30 57 L46 46 L64 58 V64 H0Z" fill="#4fb08f"/>
+  <path d="M32 14 C26 10 18 10 12 12 V28 C18 26 26 26 32 30Z" fill="#ffffff"/>
+  <path d="M32 14 C38 10 46 10 52 12 V28 C46 26 38 26 32 30Z" fill="#e6f0f2"/>
+  <path d="M32 14 V30" stroke="#1d4e6b" stroke-width="1.5"/>
+</svg>

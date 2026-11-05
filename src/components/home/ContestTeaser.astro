@@ -1,25 +1,25 @@
 ---
 import SectionHeader from "../ui/SectionHeader.astro";
 import Button from "../ui/Button.astro";
+import { upcomingAwards } from "../../content/awards";
 import { routes } from "../../config/site";
 ---
 
 <section class="section contest-teaser" id="contest">
   <div class="container contest-teaser__inner" data-reveal data-reveal-y="28">
     <SectionHeader
-      eyebrow="Coming up · Nov 13"
-      title="Faculty & student community contest"
+      eyebrow={`${upcomingAwards.eyebrow} · Nov 13`}
+      title={upcomingAwards.title}
       align="center"
     >
       <p>
-        Steven Young introduces a faculty–student community contest during the November 13 afternoon
-        program at Mars Hill. Official name and entry packet are still forthcoming—teams will use AI
-        on projects that help Western North Carolina communities.
+        {upcomingAwards.summary} Led by {upcomingAwards.lead}. Introduced during the November 13
+        afternoon program at Mars Hill’s Student Center.
       </p>
     </SectionHeader>
     <div class="contest-teaser__actions">
       <Button href={routes.contest}>See contest details</Button>
-      <Button href={routes.awards} variant="ghost">Award winners →</Button>
+      <Button href={routes.awards} variant="ghost">Past Awards →</Button>
     </div>
   </div>
 </section>
@@ -35,9 +35,13 @@ import { routes } from "../../config/site";
   }
 
   .contest-teaser__inner {
-    max-width: 42rem;
+    max-width: 44rem;
     margin-inline: auto;
     text-align: center;
+  }
+
+  .contest-teaser__inner :global(.section-header h2) {
+    max-width: 28ch;
   }
 
   .contest-teaser__actions {

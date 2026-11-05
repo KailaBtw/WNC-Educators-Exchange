@@ -6,6 +6,7 @@ import PastEventCard from "../../components/events/PastEventCard.astro";
 import PastEventDialogs from "../../components/events/PastEventDialogs.astro";
 import ParticipatingOrgs from "../../components/events/ParticipatingOrgs.astro";
 import ContactCta from "../../components/layout/ContactCta.astro";
+import LocationCard from "../../components/ui/LocationCard.astro";
 import { events } from "../../content/events";
 import { site } from "../../content/site";
 
@@ -60,10 +61,17 @@ const past = events.filter((e) => e.status === "past");
                     width="480"
                     height="360"
                   />
-                  <figcaption>November 13 · Mars Hill University</figcaption>
+                  <figcaption>November 13 · Student Center · Mars Hill University</figcaption>
                 </figure>
               )}
             </div>
+            {upcoming.venue && (
+              <div class="events-page__venue" id="location">
+                <p class="eyebrow">Getting there</p>
+                <h2 class="events-page__venue-title">Student Center · campus directions</h2>
+                <LocationCard venue={upcoming.venue} />
+              </div>
+            )}
           </article>
         </div>
       </section>
@@ -184,9 +192,21 @@ const past = events.filter((e) => e.status === "past");
 
   .events-page__featured-head {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.85fr);
+    grid-template-columns: minmax(0, 1.85fr) minmax(0, 0.65fr);
     gap: clamp(1rem, 3vw, 1.75rem);
     align-items: start;
+  }
+
+  .events-page__venue {
+    display: grid;
+    gap: 0.65rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
+  }
+
+  .events-page__venue-title {
+    margin: 0 0 0.35rem;
+    font-size: clamp(1.25rem, 2.4vw, 1.55rem);
   }
 
   .events-page__status {
@@ -213,7 +233,7 @@ const past = events.filter((e) => e.status === "past");
     font-size: clamp(1.85rem, 3.8vw, 2.65rem);
     line-height: 1.12;
     max-width: none;
-    text-wrap: balance;
+    text-wrap: pretty;
   }
 
   .events-page__meta {

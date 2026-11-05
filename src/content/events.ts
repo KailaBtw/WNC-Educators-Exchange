@@ -18,6 +18,36 @@ export type ProgramSession = {
   link?: { href: string; label: string };
 };
 
+export type VenueInfo = {
+  building: string;
+  campus: string;
+  coordinates: string;
+  city: string;
+  state: string;
+  zip: string;
+  mapsUrl: string;
+  mapsLabel: string;
+  image: string;
+  imageAlt: string;
+  greeterNote: string;
+};
+
+/** Mars Hill Student Center — Nov 13 Exchange + competition venue. */
+export const marsHillVenue: VenueInfo = {
+  building: "Student Center",
+  campus: "Mars Hill University",
+  coordinates: "35.826532, -82.550731",
+  city: "Mars Hill, North Carolina",
+  state: "North Carolina",
+  zip: "28754",
+  mapsUrl: "https://maps.app.goo.gl/sCA4azXvmTSXiAv1A",
+  mapsLabel: "maps.app.goo.gl",
+  image: "/images/venues/mars-hill-student-center.jpg",
+  imageAlt: "Mars Hill University Student Center exterior",
+  greeterNote:
+    "Students will be on site to direct you to parking and welcome you to the building.",
+};
+
 export type EventItem = {
   slug: string;
   title: string;
@@ -26,6 +56,8 @@ export type EventItem = {
   status: "upcoming" | "past";
   summary: string;
   location?: string;
+  /** Structured venue for location cards / directions. */
+  venue?: VenueInfo;
   /** Day timing for meta lines, e.g. Registration 9:00 am · Program 9:30 am–3:00 pm */
   hoursLabel?: string;
   /** Cost note for meta lines, e.g. Free */
@@ -64,7 +96,8 @@ const eventsRaw: EventItem[] = [
     status: "upcoming",
     summary:
       "Educators from across Western North Carolina will meet at Mars Hill to compare what they’re doing with AI and decide what comes next.",
-    location: "Mars Hill University · Enrollment limited",
+    location: "Student Center · Mars Hill University · Enrollment limited",
+    venue: marsHillVenue,
     hoursLabel: "Registration 9:00 am · Program 9:30 am–3:00 pm",
     costLabel: "Free",
     registerUrl: site.registerUrl,
@@ -166,10 +199,11 @@ const eventsRaw: EventItem[] = [
       {
         id: "contest",
         time: "2:20 – 2:40 pm",
-        title: "Faculty / Student Contest",
-        blurb: "Spotlight on contest entries",
+        title: "2027 Student AI Innovator Award",
+        blurb: "Contest overview and how to enter",
         leads: "Steven Young",
-        detail: "Working title—official contest name forthcoming.",
+        detail:
+          "Steven Young introduces the 2027 Student AI Innovator Award—timelines and entry steps follow in the guidelines packet.",
       },
       {
         id: "wrap",
@@ -325,11 +359,20 @@ export const events: EventItem[] = eventsRaw.map((event) => ({
   ...event,
   bannerSrc: event.bannerSrc ? withBase(event.bannerSrc) : undefined,
   images: event.images.map((img) => ({ ...img, src: withBase(img.src) })),
+  venue: event.venue
+    ? { ...event.venue, image: withBase(event.venue.image) }
+    : undefined,
   participatingOrgs: event.participatingOrgs?.map((org) => ({
     ...org,
     logo: org.logo ? withBase(org.logo) : undefined,
   })),
 }));
+
+/** Venue with base-prefixed image path for pages outside the events map. */
+export const marsHillVenueResolved: VenueInfo = {
+  ...marsHillVenue,
+  image: withBase(marsHillVenue.image),
+};
 
 export function getEvent(slug: string) {
   return events.find((e) => e.slug === slug);

@@ -1,7 +1,7 @@
 ---
 import { site } from "../../content/site";
 import { routes } from "../../config/site";
-import { withBase } from "../../lib/paths";
+import { asset, withBase } from "../../lib/paths";
 
 const pathname = Astro.url.pathname;
 const baseRoot = withBase("/").replace(/\/$/, "") || "";
@@ -28,7 +28,14 @@ function isActive(href: string) {
 <header class="site-header">
   <div class="site-header__inner">
     <a class="brand" href={withBase(routes.home)}>
-      <span class="brand__mark" aria-hidden="true"></span>
+      <img
+        class="brand__mark"
+        src={asset("brandIcon")}
+        alt=""
+        width="28"
+        height="28"
+        decoding="async"
+      />
       <span class="brand__text">{site.shortName}</span>
     </a>
     <nav class="nav" aria-label="Primary">
@@ -80,10 +87,11 @@ function isActive(href: string) {
   }
 
   .brand__mark {
-    width: 0.85rem;
-    height: 0.85rem;
-    border-radius: 999px;
-    background: linear-gradient(135deg, var(--green), var(--purple));
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 0.35rem;
+    display: block;
+    flex-shrink: 0;
   }
 
   .nav {

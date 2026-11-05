@@ -28,7 +28,7 @@ export const routes = {
   issues: "/issues",
   schools: "/schools",
   awards: "/awards",
-  /** Faculty & student community contest details (separate from award winners). */
+  /** 2027 Student AI Innovator Award competition (separate from past winners). */
   contest: "/contest",
   about: "/about",
   contact: "/contact",
@@ -40,7 +40,8 @@ export const routes = {
  * Use `asset()` / `cssUrl()` from `src/lib/paths` when rendering.
  */
 export const assets = {
-  favicon: "/favicon.svg",
+  favicon: "/wnc-educators-exchange-icon.svg",
+  brandIcon: "/wnc-educators-exchange-icon.svg",
   heroUnca: "/images/hero/unca.jpg",
   issuesBanner: "/images/events/archive/brain-10.jpg",
   schoolsBanner: "/images/events/archive/brain-03.jpg",
