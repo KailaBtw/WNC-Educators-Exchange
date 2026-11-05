@@ -3,6 +3,7 @@ import SectionHeader from "../ui/SectionHeader.astro";
 import ScheduleTimeline from "../events/ScheduleTimeline.astro";
 import PastEventCard from "../events/PastEventCard.astro";
 import PastEventDialogs from "../events/PastEventDialogs.astro";
+import ContestTeaser from "./ContestTeaser.astro";
 import Button from "../ui/Button.astro";
 import { events } from "../../content/events";
 import { routes } from "../../config/site";
@@ -73,8 +74,15 @@ const past = events.filter((e) => e.status === "past");
       )
     }
 
-    {
-      past.length > 0 && (
+  </div>
+</section>
+
+<ContestTeaser />
+
+{
+  past.length > 0 && (
+    <section class="section events-home events-home--past" id="past-events">
+      <div class="container">
         <div class="events-home__past" data-reveal data-reveal-delay="0.08" data-reveal-y="24">
           <p class="events-home__past-heading">Previous gatherings</p>
           <div class="events-home__past-grid">
@@ -83,10 +91,10 @@ const past = events.filter((e) => e.status === "past");
             ))}
           </div>
         </div>
-      )
-    }
-  </div>
-</section>
+      </div>
+    </section>
+  )
+}
 
 <PastEventDialogs events={events} />
 
@@ -174,8 +182,8 @@ const past = events.filter((e) => e.status === "past");
     border-top: 1px solid color-mix(in srgb, var(--green) 12%, transparent);
   }
 
-  .events-home__past {
-    margin-top: clamp(1.5rem, 3.5vw, 2.15rem);
+  .events-home--past .events-home__past {
+    margin-top: 0;
   }
 
   .events-home__past-heading {

@@ -40,32 +40,32 @@ export const awardsIntro = {
 };
 
 /**
- * Current competition cycle. Full guidelines stay in a downloadable
- * packet (`guideUrl`) rather than on this page.
+ * Current competition cycle. Full draft guidelines live on `/contest`
+ * (`src/content/contest.ts`). Optional PDF/Drive packet via `guideUrl`.
  */
 export const upcomingAwards = {
   eyebrow: "Competition",
   title: "2027 Student AI Innovator Award",
   summary:
-    "A competition for students—and the faculty who mentor them—using AI on projects that help Western North Carolina communities. Full criteria and entry steps will live in the guidelines packet.",
-  when: "Introduced at the November 13 Educators’ Exchange · Mars Hill University · Student Center",
+    "Three $1,000 awards for creative, effective, and responsible student AI work from WNC high schools, community colleges, colleges, and universities—any discipline.",
+  when: "Introduced at the November 13 Educators’ Exchange · presentations at BrainHub AI Summit · October 1, 2027",
   lead: "Steven Young · Blue Ridge Community College",
   highlights: [
     {
       label: "Who",
-      text: "Students from WNC campuses, with faculty mentors, entering community-facing AI projects.",
+      text: "Individual students or teams of up to five from eligible WNC institutions; educators or students may nominate.",
     },
     {
       label: "What",
-      text: "Projects that put AI to work for local communities—not only classroom demos, but real regional impact.",
+      text: "Completed projects (Nov 15, 2026–Aug 31, 2027) where AI played a substantive role—High School, Education & Community, or Innovation & Creation.",
     },
     {
       label: "When",
-      text: "Steven Young will walk through the award during the Nov 13 afternoon program; timelines and entry steps follow in the guidelines packet.",
+      text: "Rolling submissions through September 1, 2027; winners notified September 24; showcase October 1, 2027.",
     },
   ],
-  note: "We’ll keep this page light. Full criteria, deadlines, and how to enter will live in a downloadable guide once sponsors confirm the details.",
-  /** Packet / guidelines PDF or Drive link — empty shows “coming soon” note. */
+  note: "Draft guidelines (September 2026) are on the contest page. Official forms will post at brainhubsummit.com.",
+  /** Packet / guidelines PDF or Drive link — empty when on-page guidelines suffice. */
   guideUrl: "",
   guideLabel: "Download guidelines",
 };

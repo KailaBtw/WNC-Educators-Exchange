@@ -368,11 +368,6 @@ export const events: EventItem[] = eventsRaw.map((event) => ({
   })),
 }));
 
-/** Venue with base-prefixed image path for pages outside the events map. */
-export const marsHillVenueResolved: VenueInfo = {
-  ...marsHillVenue,
-  image: withBase(marsHillVenue.image),
-};
 
 export function getEvent(slug: string) {
   return events.find((e) => e.slug === slug);

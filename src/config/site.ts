@@ -56,6 +56,8 @@ export const assets = {
   teamMegan: "/images/team/megan-coyle.jpg",
   logoBrainHub: "/files/logos/brain_hub.png",
   logoLandOfSky: "/files/logos/land_of_sky.png",
+  /** Atmosphere for contest / summit pages — stage with brAIn Hub banner */
+  contestHero: "/images/events/archive/brain-09.jpg",
 } as const;
 
 export type AssetKey = keyof typeof assets;

@@ -28,39 +28,37 @@ import { withBase } from "../lib/paths";
 
   <section class="section awards-grid-section" id="winners">
     <div class="container">
-      <div class="awards-grid">
+      <ul class="awards-list">
         {
           awardees.map((person, index) => (
-            <article
-              class="award-card"
+            <li
+              class="award-row"
               data-reveal
-              data-reveal-delay={String(0.05 * (index % 3))}
-              data-reveal-y="28"
+              data-reveal-delay={String(0.03 * (index % 3))}
+              data-reveal-y="16"
               style={`--accent: ${index % 3 === 0 ? "var(--purple)" : index % 3 === 1 ? "var(--blue)" : "var(--green)"}`}
             >
-              <a class="award-card__media" href={withBase(awardProfilePath(person.id))}>
+              <a class="award-row__media" href={withBase(awardProfilePath(person.id))}>
                 <img
                   src={person.image}
                   alt={person.imageAlt}
-                  style={person.imagePosition ? `object-position: ${person.imagePosition}` : undefined}
+                  width="160"
+                  height="160"
+                  loading="lazy"
                 />
-                <span class="award-card__year">{person.year}</span>
               </a>
-              <div class="award-card__body">
-                <p class="award-card__stance">{person.stance}</p>
+              <div class="award-row__body">
+                <p class="award-row__meta">
+                  <span>{person.year}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{person.category}</span>
+                </p>
                 <h2>
                   <a href={withBase(awardProfilePath(person.id))}>{person.name}</a>
                 </h2>
-                <p class="award-card__institution">{person.institution}</p>
-                <p class="award-card__recognition">{person.recognition}</p>
-                <p class="award-card__category">{person.category}</p>
-                <p class="award-card__summary">{person.summary}</p>
-                <div class="award-card__focus">
-                  {person.focus.map((item) => (
-                    <span>{item}</span>
-                  ))}
-                </div>
-                <div class="award-card__actions">
+                <p class="award-row__institution">{person.institution}</p>
+                <p class="award-row__summary">{person.summary}</p>
+                <div class="award-row__actions">
                   <Button href={awardProfilePath(person.id)} variant="quiet">
                     View profile →
                   </Button>
@@ -71,31 +69,12 @@ import { withBase } from "../lib/paths";
                       </Button>
                     )
                   }
-                  {
-                    person.slidesPdf && (
-                      <Button href={person.slidesPdf} variant="ghost" external>
-                        Download slides
-                      </Button>
-                    )
-                  }
-                  {
-                    person.proposalPdf && (
-                      <Button href={person.proposalPdf} variant="ghost" external>
-                        Download proposal
-                      </Button>
-                    )
-                  }
-                  {
-                    person.pendingMedia && !person.certificateUrl && (
-                      <span class="award-card__pending">Portrait &amp; materials forthcoming</span>
-                    )
-                  }
                 </div>
               </div>
-            </article>
+            </li>
           ))
         }
-      </div>
+      </ul>
     </div>
   </section>
 
@@ -111,178 +90,131 @@ import { withBase } from "../lib/paths";
   }
 
   .awards-hero h1 {
-    font-size: clamp(2.1rem, 4.5vw, 3.1rem);
-    margin: 0.4rem 0 0.85rem;
+    font-size: clamp(1.95rem, 4vw, 2.75rem);
+    margin: 0.35rem 0 0.7rem;
     max-width: 22ch;
   }
 
   .awards-hero__dek {
     margin: 0;
     color: var(--muted);
-    font-size: 1.08rem;
+    font-size: 1.02rem;
   }
 
   .awards-hero__actions {
-    margin-top: 1.1rem;
+    margin-top: 0.95rem;
   }
 
-  .awards-grid {
+  .awards-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(0.75rem, 1.8vw, 1.1rem);
-    max-width: 52rem;
+    gap: 0.75rem;
+    max-width: 46rem;
   }
 
-  .award-card {
+  .award-row {
     --accent: var(--purple);
     display: grid;
-    grid-template-rows: auto 1fr;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    padding: 0.85rem;
+    border-radius: var(--radius-md, 12px);
     background: color-mix(in srgb, var(--white) 88%, var(--cream));
     border: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
-  .award-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 36px color-mix(in srgb, var(--ink) 8%, transparent);
+  .award-row:hover {
+    border-color: color-mix(in srgb, var(--accent) 26%, transparent);
   }
 
-  .award-card__media {
-    position: relative;
+  .award-row__media {
     display: block;
-    aspect-ratio: 5 / 4;
+    width: 8.5rem;
+    height: 8.5rem;
+    border-radius: 0.85rem;
     overflow: hidden;
-    background: color-mix(in srgb, var(--green-light) 30%, white);
+    background: color-mix(in srgb, var(--green-light) 22%, white);
+    flex-shrink: 0;
   }
 
-  .award-card__media img {
+  .award-row__media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 40%;
-    transition: transform 0.35s ease;
+    object-position: center 20%;
+    display: block;
   }
 
-  .award-card:hover .award-card__media img {
-    transform: scale(1.015);
+  .award-row__body {
+    min-width: 0;
   }
 
-  .award-card__year {
-    position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    padding: 0.2rem 0.55rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--ink) 72%, transparent);
-    color: white;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-  }
-
-  .award-card__body {
+  .award-row__meta {
+    margin: 0 0 0.2rem;
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.7rem 0.8rem 0.85rem;
-  }
-
-  .award-card__stance {
-    margin: 0;
+    flex-wrap: wrap;
+    gap: 0.35rem;
     font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     color: var(--accent);
   }
 
-  .award-card h2 {
+  .award-row h2 {
     margin: 0;
     font-size: 1.05rem;
     line-height: 1.2;
   }
 
-  .award-card h2 a {
+  .award-row h2 a {
     color: inherit;
     text-decoration: none;
   }
 
-  .award-card h2 a:hover {
+  .award-row h2 a:hover {
     color: var(--accent);
   }
 
-  .award-card__institution {
-    margin: 0;
-    font-size: 0.92rem;
-    color: var(--muted);
-  }
-
-  .award-card__recognition {
-    margin: 0.15rem 0 0;
+  .award-row__institution {
+    margin: 0.2rem 0 0;
     font-size: 0.88rem;
-    font-weight: 600;
-  }
-
-  .award-card__category {
-    margin: 0;
-    display: inline-block;
-    align-self: start;
-    padding: 0.15rem 0.5rem;
-    border-radius: 999px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
-    color: var(--accent);
-  }
-
-  .award-card__summary {
-    margin: 0.25rem 0 0;
-    font-size: 0.85rem;
     color: var(--muted);
+    line-height: 1.35;
+  }
+
+  .award-row__summary {
+    margin: 0.4rem 0 0;
+    font-size: 0.86rem;
+    color: var(--muted);
+    line-height: 1.45;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  .award-card__focus {
+  .award-row__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.35rem;
-    margin-top: 0.5rem;
+    margin-top: 0.55rem;
   }
 
-  .award-card__focus span {
-    font-size: 0.72rem;
-    padding: 0.2rem 0.45rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--ink) 5%, transparent);
-    color: var(--muted);
-  }
-
-  .award-card__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    margin-top: auto;
-    padding-top: 0.85rem;
-  }
-
-  .award-card__pending {
-    font-size: 0.82rem;
-    color: var(--muted);
-    align-self: center;
-  }
-
-  @media (max-width: 768px) {
-    .awards-grid {
-      grid-template-columns: 1fr;
-      max-width: none;
+  @media (max-width: 520px) {
+    .award-row {
+      grid-template-columns: 6.5rem minmax(0, 1fr);
+      gap: 0.75rem;
+      padding: 0.7rem;
     }
 
-    .award-card__media {
-      aspect-ratio: 5 / 4;
+    .award-row__media {
+      width: 6.5rem;
+      height: 6.5rem;
+      border-radius: 0.7rem;
     }
   }
 </style>
