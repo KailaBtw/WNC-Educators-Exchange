@@ -14,10 +14,8 @@ const past = events.filter((e) => e.status === "past");
 <section class="section events-home" id="events">
   <div class="container">
     <div data-reveal>
-      <SectionHeader eyebrow="Events" title="Event information">
-        <p>
-          Next up: Friday, November 13, at Mars Hill University. Enrollment limited.
-        </p>
+      <SectionHeader eyebrow="Events" title="Next gathering">
+        <p>Friday, November 13 · Mars Hill University · Enrollment limited.</p>
       </SectionHeader>
     </div>
 
@@ -25,17 +23,27 @@ const past = events.filter((e) => e.status === "past");
       upcoming && (
         <article class="events-home__featured" data-reveal data-reveal-y="28">
           <header class="events-home__featured-head">
-            <div>
-              <p class="events-home__status">Upcoming · {upcoming.category}</p>
-              <h3>{upcoming.title}</h3>
-              <p class="events-home__meta">
-                <span>{upcoming.dateLabel}</span>
-                {upcoming.hoursLabel && <span>· {upcoming.hoursLabel}</span>}
-                {upcoming.location && <span>· {upcoming.location}</span>}
-                {upcoming.costLabel && <span>· {upcoming.costLabel}</span>}
-              </p>
-              <p class="events-home__summary">{upcoming.summary}</p>
-            </div>
+            <p class="events-home__status">Upcoming · {upcoming.category}</p>
+            <h3>{upcoming.title}</h3>
+            <p class="events-home__date">{upcoming.dateLabel}</p>
+            <ul class="events-home__facts" aria-label="Event details">
+              {
+                upcoming.hoursLabel && (
+                  <li>{upcoming.hoursLabel}</li>
+                )
+              }
+              {
+                upcoming.location && (
+                  <li>{upcoming.location}</li>
+                )
+              }
+              {
+                upcoming.costLabel && (
+                  <li>{upcoming.costLabel}</li>
+                )
+              }
+            </ul>
+            <p class="events-home__summary">{upcoming.summary}</p>
           </header>
 
           {
@@ -46,15 +54,15 @@ const past = events.filter((e) => e.status === "past");
                   sessions={upcoming.sessions}
                   idPrefix="home-nov"
                   size="compact"
-                  layout="vertical"
-                  showDetail
+                  brief
+                  showDetail={false}
                 />
               </div>
             ) : null
           }
 
           <footer class="events-home__actions">
-            <Button href={routes.events}>Full Event Details</Button>
+            <Button href={routes.events}>Full schedule & details</Button>
             {
               upcoming.registerUrl && (
                 <Button href={upcoming.registerUrl} variant="secondary" external>
@@ -79,10 +87,6 @@ const past = events.filter((e) => e.status === "past");
         </div>
       )
     }
-
-    <div class="events-home__cta" data-reveal data-reveal-delay="0.12" data-reveal-y="20">
-      <Button href={routes.events} variant="ghost">Explore all events →</Button>
-    </div>
   </div>
 </section>
 
@@ -91,9 +95,9 @@ const past = events.filter((e) => e.status === "past");
 <style>
   .events-home__featured {
     display: grid;
-    gap: 1.25rem;
-    margin-top: 0.5rem;
-    padding: clamp(1.15rem, 3vw, 1.75rem);
+    gap: 1rem;
+    margin-top: 0.35rem;
+    padding: clamp(1rem, 2.5vw, 1.4rem);
     border-radius: var(--radius-lg);
     background:
       linear-gradient(
@@ -105,7 +109,7 @@ const past = events.filter((e) => e.status === "past");
   }
 
   .events-home__status {
-    margin: 0 0 0.35rem;
+    margin: 0 0 0.3rem;
     color: var(--green-strong);
     font-size: 0.72rem;
     font-weight: 700;
@@ -115,31 +119,48 @@ const past = events.filter((e) => e.status === "past");
 
   .events-home__featured-head h3 {
     margin: 0 0 0.45rem;
-    font-size: clamp(1.55rem, 3.2vw, 2.15rem);
+    font-size: clamp(1.35rem, 2.8vw, 1.85rem);
     line-height: 1.2;
-    max-width: 22ch;
+    max-width: 28ch;
   }
 
-  .events-home__meta {
-    margin: 0 0 0.75rem;
+  .events-home__date {
+    margin: 0 0 0.45rem;
     color: var(--blue);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .events-home__facts {
+    margin: 0 0 0.7rem;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.2rem;
+    color: var(--ink);
     font-weight: 600;
     font-size: 0.95rem;
+  }
+
+  .events-home__facts li {
+    margin: 0;
   }
 
   .events-home__summary {
     margin: 0;
     color: var(--muted);
-    max-width: 42rem;
+    max-width: 40rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
   }
 
   .events-home__schedule {
-    padding: 1rem 0 0.15rem;
+    padding: 0.75rem 0 0;
     border-top: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
   }
 
   .events-home__schedule-label {
-    margin: 0 0 0.55rem;
+    margin: 0 0 0.4rem;
     font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -156,13 +177,13 @@ const past = events.filter((e) => e.status === "past");
   }
 
   .events-home__past {
-    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    margin-top: clamp(1.5rem, 3.5vw, 2.15rem);
   }
 
   .events-home__past-heading {
-    margin: 0 0 0.95rem;
+    margin: 0 0 0.85rem;
     font-family: var(--font-display);
-    font-size: clamp(1.45rem, 3vw, 1.85rem);
+    font-size: clamp(1.3rem, 2.6vw, 1.65rem);
     font-weight: 600;
     line-height: 1.2;
     color: var(--ink);
@@ -172,12 +193,6 @@ const past = events.filter((e) => e.status === "past");
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(1rem, 2.5vw, 1.5rem);
-  }
-
-  .events-home__cta {
-    display: flex;
-    justify-content: center;
-    margin-top: 1.75rem;
   }
 
   @media (max-width: 720px) {

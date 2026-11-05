@@ -28,6 +28,8 @@ export const routes = {
   issues: "/issues",
   schools: "/schools",
   awards: "/awards",
+  /** Faculty & student community contest details (separate from award winners). */
+  contest: "/contest",
   about: "/about",
   contact: "/contact",
   resources: "/resources",

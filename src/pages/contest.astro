@@ -1,0 +1,180 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/ui/Button.astro";
+import ContactCta from "../components/layout/ContactCta.astro";
+import { upcomingAwards } from "../content/awards";
+import { site } from "../content/site";
+import { routes } from "../config/site";
+
+const guideUrl = upcomingAwards.guideUrl || site.contestGuideUrl;
+---
+
+<BaseLayout
+  title={upcomingAwards.title}
+  description={upcomingAwards.summary}
+>
+  <section class="section contest-page">
+    <div class="container contest-page__panel" data-reveal data-reveal-y="24">
+      <div class="contest-page__copy">
+        <p class="eyebrow">{upcomingAwards.eyebrow}</p>
+        <h1>{upcomingAwards.title}</h1>
+        <p class="contest-page__when">{upcomingAwards.when}</p>
+        {
+          upcomingAwards.lead && (
+            <p class="contest-page__lead">Led by {upcomingAwards.lead}</p>
+          )
+        }
+        <p class="contest-page__summary">{upcomingAwards.summary}</p>
+        <p class="contest-page__note muted">{upcomingAwards.note}</p>
+        <div class="contest-page__actions">
+          {
+            guideUrl ? (
+              <Button href={guideUrl} external>
+                {upcomingAwards.guideLabel}
+              </Button>
+            ) : (
+              <span class="contest-page__soon">Guidelines download coming soon</span>
+            )
+          }
+          <Button href={routes.november} variant={guideUrl ? "secondary" : "quiet"}>
+            Nov 13 program →
+          </Button>
+          <Button href={routes.awards} variant="ghost">
+            Award winners →
+          </Button>
+        </div>
+      </div>
+      <ul class="contest-page__highlights" aria-label="Contest overview">
+        {
+          upcomingAwards.highlights.map((item) => (
+            <li>
+              <span class="contest-page__hl-label">{item.label}</span>
+              <p>{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <ContactCta description="Questions about the faculty–student contest or November 13 at Mars Hill? Email Bill and we’ll follow up." />
+</BaseLayout>
+
+<style>
+  .contest-page {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--green-light) 28%, var(--cream)),
+        var(--cream)
+      );
+  }
+
+  .contest-page__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(1.5rem, 4vw, 2.75rem);
+    align-items: start;
+  }
+
+  .contest-page__copy {
+    max-width: 38rem;
+  }
+
+  .contest-page h1 {
+    margin: 0.35rem 0 0.5rem;
+    font-size: clamp(1.85rem, 3.8vw, 2.55rem);
+    max-width: 16ch;
+    line-height: 1.15;
+  }
+
+  .contest-page__when {
+    margin: 0 0 0.35rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--green);
+  }
+
+  .contest-page__lead {
+    margin: 0 0 0.85rem;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+
+  .contest-page__summary {
+    margin: 0 0 0.75rem;
+    color: var(--ink);
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  .contest-page__note {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .contest-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 0.85rem;
+    margin-top: 1.25rem;
+  }
+
+  .contest-page__soon {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .contest-page__highlights {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  .contest-page__highlights li {
+    padding: 1rem 1.1rem;
+    border-radius: var(--radius-md, 12px);
+    background: color-mix(in srgb, var(--white) 72%, var(--cream));
+    border: 1px solid color-mix(in srgb, var(--ink) 7%, transparent);
+  }
+
+  .contest-page__hl-label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .contest-page__highlights p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+
+  @media (max-width: 820px) {
+    .contest-page__panel {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .contest-page__actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .contest-page__actions :global(.btn) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
