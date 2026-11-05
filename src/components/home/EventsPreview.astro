@@ -30,7 +30,9 @@ const past = events.filter((e) => e.status === "past");
               <h3>{upcoming.title}</h3>
               <p class="events-home__meta">
                 <span>{upcoming.dateLabel}</span>
+                {upcoming.hoursLabel && <span>· {upcoming.hoursLabel}</span>}
                 {upcoming.location && <span>· {upcoming.location}</span>}
+                {upcoming.costLabel && <span>· {upcoming.costLabel}</span>}
               </p>
               <p class="events-home__summary">{upcoming.summary}</p>
             </div>
@@ -52,7 +54,7 @@ const past = events.filter((e) => e.status === "past");
           }
 
           <footer class="events-home__actions">
-            <Button href={`/events/${upcoming.slug}`}>Full Event Details</Button>
+            <Button href={routes.events}>Full Event Details</Button>
             {
               upcoming.registerUrl && (
                 <Button href={upcoming.registerUrl} variant="secondary" external>

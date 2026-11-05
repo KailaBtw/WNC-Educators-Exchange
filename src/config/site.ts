@@ -21,7 +21,8 @@ export const deploy = {
 export const routes = {
   home: "/",
   events: "/events",
-  november: "/events/november-2026",
+  /** Canonical Nov 13 program lives on the events index — no separate slug page. */
+  november: "/events",
   brainHub: "/events/brain-hub",
   january: "/events/january-event",
   issues: "/issues",

@@ -54,7 +54,13 @@ const isExpandable = layout === "vertical" || layout === "grid";
         isExpandable ? (
           <div class="schedule__stack" role="list" aria-label="Program sessions">
             {sessions.map((session, index) => {
-              const open = showDetail && index === 0;
+              const hasExpand =
+                showDetail &&
+                (Boolean(session.leads) ||
+                  (!brief && Boolean(session.detail)) ||
+                  (!brief && Boolean(session.link)) ||
+                  (!brief && Boolean(session.topics?.length)));
+              const open = hasExpand && index === 0;
               return (
                 <div
                   class:list={["schedule__stop", { "is-active": open }]}
@@ -66,17 +72,17 @@ const isExpandable = layout === "vertical" || layout === "grid";
                     type="button"
                     class="schedule__stop-toggle"
                     data-schedule-toggle
-                    aria-expanded={open ? "true" : "false"}
-                    aria-controls={showDetail ? `${idPrefix}-expand-${session.id}` : undefined}
+                    aria-expanded={hasExpand ? (open ? "true" : "false") : undefined}
+                    aria-controls={hasExpand ? `${idPrefix}-expand-${session.id}` : undefined}
                   >
                     <span class="schedule__time">{session.time}</span>
                     <span class="schedule__card">
                       <span class="schedule__title">{session.title}</span>
-                      <span class="schedule__blurb">{session.blurb}</span>
+                      {session.blurb && <span class="schedule__blurb">{session.blurb}</span>}
                     </span>
                   </button>
                   {
-                    showDetail && (
+                    hasExpand && (
                       <div
                         class="schedule__stop-expand"
                         id={`${idPrefix}-expand-${session.id}`}
@@ -1181,8 +1187,13 @@ const isExpandable = layout === "vertical" || layout === "grid";
     width: 100%;
   }
 
-  .schedule--vertical.schedule--compact .schedule__stop-toggle, .schedule--grid.schedule--compact .schedule__stop-toggle {
+  .schedule--vertical.schedule--compact .schedule__stop-toggle {
     grid-template-columns: 6.5rem minmax(0, 1fr);
+    padding: 0.7rem 0.85rem;
+  }
+
+  .schedule--grid.schedule--compact .schedule__stop-toggle {
+    grid-template-columns: 1fr;
     padding: 0.7rem 0.85rem;
   }
 
@@ -1199,7 +1210,8 @@ const isExpandable = layout === "vertical" || layout === "grid";
     padding-right: 0.85rem;
   }
 
-  @media (max-width: 640px) {
+  /* Stack time over title before the card gets cramped at tablet widths. */
+  @media (max-width: 768px) {
     .schedule--vertical .schedule__stop-toggle, .schedule--grid .schedule__stop-toggle,
     .schedule--vertical.schedule--compact .schedule__stop-toggle, .schedule--grid.schedule--compact .schedule__stop-toggle {
       grid-template-columns: 1fr;
@@ -1260,7 +1272,8 @@ const isExpandable = layout === "vertical" || layout === "grid";
     font-size: 0.88rem;
   }
 
-  @media (max-width: 720px) {
+  /* 2-up until tablet; stack earlier only when cards would feel squeezed. */
+  @media (max-width: 900px) {
     .schedule--grid .schedule__stack {
       grid-template-columns: 1fr;
     }

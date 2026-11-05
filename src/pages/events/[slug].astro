@@ -10,9 +10,12 @@ import { routes } from "../../config/site";
 import { withBase } from "../../lib/paths";
 
 export function getStaticPaths() {
-  return events.map((event) => ({
-    params: { slug: event.slug },
-  }));
+  // Upcoming Nov 13 program is on /events — only past events keep slug pages.
+  return events
+    .filter((event) => event.status === "past")
+    .map((event) => ({
+      params: { slug: event.slug },
+    }));
 }
 
 const { slug } = Astro.params;
@@ -34,7 +37,9 @@ const hasSchedule = Boolean(event.sessions?.length);
         <h1>{event.title}</h1>
         <p class="event-hero__meta">
           <span>{event.dateLabel}</span>
+          {event.hoursLabel && <span>· {event.hoursLabel}</span>}
           {event.location && <span>· {event.location}</span>}
+          {event.costLabel && <span>· {event.costLabel}</span>}
         </p>
         <p class="event-hero__summary muted">{event.summary}</p>
         <div class="event-hero__actions">
@@ -94,7 +99,7 @@ const hasSchedule = Boolean(event.sessions?.length);
               sessions={event.sessions!}
               idPrefix={`page-${event.slug}`}
               size="full"
-              layout="grid"
+              layout="vertical"
               showDetail
             />
           </div>
@@ -270,11 +275,12 @@ const hasSchedule = Boolean(event.sessions?.length);
     }
 
     .event-hero__photo {
-      max-width: 24rem;
+      max-width: none;
+      width: 100%;
     }
 
     .event-hero__photo img {
-      max-height: 14rem;
+      max-height: 16rem;
     }
   }
 

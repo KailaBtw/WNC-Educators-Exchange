@@ -26,6 +26,10 @@ export type EventItem = {
   status: "upcoming" | "past";
   summary: string;
   location?: string;
+  /** Day timing for meta lines, e.g. Registration 9:00 am · Program 9:30 am–3:00 pm */
+  hoursLabel?: string;
+  /** Cost note for meta lines, e.g. Free */
+  costLabel?: string;
   registerUrl?: string;
   images: { src: string; alt: string; caption?: string; subtitle?: string }[];
   /** Optional modal / hero banner override (defaults to first gallery image). */
@@ -61,6 +65,8 @@ const eventsRaw: EventItem[] = [
     summary:
       "Educators from across Western North Carolina will meet at Mars Hill to compare what they’re doing with AI and decide what comes next.",
     location: "Mars Hill University · Enrollment limited",
+    hoursLabel: "Registration 9:00 am · Program 9:30 am–3:00 pm",
+    costLabel: "Free",
     registerUrl: site.registerUrl,
     participatingOrgs: novemberParticipatingOrgs,
     beforeEvent: [
@@ -92,7 +98,8 @@ const eventsRaw: EventItem[] = [
         id: "registration",
         time: "9:00 am",
         title: "Registration and Networking",
-        blurb: "Check in and meet colleagues",
+        blurb: "Check in, grab coffee, and meet colleagues",
+        detail: "Doors open for check-in and informal networking before the program starts.",
       },
       {
         id: "welcome",
@@ -135,7 +142,7 @@ const eventsRaw: EventItem[] = [
       },
       {
         id: "lunch-conversations",
-        time: "11:30 am – 12:00 pm",
+        time: "11:30 – 1:00 pm",
         title: "Lunch Conversations",
         blurb: "Table topics during lunch",
         leads: "Ian Selig",
@@ -145,7 +152,7 @@ const eventsRaw: EventItem[] = [
       {
         id: "scapin",
         time: "1:00 – 1:50 pm",
-        title: "Adjusting Assessment for the World of AI",
+        title: "Answers to Evidence: Assessment in the Age of AI",
         blurb: "Rethinking assessment with AI",
         leads: "Tim Scapin, Haywood Community College",
       },

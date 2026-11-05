@@ -12,4 +12,8 @@ export default defineConfig({
   base: customDomain ? '/' : deploy.githubPagesBase,
   output: 'static',
   integrations: [react()],
+  redirects: {
+    // Old Nov 13 detail URL — program now lives on /events
+    '/events/november-2026': '/events',
+  },
 });

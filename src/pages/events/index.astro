@@ -7,6 +7,7 @@ import PastEventDialogs from "../../components/events/PastEventDialogs.astro";
 import ParticipatingOrgs from "../../components/events/ParticipatingOrgs.astro";
 import ContactCta from "../../components/layout/ContactCta.astro";
 import { events } from "../../content/events";
+import { site } from "../../content/site";
 
 const upcoming = events.find((e) => e.status === "upcoming");
 const past = events.filter((e) => e.status === "past");
@@ -28,7 +29,19 @@ const past = events.filter((e) => e.status === "past");
                 <p class="events-page__date">{upcoming.dateLabel}</p>
                 <h1>{upcoming.title}</h1>
                 <p class="events-page__meta">
-                  {upcoming.location && <span>{upcoming.location}</span>}
+                  {upcoming.hoursLabel && <span>{upcoming.hoursLabel}</span>}
+                  {upcoming.location && (
+                    <span>
+                      {upcoming.hoursLabel ? "· " : ""}
+                      {upcoming.location}
+                    </span>
+                  )}
+                  {upcoming.costLabel && (
+                    <span>
+                      {upcoming.hoursLabel || upcoming.location ? "· " : ""}
+                      {upcoming.costLabel}
+                    </span>
+                  )}
                 </p>
                 <p class="events-page__summary">{upcoming.summary}</p>
                 <div class="events-page__actions">
@@ -37,9 +50,6 @@ const past = events.filter((e) => e.status === "past");
                       Register for Nov 13
                     </Button>
                   )}
-                  <Button href={`/events/${upcoming.slug}`} variant="secondary">
-                    Full program
-                  </Button>
                 </div>
               </div>
               {upcoming.images[0] && (
@@ -54,51 +64,49 @@ const past = events.filter((e) => e.status === "past");
                 </figure>
               )}
             </div>
-
-            {upcoming.sessions?.length ? (
-              <div class="events-page__schedule">
-                {
-                  upcoming.beforeEvent && upcoming.beforeEvent.length > 0 && (
-                    <aside class="events-page__prep">
-                      <p class="eyebrow">Before the event</p>
-                      <ul>
-                        {upcoming.beforeEvent.map((item) => (
-                          <li>{item}</li>
-                        ))}
-                      </ul>
-                    </aside>
-                  )
-                }
-
-                <details class="events-page__sched-fold">
-                  <summary class="events-page__sched-summary">
-                    <span class="events-page__sched-summary-copy">
-                      <span class="events-page__sched-summary-eyebrow">Program</span>
-                      <span class="events-page__sched-summary-title">Day schedule</span>
-                      <span class="events-page__sched-summary-meta">
-                        {upcoming.sessions.length} sessions · tap to expand speakers &amp; notes
-                      </span>
-                    </span>
-                    <span class="events-page__sched-summary-action" aria-hidden="true">
-                      <span class="events-page__sched-summary-open">Show schedule ↓</span>
-                      <span class="events-page__sched-summary-close">Hide schedule ↑</span>
-                    </span>
-                  </summary>
-                  <div class="events-page__sched-body">
-                    <ScheduleTimeline
-                      sessions={upcoming.sessions}
-                      idPrefix="events-index-nov"
-                      size="compact"
-                      layout="vertical"
-                      showDetail
-                    />
-                  </div>
-                </details>
-              </div>
-            ) : null}
           </article>
         </div>
       </section>
+
+      {
+        upcoming.sessions?.length ? (
+          <section class="section section--tight events-page__program" id="program">
+            <div class="container">
+              <div class="events-page__program-head">
+                <p class="eyebrow">Program</p>
+                <h2>Day schedule</h2>
+                <p class="muted">
+                  All sessions at a glance. Tap any card for speakers, notes, and table topics.
+                </p>
+              </div>
+
+              {
+                upcoming.beforeEvent && upcoming.beforeEvent.length > 0 && (
+                  <aside class="events-page__prep">
+                    <p class="eyebrow">Before the event</p>
+                    <h3>Prep underway</h3>
+                    <ul>
+                      {upcoming.beforeEvent.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </ul>
+                  </aside>
+                )
+              }
+
+              <div class="events-page__schedule">
+                <ScheduleTimeline
+                  sessions={upcoming.sessions}
+                  idPrefix="events-index-nov"
+                  size="compact"
+                  layout="grid"
+                  showDetail
+                />
+              </div>
+            </div>
+          </section>
+        ) : null
+      }
 
       {upcoming.participatingOrgs && upcoming.participatingOrgs.length > 0 && (
         <ParticipatingOrgs
@@ -107,6 +115,21 @@ const past = events.filter((e) => e.status === "past");
           lede="Host campus, sponsoring institutions, and partners for the November Exchange."
         />
       )}
+
+      <section class="section section--tight" id="register">
+        <div class="container events-page__register">
+          <div>
+            <p class="eyebrow">Registration</p>
+            <h2>Join us November 13</h2>
+            <p class="muted">
+              Registration is hosted on a separate site. Enrollment is limited.
+            </p>
+          </div>
+          <Button href={upcoming.registerUrl ?? site.registerUrl} external>
+            Register for Nov 13
+          </Button>
+        </div>
+      </section>
       </>
     )
   }
@@ -234,24 +257,41 @@ const past = events.filter((e) => e.status === "past");
     background: color-mix(in srgb, var(--white) 70%, transparent);
   }
 
+  .events-page__program {
+    background: color-mix(in srgb, var(--cream) 70%, white);
+  }
+
+  .events-page__program-head {
+    margin-bottom: 1.35rem;
+    max-width: 40rem;
+  }
+
+  .events-page__program-head h2 {
+    font-size: clamp(1.75rem, 3.5vw, 2.35rem);
+    margin: 0.3rem 0 0.5rem;
+  }
+
   .events-page__schedule {
-    padding-top: 1.15rem;
-    border-top: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
     display: grid;
     gap: 1rem;
   }
 
   .events-page__prep {
-    margin: 0;
-    padding: 1rem 1.15rem;
+    margin: 0 0 1.5rem;
+    padding: 1.1rem 1.2rem;
     max-width: 42rem;
     border-radius: var(--radius-lg);
     background: color-mix(in srgb, var(--green-light) 28%, white);
     border: 1px solid color-mix(in srgb, var(--green) 16%, transparent);
   }
 
+  .events-page__prep h3 {
+    margin: 0.25rem 0 0.65rem;
+    font-size: 1.15rem;
+  }
+
   .events-page__prep ul {
-    margin: 0.45rem 0 0;
+    margin: 0;
     padding-left: 1.15rem;
     display: grid;
     gap: 0.4rem;
@@ -259,97 +299,20 @@ const past = events.filter((e) => e.status === "past");
     font-size: 0.95rem;
   }
 
-  .events-page__sched-fold {
-    border-radius: var(--radius-lg);
-    border: 1px solid color-mix(in srgb, var(--green) 22%, transparent);
-    background: color-mix(in srgb, var(--white) 72%, var(--cream));
-    overflow: hidden;
-  }
-
-  .events-page__sched-summary {
+  .events-page__register {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 1.15rem;
-    cursor: pointer;
-    list-style: none;
-  }
-
-  .events-page__sched-summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .events-page__sched-summary:hover {
-    background: color-mix(in srgb, var(--green-light) 22%, white);
-  }
-
-  .events-page__sched-summary:focus-visible {
-    outline: 2px solid var(--blue);
-    outline-offset: -2px;
-  }
-
-  .events-page__sched-summary-copy {
-    display: grid;
-    gap: 0.2rem;
-    min-width: 0;
-  }
-
-  .events-page__sched-summary-eyebrow {
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--green-strong);
-  }
-
-  .events-page__sched-summary-title {
-    font-family: var(--font-display);
-    font-size: clamp(1.25rem, 2.4vw, 1.55rem);
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  .events-page__sched-summary-meta {
-    font-size: 0.9rem;
-    color: var(--muted);
-  }
-
-  .events-page__sched-summary-action {
-    flex: 0 0 auto;
-    display: inline-flex;
+    gap: 1.5rem;
     align-items: center;
-    justify-content: center;
-    min-height: 2.75rem;
-    padding: 0.55rem 1.15rem;
-    border-radius: var(--radius-pill);
-    background: var(--green);
-    color: var(--white);
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    white-space: nowrap;
+    flex-wrap: wrap;
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--green-light) 35%, white);
   }
 
-  .events-page__sched-summary-close {
-    display: none;
-  }
-
-  .events-page__sched-fold[open] .events-page__sched-summary-open {
-    display: none;
-  }
-
-  .events-page__sched-fold[open] .events-page__sched-summary-close {
-    display: inline;
-  }
-
-  .events-page__sched-fold[open] .events-page__sched-summary-action {
-    background: color-mix(in srgb, var(--ink) 78%, var(--green));
-  }
-
-  .events-page__sched-body {
-    padding: 0 1rem 1.15rem;
-    border-top: 1px solid color-mix(in srgb, var(--green) 14%, transparent);
+  .events-page__register h2 {
+    font-size: clamp(1.6rem, 3vw, 2rem);
+    margin: 0.35rem 0 0.5rem;
   }
 
   .events-page__past-head {
@@ -374,11 +337,12 @@ const past = events.filter((e) => e.status === "past");
     }
 
     .events-page__featured-photo {
-      max-width: 22rem;
+      max-width: none;
+      width: 100%;
     }
 
     .events-page__featured-photo img {
-      max-height: 12rem;
+      max-height: 14rem;
     }
   }
 
@@ -397,13 +361,14 @@ const past = events.filter((e) => e.status === "past");
       justify-content: center;
     }
 
-    .events-page__sched-summary {
+    .events-page__register {
       flex-direction: column;
       align-items: stretch;
     }
 
-    .events-page__sched-summary-action {
+    .events-page__register :global(.btn) {
       width: 100%;
+      justify-content: center;
     }
   }
 </style>
