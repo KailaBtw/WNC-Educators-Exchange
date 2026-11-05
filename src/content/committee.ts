@@ -3,7 +3,8 @@
 export type CommitteePerson = {
   org: string;
   name: string;
-  email: string;
+  /** Optional — omit when we only have a public profile link. */
+  email?: string;
   /** Local portrait under /public, when we found a usable public headshot. */
   image?: string;
   profileUrl?: string;
@@ -40,6 +41,12 @@ export const summitCommittee = {
       id: "presenters",
       title: "Presenters",
       people: [
+        {
+          org: "Western Carolina University",
+          name: "Dr. John Sherlock",
+          profileUrl: "https://members.educause.edu/john-sherlock",
+          image: "/images/team/sherlock.jpg",
+        },
         {
           org: "Western Carolina University",
           name: "Ian Selig",

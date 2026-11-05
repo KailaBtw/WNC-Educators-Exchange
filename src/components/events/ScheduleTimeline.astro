@@ -54,10 +54,10 @@ const isExpandable = layout === "vertical" || layout === "grid";
         isExpandable ? (
           <div class="schedule__stack" role="list" aria-label="Program sessions">
             {sessions.map((session, index) => {
+              // Leads show on the card; expand is only for notes / links / topics.
               const hasExpand =
                 showDetail &&
-                (Boolean(session.leads) ||
-                  (!brief && Boolean(session.detail)) ||
+                ((!brief && Boolean(session.detail)) ||
                   (!brief && Boolean(session.link)) ||
                   (!brief && Boolean(session.topics?.length)));
               const open = hasExpand && index === 0;
@@ -78,6 +78,7 @@ const isExpandable = layout === "vertical" || layout === "grid";
                     <span class="schedule__time">{session.time}</span>
                     <span class="schedule__card">
                       <span class="schedule__title">{session.title}</span>
+                      {session.leads && <span class="schedule__leads">{session.leads}</span>}
                       {session.blurb && <span class="schedule__blurb">{session.blurb}</span>}
                     </span>
                   </button>
@@ -89,7 +90,6 @@ const isExpandable = layout === "vertical" || layout === "grid";
                         data-session-expand
                         hidden={!open}
                       >
-                        {session.leads && <p class="schedule__panel-leads">{session.leads}</p>}
                         {!brief && session.detail && (
                           <p class="schedule__panel-detail">{session.detail}</p>
                         )}
@@ -152,6 +152,7 @@ const isExpandable = layout === "vertical" || layout === "grid";
                       <span class="schedule__time">{session.time}</span>
                       <span class="schedule__card">
                         <span class="schedule__title">{session.title}</span>
+                        {session.leads && <span class="schedule__leads">{session.leads}</span>}
                         <span class="schedule__blurb">{session.blurb}</span>
                       </span>
                     </button>
@@ -768,6 +769,17 @@ const isExpandable = layout === "vertical" || layout === "grid";
     color: var(--ink);
   }
 
+  .schedule__leads {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
   .schedule__blurb {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -1138,6 +1150,14 @@ const isExpandable = layout === "vertical" || layout === "grid";
     font-size: 1rem;
     font-weight: 600;
     line-height: 1.25;
+  }
+
+  .schedule--vertical .schedule__leads, .schedule--grid .schedule__leads {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+    font-size: 0.84rem;
+    margin-top: 0.1rem;
   }
 
   .schedule--vertical .schedule__blurb, .schedule--grid .schedule__blurb {

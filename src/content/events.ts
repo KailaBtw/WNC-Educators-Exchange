@@ -59,7 +59,7 @@ const eventsRaw: EventItem[] = [
   {
     slug: "november-2026",
     title: "Western North Carolina AI Educators’ Exchange",
-    category: "Summit",
+    category: "Exchange",
     dateLabel: "Friday, November 13, 2026",
     status: "upcoming",
     summary:

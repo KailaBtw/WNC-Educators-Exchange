@@ -143,9 +143,20 @@ function personPhoto(person: CommitteePerson) {
                         <div class="about-person-card__body">
                           <h4>{person.name}</h4>
                           <p class="about-person-card__org">{person.org}</p>
-                          <a class="about-person-card__email" href={`mailto:${person.email}`}>
-                            {person.email}
-                          </a>
+                          {person.email ? (
+                            <a class="about-person-card__email" href={`mailto:${person.email}`}>
+                              {person.email}
+                            </a>
+                          ) : person.profileUrl ? (
+                            <a
+                              class="about-person-card__email"
+                              href={person.profileUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Profile ↗
+                            </a>
+                          ) : null}
                         </div>
                       </article>
                     );
@@ -156,31 +167,35 @@ function personPhoto(person: CommitteePerson) {
         }
       </div>
 
-      <article
-        class={`about-person-card about-person-card--chair${
-          personPhoto(summitCommittee.chair) ? " about-person-card--with-photo" : ""
-        }`}
-      >
-        {
-          personPhoto(summitCommittee.chair) ? (
-            <img
-              class="about-person-card__photo about-person-card__photo--grid"
-              src={personPhoto(summitCommittee.chair)!}
-              alt={summitCommittee.chair.name}
-              width="72"
-              height="72"
-            />
-          ) : null
-        }
-        <div class="about-person-card__body">
-          <p class="about-person-card__role">Chair</p>
-          <h3>{summitCommittee.chair.name}</h3>
-          <p class="about-person-card__org">WNC Educators’ Exchange</p>
-          <a class="about-person-card__email" href={`mailto:${summitCommittee.chair.email}`}>
-            {summitCommittee.chair.email}
-          </a>
+      <div class="about-committee__group about-committee__group--chair">
+        <h3>Chair</h3>
+        <div class="about-person-grid">
+          <article
+            class={`about-person-card${
+              personPhoto(summitCommittee.chair) ? " about-person-card--with-photo" : ""
+            }`}
+          >
+            {
+              personPhoto(summitCommittee.chair) ? (
+                <img
+                  class="about-person-card__photo about-person-card__photo--grid"
+                  src={personPhoto(summitCommittee.chair)!}
+                  alt={summitCommittee.chair.name}
+                  width="72"
+                  height="72"
+                />
+              ) : null
+            }
+            <div class="about-person-card__body">
+              <h4>{summitCommittee.chair.name}</h4>
+              <p class="about-person-card__org">WNC Educators’ Exchange</p>
+              <a class="about-person-card__email" href={`mailto:${summitCommittee.chair.email}`}>
+                {summitCommittee.chair.email}
+              </a>
+            </div>
+          </article>
         </div>
-      </article>
+      </div>
 
       <div class="about-committee__group about-committee__group--site">
         <h3>Website development</h3>
@@ -349,22 +364,11 @@ function personPhoto(person: CommitteePerson) {
     padding: 0.75rem;
   }
 
-  .about-person-card--chair {
-    margin-top: 1.75rem;
-    max-width: 28rem;
-    border-color: color-mix(in srgb, var(--purple) 22%, transparent);
-    background:
-      linear-gradient(
-        135deg,
-        color-mix(in srgb, var(--purple) 8%, white),
-        color-mix(in srgb, var(--white) 85%, var(--cream))
-      );
-  }
-
   .about-person-card--site {
     max-width: 24rem;
   }
 
+  .about-committee__group--chair,
   .about-committee__group--site {
     margin-top: 1.75rem;
   }
@@ -410,8 +414,7 @@ function personPhoto(person: CommitteePerson) {
     line-height: 1.25;
   }
 
-  .about-person-card--featured h3,
-  .about-person-card--chair h3 {
+  .about-person-card--featured h3 {
     font-size: 1.3rem;
   }
 

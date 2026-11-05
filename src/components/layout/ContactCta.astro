@@ -1,4 +1,5 @@
 ---
+import Button from "../ui/Button.astro";
 import { site } from "../../content/site";
 
 interface Props {
@@ -10,8 +11,10 @@ interface Props {
 const {
   eyebrow = "Contact",
   title = "Questions or follow-up?",
-  description = "Write about the November 13 Exchange at Mars Hill, the Top 10 Issues report, campus practice, or joining the next summit. The form opens your email client.",
+  description = "Write about the November 13 Exchange at Mars Hill, the Top 10 Issues report, campus practice, or joining the next gathering.",
 } = Astro.props;
+
+const mailtoHref = `mailto:${site.contactEmail}?subject=${encodeURIComponent("WNC Educators’ Exchange inquiry")}`;
 ---
 
 <section class="contact-cta">
@@ -19,50 +22,15 @@ const {
     <p class="contact-cta__eyebrow">{eyebrow}</p>
     <h2>{title}</h2>
     <p class="contact-cta__desc">{description}</p>
-    <form
-      class="contact-cta__form"
-      id="contact-mailto-form"
-      data-contact-email={site.contactEmail}
-    >
-      <label class="sr-only" for="cta-email">Email</label>
-      <input
-        id="cta-email"
-        name="email"
-        type="email"
-        required
-        placeholder="your.email@college.edu"
-        autocomplete="email"
-      />
-      <label class="sr-only" for="cta-message">Message</label>
-      <input
-        id="cta-message"
-        name="message"
-        type="text"
-        required
-        placeholder="Your question or note"
-      />
-      <button type="submit">Contact Us</button>
-    </form>
+    <div class="contact-cta__actions">
+      <Button href={mailtoHref} variant="light">Email Bill with questions</Button>
+    </div>
     <p class="contact-cta__hint">
-      Opens your email app to <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+      Or write directly to{" "}
+      <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
     </p>
   </div>
 </section>
-
-<script>
-  const form = document.getElementById("contact-mailto-form");
-  form?.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const target = form as HTMLFormElement;
-    const to = target.dataset.contactEmail || "wsederburg@gmail.com";
-    const data = new FormData(target);
-    const email = String(data.get("email") || "").trim();
-    const message = String(data.get("message") || "").trim();
-    const subject = encodeURIComponent("WNC Educators’ Exchange inquiry");
-    const body = encodeURIComponent(`From: ${email}\n\n${message}`);
-    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-  });
-</script>
 
 <style>
   .contact-cta {
@@ -98,45 +66,8 @@ const {
     color: color-mix(in srgb, var(--white) 88%, transparent);
   }
 
-  .contact-cta__form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.65rem;
-    justify-content: center;
-    margin-top: 0.75rem;
-    width: min(100%, 42rem);
-  }
-
-  .contact-cta__form input {
-    flex: 1 1 12rem;
-    min-height: 3rem;
-    border-radius: var(--radius-pill);
-    border: 1px solid color-mix(in srgb, var(--white) 35%, transparent);
-    background: color-mix(in srgb, var(--ink) 22%, var(--purple));
-    color: var(--white);
-    padding: 0.65rem 1.1rem;
-  }
-
-  .contact-cta__form input::placeholder {
-    color: color-mix(in srgb, var(--white) 65%, transparent);
-  }
-
-  .contact-cta__form button {
-    min-height: 3rem;
-    border: 0;
-    border-radius: var(--radius-pill);
-    background: var(--white);
-    color: var(--green);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 0.65rem 1.35rem;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-
-  .contact-cta__form button:hover {
-    transform: scale(1.03);
+  .contact-cta__actions {
+    margin-top: 0.55rem;
   }
 
   .contact-cta__hint {
@@ -146,17 +77,5 @@ const {
 
   .contact-cta__hint a {
     color: var(--green-light);
-  }
-
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
   }
 </style>
